@@ -9,51 +9,278 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as SiteRouteImport } from './routes/_site'
+import { Route as SiteIndexRouteImport } from './routes/_site.index'
+import { Route as AdminSplatRouteImport } from './routes/admin.$'
+import { Route as SiteServicesRouteImport } from './routes/_site.services'
+import { Route as SitePromotionsRouteImport } from './routes/_site.promotions'
+import { Route as SitePricesRouteImport } from './routes/_site.prices'
+import { Route as SiteFaqRouteImport } from './routes/_site.faq'
+import { Route as SiteDiscountsRouteImport } from './routes/_site.discounts'
+import { Route as SiteContactsRouteImport } from './routes/_site.contacts'
+import { Route as SiteBrandSlugRouteImport } from './routes/_site.brand.$slug'
+import { Route as SiteApplianceSlugRouteImport } from './routes/_site.appliance.$slug'
 
-const IndexRoute = IndexRouteImport.update({
+const SiteRoute = SiteRouteImport.update({
+  id: '/_site',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SiteIndexRoute = SiteIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => SiteRoute,
+} as any)
+const AdminSplatRoute = AdminSplatRouteImport.update({
+  id: '/admin/$',
+  path: '/admin/$',
   getParentRoute: () => rootRouteImport,
+} as any)
+const SiteServicesRoute = SiteServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SitePromotionsRoute = SitePromotionsRouteImport.update({
+  id: '/promotions',
+  path: '/promotions',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SitePricesRoute = SitePricesRouteImport.update({
+  id: '/prices',
+  path: '/prices',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteFaqRoute = SiteFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteDiscountsRoute = SiteDiscountsRouteImport.update({
+  id: '/discounts',
+  path: '/discounts',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteContactsRoute = SiteContactsRouteImport.update({
+  id: '/contacts',
+  path: '/contacts',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteBrandSlugRoute = SiteBrandSlugRouteImport.update({
+  id: '/brand/$slug',
+  path: '/brand/$slug',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteApplianceSlugRoute = SiteApplianceSlugRouteImport.update({
+  id: '/appliance/$slug',
+  path: '/appliance/$slug',
+  getParentRoute: () => SiteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof SiteIndexRoute
+  '/contacts': typeof SiteContactsRoute
+  '/discounts': typeof SiteDiscountsRoute
+  '/faq': typeof SiteFaqRoute
+  '/prices': typeof SitePricesRoute
+  '/promotions': typeof SitePromotionsRoute
+  '/services': typeof SiteServicesRoute
+  '/admin/$': typeof AdminSplatRoute
+  '/appliance/$slug': typeof SiteApplianceSlugRoute
+  '/brand/$slug': typeof SiteBrandSlugRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/contacts': typeof SiteContactsRoute
+  '/discounts': typeof SiteDiscountsRoute
+  '/faq': typeof SiteFaqRoute
+  '/prices': typeof SitePricesRoute
+  '/promotions': typeof SitePromotionsRoute
+  '/services': typeof SiteServicesRoute
+  '/admin/$': typeof AdminSplatRoute
+  '/': typeof SiteIndexRoute
+  '/appliance/$slug': typeof SiteApplianceSlugRoute
+  '/brand/$slug': typeof SiteBrandSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_site': typeof SiteRouteWithChildren
+  '/_site/contacts': typeof SiteContactsRoute
+  '/_site/discounts': typeof SiteDiscountsRoute
+  '/_site/faq': typeof SiteFaqRoute
+  '/_site/prices': typeof SitePricesRoute
+  '/_site/promotions': typeof SitePromotionsRoute
+  '/_site/services': typeof SiteServicesRoute
+  '/admin/$': typeof AdminSplatRoute
+  '/_site/': typeof SiteIndexRoute
+  '/_site/appliance/$slug': typeof SiteApplianceSlugRoute
+  '/_site/brand/$slug': typeof SiteBrandSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/contacts'
+    | '/discounts'
+    | '/faq'
+    | '/prices'
+    | '/promotions'
+    | '/services'
+    | '/admin/$'
+    | '/appliance/$slug'
+    | '/brand/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/contacts'
+    | '/discounts'
+    | '/faq'
+    | '/prices'
+    | '/promotions'
+    | '/services'
+    | '/admin/$'
+    | '/'
+    | '/appliance/$slug'
+    | '/brand/$slug'
+  id:
+    | '__root__'
+    | '/_site'
+    | '/_site/contacts'
+    | '/_site/discounts'
+    | '/_site/faq'
+    | '/_site/prices'
+    | '/_site/promotions'
+    | '/_site/services'
+    | '/admin/$'
+    | '/_site/'
+    | '/_site/appliance/$slug'
+    | '/_site/brand/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  SiteRoute: typeof SiteRouteWithChildren
+  AdminSplatRoute: typeof AdminSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_site': {
+      id: '/_site'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof SiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_site/': {
+      id: '/_site/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof SiteIndexRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/admin/$': {
+      id: '/admin/$'
+      path: '/admin/$'
+      fullPath: '/admin/$'
+      preLoaderRoute: typeof AdminSplatRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_site/services': {
+      id: '/_site/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof SiteServicesRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/promotions': {
+      id: '/_site/promotions'
+      path: '/promotions'
+      fullPath: '/promotions'
+      preLoaderRoute: typeof SitePromotionsRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/prices': {
+      id: '/_site/prices'
+      path: '/prices'
+      fullPath: '/prices'
+      preLoaderRoute: typeof SitePricesRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/faq': {
+      id: '/_site/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof SiteFaqRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/discounts': {
+      id: '/_site/discounts'
+      path: '/discounts'
+      fullPath: '/discounts'
+      preLoaderRoute: typeof SiteDiscountsRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/contacts': {
+      id: '/_site/contacts'
+      path: '/contacts'
+      fullPath: '/contacts'
+      preLoaderRoute: typeof SiteContactsRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/brand/$slug': {
+      id: '/_site/brand/$slug'
+      path: '/brand/$slug'
+      fullPath: '/brand/$slug'
+      preLoaderRoute: typeof SiteBrandSlugRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/appliance/$slug': {
+      id: '/_site/appliance/$slug'
+      path: '/appliance/$slug'
+      fullPath: '/appliance/$slug'
+      preLoaderRoute: typeof SiteApplianceSlugRouteImport
+      parentRoute: typeof SiteRoute
     }
   }
 }
 
+interface SiteRouteChildren {
+  SiteContactsRoute: typeof SiteContactsRoute
+  SiteDiscountsRoute: typeof SiteDiscountsRoute
+  SiteFaqRoute: typeof SiteFaqRoute
+  SitePricesRoute: typeof SitePricesRoute
+  SitePromotionsRoute: typeof SitePromotionsRoute
+  SiteServicesRoute: typeof SiteServicesRoute
+  SiteIndexRoute: typeof SiteIndexRoute
+  SiteApplianceSlugRoute: typeof SiteApplianceSlugRoute
+  SiteBrandSlugRoute: typeof SiteBrandSlugRoute
+}
+
+const SiteRouteChildren: SiteRouteChildren = {
+  SiteContactsRoute: SiteContactsRoute,
+  SiteDiscountsRoute: SiteDiscountsRoute,
+  SiteFaqRoute: SiteFaqRoute,
+  SitePricesRoute: SitePricesRoute,
+  SitePromotionsRoute: SitePromotionsRoute,
+  SiteServicesRoute: SiteServicesRoute,
+  SiteIndexRoute: SiteIndexRoute,
+  SiteApplianceSlugRoute: SiteApplianceSlugRoute,
+  SiteBrandSlugRoute: SiteBrandSlugRoute,
+}
+
+const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  SiteRoute: SiteRouteWithChildren,
+  AdminSplatRoute: AdminSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

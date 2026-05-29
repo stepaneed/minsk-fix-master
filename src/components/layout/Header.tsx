@@ -57,7 +57,7 @@ export function Header() {
               {drop === key && (
                 <div className="absolute left-0 top-full mt-1 min-w-[220px] rounded-xl border bg-popover p-2 shadow-lg">
                   {dd.links.map((l) => (
-                    <Link key={l.to} to={l.to} className="block rounded-md px-3 py-2 text-sm hover:bg-secondary" onClick={() => setDrop(null)}>
+                    <Link key={l.to} to={l.to as never} className="block rounded-md px-3 py-2 text-sm hover:bg-secondary" onClick={() => setDrop(null)}>
                       {l.label}
                     </Link>
                   ))}
@@ -106,7 +106,7 @@ export function Header() {
         <div className="border-t bg-background lg:hidden">
           <nav className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3">
             {Object.values(dropdowns).flatMap((dd) => dd.links).map((l) => (
-              <Link key={l.to} to={l.to} className="rounded-md px-3 py-2 text-sm hover:bg-secondary" onClick={() => setMenuOpen(false)}>
+              <Link key={l.to} to={l.to as never} className="rounded-md px-3 py-2 text-sm hover:bg-secondary" onClick={() => setMenuOpen(false)}>
                 {l.label}
               </Link>
             ))}

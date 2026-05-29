@@ -126,7 +126,7 @@ export function OrderForm({ defaultTypeId, compact }: { defaultTypeId?: string; 
           <Textarea className="mt-1" rows={3} {...form.register("description")} placeholder="Опишите проблему..." />
         </div>
         <div className={`flex items-start gap-2 ${compact ? "" : "md:col-span-2"}`}>
-          <Checkbox id="consent" onCheckedChange={(c) => form.setValue("consent", c === true as never)} />
+          <Checkbox id="consent" onCheckedChange={(c) => form.setValue("consent", c === true ? true : (false as never))} />
           <label htmlFor="consent" className="text-xs text-muted-foreground">
             Согласен с обработкой персональных данных
           </label>

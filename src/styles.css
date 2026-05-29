@@ -68,3 +68,22 @@
     -webkit-font-smoothing: antialiased;
   }
 }
+
+@layer utilities {
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee var(--marquee-duration, 40s) linear infinite;
+  }
+  .marquee-track:hover { animation-play-state: paused; }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.3); }
+  }
+  .pulse-dot { animation: pulse-dot 1.6s ease-in-out infinite; }
+}
+

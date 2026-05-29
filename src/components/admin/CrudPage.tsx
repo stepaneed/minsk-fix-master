@@ -59,11 +59,17 @@ export function CrudPage({ config }: { config: CrudConfig }) {
   const handleSubmit = async (values: Record<string, any>) => {
     if (editing) {
       const { error } = await supabase.from(config.table as any).update(values).eq("id", editing.id);
-      if (error) return toast.error(error.message);
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
       toast.success("Обновлено");
     } else {
       const { error } = await supabase.from(config.table as any).insert(values as any);
-      if (error) return toast.error(error.message);
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
       toast.success("Создано");
     }
     setOpen(false);

@@ -21,7 +21,8 @@ export function Header() {
     return () => document.removeEventListener("click", onClick);
   }, []);
 
-  const dropdowns = {
+  type NavLink = { to: string; label: string };
+  const dropdowns: Record<string, { label: string; links: NavLink[] }> = {
     services: { label: "Услуги", links: [
       { to: "/services", label: "Все услуги" },
       { to: "/appliance/washing-machines", label: "Стиральные машины" },
@@ -37,7 +38,7 @@ export function Header() {
       { to: "/faq", label: "Частые вопросы" },
       { to: "/contacts", label: "Контакты" },
     ]},
-  } as const;
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/85 backdrop-blur">

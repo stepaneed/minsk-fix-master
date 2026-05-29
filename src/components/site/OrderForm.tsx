@@ -21,7 +21,7 @@ const schema = z.object({
   date: z.string().optional(),
   time: z.string().optional(),
   description: z.string().max(2000).optional(),
-  consent: z.literal(true, { errorMap: () => ({ message: "Требуется согласие" }) }),
+  consent: z.literal(true, { message: "Требуется согласие" }),
 });
 type FormData = z.infer<typeof schema>;
 

@@ -1,5 +1,4 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { OrderForm } from "@/components/site/OrderForm";
 import { WorkAlgorithm } from "@/components/site/WorkAlgorithm";

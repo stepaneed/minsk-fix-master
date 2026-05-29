@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as SiteRouteImport } from './routes/_site'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
@@ -32,6 +33,11 @@ import { Route as SiteContactsRouteImport } from './routes/_site.contacts'
 import { Route as SiteBrandSlugRouteImport } from './routes/_site.brand.$slug'
 import { Route as SiteApplianceSlugRouteImport } from './routes/_site.appliance.$slug'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -145,6 +151,7 @@ const SiteApplianceSlugRoute = SiteApplianceSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/contacts': typeof SiteContactsRoute
   '/discounts': typeof SiteDiscountsRoute
   '/faq': typeof SiteFaqRoute
@@ -166,6 +173,7 @@ export interface FileRoutesByFullPath {
   '/brand/$slug': typeof SiteBrandSlugRoute
 }
 export interface FileRoutesByTo {
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/contacts': typeof SiteContactsRoute
   '/discounts': typeof SiteDiscountsRoute
   '/faq': typeof SiteFaqRoute
@@ -191,6 +199,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_site': typeof SiteRouteWithChildren
   '/admin': typeof AdminRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_site/contacts': typeof SiteContactsRoute
   '/_site/discounts': typeof SiteDiscountsRoute
   '/_site/faq': typeof SiteFaqRoute
@@ -217,6 +226,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/sitemap.xml'
     | '/contacts'
     | '/discounts'
     | '/faq'
@@ -238,6 +248,7 @@ export interface FileRouteTypes {
     | '/brand/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/sitemap.xml'
     | '/contacts'
     | '/discounts'
     | '/faq'
@@ -262,6 +273,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_site'
     | '/admin'
+    | '/sitemap.xml'
     | '/_site/contacts'
     | '/_site/discounts'
     | '/_site/faq'
@@ -287,10 +299,18 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   SiteRoute: typeof SiteRouteWithChildren
   AdminRoute: typeof AdminRouteWithChildren
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
@@ -507,7 +527,18 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   SiteRoute: SiteRouteWithChildren,
   AdminRoute: AdminRouteWithChildren,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

@@ -1,0 +1,38 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { CrudPage } from "@/components/admin/CrudPage";
+
+const fields = [
+  { name: "title", label: "Заголовок", type: "text" as const, required: true },
+  { name: "description", label: "Описание", type: "textarea" as const },
+  { name: "benefit", label: "Выгода", type: "text" as const, placeholder: "напр. -20%" },
+  { name: "conditions", label: "Условия", type: "textarea" as const },
+  { name: "expires_at", label: "Действует до", type: "datetime" as const },
+  { name: "is_active", label: "Активно", type: "boolean" as const },
+];
+
+const columns = [
+  { key: "title", label: "Заголовок", sortable: true },
+  { key: "benefit", label: "Выгода" },
+  {
+    key: "expires_at",
+    label: "До",
+    sortable: true,
+    render: (r: any) => (r.expires_at ? new Date(r.expires_at).toLocaleDateString("ru-RU") : "—"),
+  },
+];
+
+export const Route = createFileRoute("/admin/discounts")({
+  head: () => ({ meta: [{ title: "Скидки — Админка" }, { name: "robots", content: "noindex" }] }),
+  component: () => (
+    <CrudPage
+      config={{
+        title: "Скидки",
+        table: "discounts",
+        orderBy: { column: "created_at", ascending: false },
+        showActiveToggle: true,
+        fields,
+        columns,
+      }}
+    />
+  ),
+});

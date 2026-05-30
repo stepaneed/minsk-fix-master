@@ -19,7 +19,7 @@ export const Route = createFileRoute("/_site/promotions")({
 });
 
 function PromotionsPage() {
-  const { data: items = [] } = useQuery({
+  const { data: items = [], isLoading } = useQuery({
     queryKey: ["promotions_all"],
     queryFn: async () => {
       const { data } = await supabase.from("promotions").select("*").eq("is_active", true).order("created_at", { ascending: false });

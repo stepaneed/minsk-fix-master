@@ -20,6 +20,7 @@ const schema = z.object({
   date: z.string().optional(),
   time: z.string().optional(),
   description: z.string().max(2000).optional(),
+  website: z.string().max(0, "spam").optional().or(z.literal("")),
   consent: z.literal(true, { message: "Требуется согласие" }),
 });
 type FormData = z.infer<typeof schema>;
@@ -98,6 +99,10 @@ export function OrderForm({ defaultTypeId, compact, onSuccess }: { defaultTypeId
       <p className="mt-1 text-sm text-muted-foreground">Бесплатный выезд · Гарантия до 12 мес · Оплата после ремонта</p>
 
       <form onSubmit={form.handleSubmit(onSubmit)} className={`mt-6 grid gap-4 ${compact ? "" : "md:grid-cols-2"}`}>
+        {/* honeypot — скрытое поле, заполняется только ботами */}
+        <div aria-hidden="true" style={{ position: "absolute", left: "-10000px", top: "auto", width: 1, height: 1, overflow: "hidden" }}>
+          <label>Website<input type="text" tabIndex={-1} autoComplete="off" {...form.register("website")} /></label>
+        </div>
         <div className={compact ? "" : "md:col-span-2"}>
           <Label>Вид техники</Label>
           <select

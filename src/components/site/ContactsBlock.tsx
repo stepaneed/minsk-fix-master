@@ -70,6 +70,7 @@ export function ContactsBlock() {
         <div className="overflow-hidden rounded-2xl border">
           <iframe
             title="Карта"
+            loading="lazy"
             className="h-72 w-full"
             src={`https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lng}`}
           />

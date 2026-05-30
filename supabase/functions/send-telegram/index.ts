@@ -1,4 +1,4 @@
-// Edge function: receives order, rate-limits per IP, inserts into DB, notifies Telegram.
+// Edge function: receives order, rate-limits per IP, validates input, inserts into DB, notifies Telegram.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const cors = {
@@ -9,6 +9,24 @@ const cors = {
 
 const RATE_LIMIT = 10;
 const WINDOW_MS = 60 * 60 * 1000;
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const PHONE_RE = /^[+0-9 ()\-]{5,30}$/;
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const TIME_RE = /^\d{2}:\d{2}(:\d{2})?$/;
+
+function jsonResponse(status: number, body: unknown) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...cors, "Content-Type": "application/json" },
+  });
+}
+
+function clean(v: unknown, max: number): string | null {
+  if (typeof v !== "string") return null;
+  const t = v.trim().slice(0, max);
+  return t.length ? t : null;
+}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: cors });
@@ -33,40 +51,35 @@ Deno.serve(async (req) => {
     .gte("created_at", since);
 
   if ((count ?? 0) >= RATE_LIMIT) {
-    return new Response(JSON.stringify({ error: "rate_limited" }), {
-      status: 429,
-      headers: { ...cors, "Content-Type": "application/json" },
-    });
+    return jsonResponse(429, { error: "rate_limited" });
   }
 
   let body: Record<string, unknown>;
   try {
     body = await req.json();
   } catch {
-    return new Response(JSON.stringify({ error: "invalid_json" }), {
-      status: 400,
-      headers: { ...cors, "Content-Type": "application/json" },
-    });
+    return jsonResponse(400, { error: "invalid_json" });
   }
 
-  const name = String(body.name ?? "").trim().slice(0, 100);
-  const phone = String(body.phone ?? "").trim().slice(0, 30);
-  if (name.length < 2 || phone.length < 5) {
-    return new Response(JSON.stringify({ error: "invalid_input" }), {
-      status: 400,
-      headers: { ...cors, "Content-Type": "application/json" },
-    });
+  // Honeypot — silent reject to look like success
+  if (typeof body.website === "string" && body.website.trim().length > 0) {
+    return jsonResponse(200, { id: null, telegram_sent: false });
   }
 
-  const order = {
-    type_id: (body.type_id as string) || null,
-    name,
-    phone,
-    address: (body.address as string) || null,
-    date: (body.date as string) || null,
-    time: (body.time as string) || null,
-    description: (body.description as string) || null,
-  };
+  const name = clean(body.name, 100);
+  const phone = clean(body.phone, 30);
+  if (!name || name.length < 2) return jsonResponse(400, { error: "invalid_name" });
+  if (!phone || !PHONE_RE.test(phone)) return jsonResponse(400, { error: "invalid_phone" });
+
+  const type_id = typeof body.type_id === "string" && UUID_RE.test(body.type_id) ? body.type_id : null;
+  const address = clean(body.address, 300);
+  const description = clean(body.description, 2000);
+  const dateRaw = clean(body.date, 10);
+  const timeRaw = clean(body.time, 8);
+  const date = dateRaw && DATE_RE.test(dateRaw) ? dateRaw : null;
+  const time = timeRaw && TIME_RE.test(timeRaw) ? timeRaw : null;
+
+  const order = { type_id, name, phone, address, date, time, description };
 
   const { data: inserted, error: insertErr } = await supabase
     .from("orders")
@@ -75,16 +88,13 @@ Deno.serve(async (req) => {
     .single();
 
   if (insertErr) {
-    return new Response(JSON.stringify({ error: insertErr.message }), {
-      status: 500,
-      headers: { ...cors, "Content-Type": "application/json" },
-    });
+    return jsonResponse(500, { error: insertErr.message });
   }
 
   // Log rate-limit hit
   await supabase.from("rate_limits").insert({ key: `order:${ip}` });
 
-  // Telegram (best-effort)
+  // Telegram (best-effort) — order saved even on failure
   let telegram_sent = false;
   const token = Deno.env.get("TELEGRAM_BOT_TOKEN");
   const chatId = Deno.env.get("TELEGRAM_CHAT_ID");
@@ -94,9 +104,9 @@ Deno.serve(async (req) => {
         "🔧 *Новая заявка*",
         `Имя: ${name}`,
         `Телефон: ${phone}`,
-        order.address ? `Адрес: ${order.address}` : null,
-        order.date ? `Дата: ${order.date} ${order.time ?? ""}` : null,
-        order.description ? `Описание: ${order.description}` : null,
+        address ? `Адрес: ${address}` : null,
+        date ? `Дата: ${date} ${time ?? ""}` : null,
+        description ? `Описание: ${description}` : null,
       ].filter(Boolean).join("\n");
 
       const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
@@ -113,8 +123,5 @@ Deno.serve(async (req) => {
     }
   }
 
-  return new Response(JSON.stringify({ id: inserted.id, telegram_sent }), {
-    status: 200,
-    headers: { ...cors, "Content-Type": "application/json" },
-  });
+  return jsonResponse(200, { id: inserted.id, telegram_sent });
 });

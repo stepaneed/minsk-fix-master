@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_site/discounts")({
 });
 
 function DiscountsPage() {
-  const { data: items = [] } = useQuery({
+  const { data: items = [], isLoading } = useQuery({
     queryKey: ["discounts_all"],
     queryFn: async () => {
       const { data } = await supabase.from("discounts").select("*").eq("is_active", true).order("created_at", { ascending: false });
@@ -33,7 +33,18 @@ function DiscountsPage() {
           <a href="/" className="hover:text-foreground">Главная</a> · <span className="text-foreground">Скидки</span>
         </nav>
         <h1 className="text-4xl font-semibold tracking-tight">Скидки</h1>
-        {items.length === 0 ? (
+        {isLoading ? (
+          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="rounded-2xl border bg-card p-6">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="mt-3 h-5 w-3/4" />
+                <Skeleton className="mt-3 h-8 w-32" />
+                <Skeleton className="mt-3 h-4 w-full" />
+              </div>
+            ))}
+          </div>
+        ) : items.length === 0 ? (
           <p className="mt-6 text-muted-foreground">Активных скидок пока нет. Загляните позже.</p>
         ) : (
           <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">

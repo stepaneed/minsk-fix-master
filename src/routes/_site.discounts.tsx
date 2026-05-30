@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Gift } from "lucide-react";
 import { SecondCTA } from "@/components/site/SecondCTA";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/_site/discounts")({
   head: () => ({

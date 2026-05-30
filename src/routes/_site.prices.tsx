@@ -43,7 +43,13 @@ function PricesPage() {
         <h1 className="text-4xl font-semibold tracking-tight">Прейскурант</h1>
         <p className="mt-3 text-muted-foreground">Окончательная цена зависит от сложности — её мастер озвучит после диагностики.</p>
 
-        {types.length > 0 && (
+        {isLoading && (
+          <div className="mt-8 space-y-3">
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-48 w-full rounded-2xl" />
+          </div>
+        )}
+        {!isLoading && types.length > 0 && (
           <Tabs defaultValue={types[0].id} className="mt-8">
             <TabsList className="flex flex-wrap h-auto">
               {types.map((t) => (

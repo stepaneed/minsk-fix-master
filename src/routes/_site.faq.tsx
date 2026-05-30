@@ -52,6 +52,11 @@ function FaqPage() {
         </nav>
         <h1 className="text-4xl font-semibold tracking-tight">Частые вопросы</h1>
         <div className="mt-8 space-y-10">
+          {isLoading && (
+            <div className="space-y-3">
+              {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-14 w-full rounded-md" />)}
+            </div>
+          )}
           {Object.entries(grouped).map(([cat, list]) => (
             <div key={cat}>
               <h2 className="text-xl font-semibold tracking-tight mb-2">{cat}</h2>

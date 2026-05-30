@@ -40,9 +40,8 @@ function useMinskHours() {
   return open;
 }
 
-export function OrderForm({ defaultTypeId, compact }: { defaultTypeId?: string; compact?: boolean }) {
+export function OrderForm({ defaultTypeId, compact, onSuccess }: { defaultTypeId?: string; compact?: boolean; onSuccess?: () => void }) {
   const open = useMinskHours();
-  const submit = useServerFn(submitOrder);
   const { data: types = [] } = useQuery({
     queryKey: ["service_types_active"],
     queryFn: async () => {
@@ -66,13 +65,26 @@ export function OrderForm({ defaultTypeId, compact }: { defaultTypeId?: string; 
 
   const onSubmit = async (v: FormData) => {
     try {
-      await submit({ data: { ...v, type_id: v.type_id || null } });
+      const { data, error } = await supabase.functions.invoke("send-telegram", {
+        body: { ...v, type_id: v.type_id || null },
+      });
+      if (error || (data && (data as { error?: string }).error)) {
+        const msg = (data as { error?: string })?.error;
+        if (msg === "rate_limited") {
+          toast.error("Слишком много заявок. Попробуйте через час.");
+        } else {
+          throw new Error(msg || error?.message || "fail");
+        }
+        return;
+      }
       toast.success("Заявка отправлена! Перезвоним в течение 15 минут.");
       form.reset({ type_id: defaultTypeId ?? "", name: "", phone: "", address: "", date: "", time: "", description: "" });
+      onSuccess?.();
     } catch (e) {
       toast.error("Не удалось отправить. Попробуйте ещё раз.");
     }
   };
+
 
   return (
     <div id="order" className="rounded-2xl border bg-card p-6 shadow-sm md:p-8">

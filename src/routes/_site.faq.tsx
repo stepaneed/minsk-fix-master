@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { SecondCTA } from "@/components/site/SecondCTA";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/_site/faq")({
   head: () => ({
@@ -19,7 +20,7 @@ export const Route = createFileRoute("/_site/faq")({
 });
 
 function FaqPage() {
-  const { data: items = [] } = useQuery({
+  const { data: items = [], isLoading } = useQuery({
     queryKey: ["faq_all"],
     queryFn: async () => {
       const { data } = await supabase.from("faq").select("*").eq("is_active", true).order("sort_order");

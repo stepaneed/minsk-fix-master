@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { SecondCTA } from "@/components/site/SecondCTA";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/_site/prices")({
   head: () => ({
@@ -19,7 +20,7 @@ export const Route = createFileRoute("/_site/prices")({
 });
 
 function PricesPage() {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["prices_grouped"],
     queryFn: async () => {
       const [types, prices] = await Promise.all([

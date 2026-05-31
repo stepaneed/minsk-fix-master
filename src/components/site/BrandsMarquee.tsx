@@ -6,7 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 const ROWS = 4;
 const DURATIONS = ["60s", "70s", "55s", "65s"];
 
-export function BrandsMarquee() {
+export function BrandsMarquee({ applianceSlug }: { applianceSlug?: string } = {}) {
   const { data: brands = [], isLoading } = useQuery({
     queryKey: ["brands_active"],
     queryFn: async () => {

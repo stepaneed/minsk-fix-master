@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Phone, Clock, MapPin, Send, MessageCircle } from "lucide-react";
+import { Phone, Clock, MapPin, Send, MessageCircle, Phone as PhoneIcon } from "lucide-react";
 
 type Contacts = {
   phone?: string;
@@ -22,6 +22,12 @@ export function useContacts() {
     },
   });
 }
+
+export const MESSENGERS = [
+  { key: "telegram" as const, label: "Telegram", icon: Send, color: "#0088CC" },
+  { key: "whatsapp" as const, label: "WhatsApp", icon: MessageCircle, color: "#25D366" },
+  { key: "viber" as const, label: "Viber", icon: PhoneIcon, color: "#7360F2" },
+];
 
 export function ContactsBlock() {
   const { data: c } = useContacts();
@@ -49,22 +55,23 @@ export function ContactsBlock() {
               <MapPin className="h-5 w-5 text-primary" /> {c.address}
             </div>
           )}
-          <div className="flex gap-2 pt-2">
-            {c.telegram && (
-              <a href={c.telegram} target="_blank" rel="noreferrer" className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground">
-                <Send className="h-5 w-5" />
-              </a>
-            )}
-            {c.whatsapp && (
-              <a href={c.whatsapp} target="_blank" rel="noreferrer" className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground">
-                <MessageCircle className="h-5 w-5" />
-              </a>
-            )}
-            {c.viber && (
-              <a href={c.viber} target="_blank" rel="noreferrer" className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground">
-                <MessageCircle className="h-5 w-5" />
-              </a>
-            )}
+          <div className="flex flex-col gap-2 pt-2 sm:flex-row sm:flex-wrap">
+            {MESSENGERS.map(({ key, label, icon: Icon, color }) => {
+              const href = c[key];
+              if (!href) return null;
+              return (
+                <a
+                  key={key}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-white shadow-sm transition-transform hover:scale-[1.02]"
+                  style={{ backgroundColor: color }}
+                >
+                  <Icon className="h-4 w-4" /> {label}
+                </a>
+              );
+            })}
           </div>
         </div>
         <div className="overflow-hidden rounded-2xl border">

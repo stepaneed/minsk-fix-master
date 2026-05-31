@@ -1,44 +1,78 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Menu, X, ChevronDown, Phone, Send, MessageCircle, Clock } from "lucide-react";
-import { useContacts } from "@/components/site/ContactsBlock";
+import { useQuery } from "@tanstack/react-query";
+import { Menu, X, ChevronDown, Phone, Send, MessageCircle, Phone as PhoneIcon, Clock } from "lucide-react";
+import { useContacts, MESSENGERS } from "@/components/site/ContactsBlock";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 
 function scrollToOrder() {
   const el = document.getElementById("order");
   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+const MESSENGER_ICON_MAP = { telegram: Send, whatsapp: MessageCircle, viber: PhoneIcon } as const;
+
 export function Header() {
   const { data: c } = useContacts();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [msgOpen, setMsgOpen] = useState(false);
-  const [drop, setDrop] = useState<string | null>(null);
 
-  useEffect(() => {
-    const onClick = () => setDrop(null);
-    document.addEventListener("click", onClick);
-    return () => document.removeEventListener("click", onClick);
-  }, []);
+  const { data: services = [] } = useQuery({
+    queryKey: ["header_services"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("service_types")
+        .select("slug,title")
+        .eq("is_active", true)
+        .order("sort_order");
+      return data ?? [];
+    },
+  });
 
-  type NavLink = { to: string; label: string };
-  const dropdowns: Record<string, { label: string; links: NavLink[] }> = {
-    services: { label: "Услуги", links: [
-      { to: "/services", label: "Все услуги" },
-      { to: "/appliance/washing-machines", label: "Стиральные машины" },
-      { to: "/appliance/refrigerators", label: "Холодильники" },
-      { to: "/appliance/dishwashers", label: "Посудомоечные машины" },
-    ]},
-    prices: { label: "Цены", links: [
-      { to: "/prices", label: "Все цены" },
-      { to: "/discounts", label: "Скидки" },
-      { to: "/promotions", label: "Акции" },
-    ]},
-    faq: { label: "FAQ", links: [
-      { to: "/faq", label: "Частые вопросы" },
-      { to: "/contacts", label: "Контакты" },
-    ]},
-  };
+  const dropdowns = [
+    {
+      key: "services",
+      label: "Услуги",
+      links: [
+        { to: "/services", label: "Все услуги", params: undefined as undefined },
+        ...services.map((s) => ({
+          to: "/appliance/$slug",
+          label: s.title,
+          params: { slug: s.slug },
+        })),
+      ],
+    },
+    {
+      key: "prices",
+      label: "Цены",
+      links: [
+        { to: "/prices", label: "Прайс-лист", params: undefined },
+        { to: "/discounts", label: "Скидки", params: undefined },
+        { to: "/promotions", label: "Акции", params: undefined },
+      ],
+    },
+    {
+      key: "faq",
+      label: "FAQ",
+      links: [
+        { to: "/faq", label: "Частые вопросы", params: undefined },
+        { to: "/contacts", label: "Контакты", params: undefined },
+      ],
+    },
+  ];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/85 backdrop-blur">
@@ -46,24 +80,27 @@ export function Header() {
         <Link to="/" className="text-lg font-semibold tracking-tight">МастерФикс</Link>
 
         <nav className="hidden items-center gap-1 lg:flex">
-          {Object.entries(dropdowns).map(([key, dd]) => (
-            <div key={key} className="relative" onClick={(e) => e.stopPropagation()}>
-              <button
-                onClick={() => setDrop(drop === key ? null : key)}
-                className="inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm text-foreground hover:bg-secondary"
-              >
+          {dropdowns.map((dd) => (
+            <DropdownMenu key={dd.key}>
+              <DropdownMenuTrigger className="inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm text-foreground outline-none hover:bg-secondary data-[state=open]:bg-secondary">
                 {dd.label} <ChevronDown className="h-3.5 w-3.5" />
-              </button>
-              {drop === key && (
-                <div className="absolute left-0 top-full mt-1 min-w-[220px] rounded-xl border bg-popover p-2 shadow-lg">
-                  {dd.links.map((l) => (
-                    <Link key={l.to} to={l.to as never} className="block rounded-md px-3 py-2 text-sm hover:bg-secondary" onClick={() => setDrop(null)}>
-                      {l.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="min-w-[240px]">
+                {dd.links.map((l, i) => (
+                  <DropdownMenuItem key={i} asChild>
+                    {l.params ? (
+                      <Link to={l.to as never} params={l.params as never} className="cursor-pointer">
+                        {l.label}
+                      </Link>
+                    ) : (
+                      <Link to={l.to as never} className="cursor-pointer">
+                        {l.label}
+                      </Link>
+                    )}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           ))}
         </nav>
 
@@ -73,22 +110,37 @@ export function Header() {
               <Clock className="h-3.5 w-3.5" /> {c.schedule}
             </div>
           )}
-          <div className="relative" onClick={(e) => e.stopPropagation()}>
-            <button
-              onClick={() => setMsgOpen((v) => !v)}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground"
-              aria-label="Мессенджеры"
-            >
-              <MessageCircle className="h-4 w-4" />
-            </button>
-            {msgOpen && (
-              <div className="absolute right-0 top-full mt-2 flex gap-2 rounded-xl border bg-popover p-2 shadow-lg">
-                {c?.telegram && <a href={c.telegram} target="_blank" rel="noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground"><Send className="h-4 w-4" /></a>}
-                {c?.whatsapp && <a href={c.whatsapp} target="_blank" rel="noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground"><MessageCircle className="h-4 w-4" /></a>}
-                {c?.viber && <a href={c.viber} target="_blank" rel="noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground"><MessageCircle className="h-4 w-4" /></a>}
+          <Popover>
+            <PopoverTrigger asChild>
+              <button
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground"
+                aria-label="Мессенджеры"
+              >
+                <MessageCircle className="h-4 w-4" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent align="end" className="w-56 p-2">
+              <div className="flex flex-col gap-1.5">
+                {MESSENGERS.map(({ key, label, color }) => {
+                  const href = c?.[key];
+                  if (!href) return null;
+                  const Icon = MESSENGER_ICON_MAP[key];
+                  return (
+                    <a
+                      key={key}
+                      href={href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-white transition-transform hover:scale-[1.02]"
+                      style={{ backgroundColor: color }}
+                    >
+                      <Icon className="h-4 w-4" /> {label}
+                    </a>
+                  );
+                })}
               </div>
-            )}
-          </div>
+            </PopoverContent>
+          </Popover>
           {c?.phone && (
             <a href={`tel:${c.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-1.5 text-sm font-semibold hover:text-primary">
               <Phone className="h-4 w-4" /> {c.phone}
@@ -103,17 +155,73 @@ export function Header() {
       </div>
 
       {menuOpen && (
-        <div className="border-t bg-background lg:hidden">
-          <nav className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3">
-            {Object.values(dropdowns).flatMap((dd) => dd.links).map((l) => (
-              <Link key={l.to} to={l.to as never} className="rounded-md px-3 py-2 text-sm hover:bg-secondary" onClick={() => setMenuOpen(false)}>
-                {l.label}
-              </Link>
-            ))}
+        <div className="max-h-[calc(100vh-4rem)] overflow-y-auto border-t bg-background lg:hidden">
+          <nav className="mx-auto max-w-6xl px-4 py-2">
+            <Link
+              to="/"
+              onClick={() => setMenuOpen(false)}
+              className="block border-b py-4 text-base font-medium"
+            >
+              Главная
+            </Link>
+
+            <Accordion type="multiple" className="w-full">
+              <AccordionItem value="services">
+                <AccordionTrigger className="text-base font-medium">Услуги</AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex flex-col">
+                    {services.map((s) => (
+                      <Link
+                        key={s.slug}
+                        to="/appliance/$slug"
+                        params={{ slug: s.slug }}
+                        onClick={() => setMenuOpen(false)}
+                        className="py-2.5 pl-2 text-sm text-muted-foreground hover:text-foreground"
+                      >
+                        {s.title}
+                      </Link>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="prices">
+                <AccordionTrigger className="text-base font-medium">Цены</AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex flex-col">
+                    <Link to="/prices" onClick={() => setMenuOpen(false)} className="py-2.5 pl-2 text-sm text-muted-foreground hover:text-foreground">Прайс-лист выполняемых услуг</Link>
+                    <Link to="/discounts" onClick={() => setMenuOpen(false)} className="py-2.5 pl-2 text-sm text-muted-foreground hover:text-foreground">Скидки</Link>
+                    <Link to="/promotions" onClick={() => setMenuOpen(false)} className="py-2.5 pl-2 text-sm text-muted-foreground hover:text-foreground">Акции</Link>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="faq">
+                <AccordionTrigger className="text-base font-medium">Часто задаваемые вопросы</AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex flex-col">
+                    <Link to="/faq" onClick={() => setMenuOpen(false)} className="py-2.5 pl-2 text-sm text-muted-foreground hover:text-foreground">Вопросы и ответы</Link>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+
+            <Link
+              to="/contacts"
+              onClick={() => setMenuOpen(false)}
+              className="block border-b py-4 text-base font-medium"
+            >
+              Контакты
+            </Link>
+
             {c?.phone && (
-              <a href={`tel:${c.phone.replace(/\s/g, "")}`} className="rounded-md px-3 py-2 text-sm font-semibold">📞 {c.phone}</a>
+              <a href={`tel:${c.phone.replace(/\s/g, "")}`} className="block py-3 text-sm font-semibold">
+                📞 {c.phone}
+              </a>
             )}
-            <Button className="mt-2" onClick={() => { setMenuOpen(false); scrollToOrder(); }}>Оформить заказ</Button>
+            <Button className="my-3 w-full" onClick={() => { setMenuOpen(false); scrollToOrder(); }}>
+              Оформить заказ
+            </Button>
           </nav>
         </div>
       )}

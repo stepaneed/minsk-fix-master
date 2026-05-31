@@ -21,19 +21,17 @@ export function BrandsMarquee() {
 
   if (isLoading) {
     return (
-      <section className="py-16">
-        <div className="mx-auto max-w-6xl px-4">
-          <Skeleton className="h-8 w-64" />
-          <Skeleton className="mt-2 h-4 w-80" />
-          <div className="mt-8 space-y-3">
-            {Array.from({ length: 4 }).map((_, r) => (
-              <div key={r} className="flex gap-3 overflow-hidden">
-                {Array.from({ length: 8 }).map((_, i) => (
-                  <Skeleton key={i} className="h-16 w-[140px] shrink-0 rounded-xl" />
-                ))}
-              </div>
-            ))}
-          </div>
+      <section className="mx-auto max-w-6xl px-4 py-16">
+        <Skeleton className="h-8 w-64" />
+        <Skeleton className="mt-2 h-4 w-80" />
+        <div className="mt-8 space-y-3">
+          {Array.from({ length: 4 }).map((_, r) => (
+            <div key={r} className="flex gap-3 overflow-hidden">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <Skeleton key={i} className="h-16 w-[140px] shrink-0 rounded-xl" />
+              ))}
+            </div>
+          ))}
         </div>
       </section>
     );

@@ -69,7 +69,7 @@ export function AdminForm({
       for (const f of fields) {
         let v = values[f.name];
         if (v === "") v = null;
-        if (f.type === "number" && v !== null && v !== undefined) v = Number(v);
+        if ((f.type === "number" || f.type === "scale") && v !== null && v !== undefined) v = Number(v);
         out[f.name] = v;
       }
       await onSubmit(out);

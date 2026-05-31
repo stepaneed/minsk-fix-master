@@ -83,7 +83,7 @@ function AppliancePage() {
       </section>
 
       <WorkAlgorithm />
-      <BrandsMarquee />
+      <BrandsMarquee applianceSlug={slug} />
       <ContactsBlock />
     </>
   );

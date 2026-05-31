@@ -16,10 +16,16 @@ import { ImageUpload } from "./ImageUpload";
 export type Field = {
   name: string;
   label: string;
-  type: "text" | "textarea" | "number" | "boolean" | "image" | "datetime" | "select" | "slug";
+  type: "text" | "textarea" | "number" | "boolean" | "image" | "datetime" | "select" | "slug" | "scale";
   required?: boolean;
   options?: { value: string; label: string }[];
   placeholder?: string;
+  /** For "scale": name of the field holding the image URL to preview. */
+  previewField?: string;
+  /** For "scale": min/max/step (defaults: 0.5/2/0.05). */
+  min?: number;
+  max?: number;
+  step?: number;
 };
 
 export function AdminForm({
@@ -63,7 +69,7 @@ export function AdminForm({
       for (const f of fields) {
         let v = values[f.name];
         if (v === "") v = null;
-        if (f.type === "number" && v !== null && v !== undefined) v = Number(v);
+        if ((f.type === "number" || f.type === "scale") && v !== null && v !== undefined) v = Number(v);
         out[f.name] = v;
       }
       await onSubmit(out);
@@ -122,6 +128,51 @@ export function AdminForm({
               </div>
             )}
             {f.type === "image" && <ImageUpload value={v} onChange={(url) => set(f.name, url)} />}
+            {f.type === "scale" && (() => {
+              const min = f.min ?? 0.5;
+              const max = f.max ?? 2;
+              const step = f.step ?? 0.05;
+              const current = Number(v ?? 1);
+              const previewUrl = f.previewField ? values[f.previewField] : null;
+              return (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <Input
+                      id={f.name}
+                      type="range"
+                      min={min}
+                      max={max}
+                      step={step}
+                      value={current}
+                      onChange={(e) => set(f.name, Number(e.target.value))}
+                      className="flex-1"
+                    />
+                    <Input
+                      type="number"
+                      min={min}
+                      max={max}
+                      step={step}
+                      value={current}
+                      onChange={(e) => set(f.name, Number(e.target.value))}
+                      className="w-20"
+                    />
+                    <span className="text-sm text-muted-foreground w-12 text-right">{Math.round(current * 100)}%</span>
+                  </div>
+                  <div className="flex h-20 w-[160px] items-center justify-center rounded-xl border bg-card px-4">
+                    {previewUrl ? (
+                      <img
+                        src={previewUrl}
+                        alt="preview"
+                        style={{ transform: `scale(${current})`, transformOrigin: "center" }}
+                        className="max-h-10 max-w-[120px] object-contain transition-transform"
+                      />
+                    ) : (
+                      <span className="text-xs text-muted-foreground">Загрузите логотип</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })()}
             {f.type === "select" && (
               <Select value={v ?? ""} onValueChange={(val) => set(f.name, val)}>
                 <SelectTrigger>

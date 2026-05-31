@@ -55,6 +55,7 @@ export type Database = {
           created_at: string
           id: string
           is_active: boolean
+          logo_scale: number
           logo_url: string | null
           slug: string
           sort_order: number
@@ -64,6 +65,7 @@ export type Database = {
           created_at?: string
           id?: string
           is_active?: boolean
+          logo_scale?: number
           logo_url?: string | null
           slug: string
           sort_order?: number
@@ -73,6 +75,7 @@ export type Database = {
           created_at?: string
           id?: string
           is_active?: boolean
+          logo_scale?: number
           logo_url?: string | null
           slug?: string
           sort_order?: number

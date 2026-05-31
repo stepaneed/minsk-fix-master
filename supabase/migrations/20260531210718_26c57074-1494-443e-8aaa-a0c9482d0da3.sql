@@ -1,0 +1,1 @@
+ALTER TABLE public.brands ADD COLUMN IF NOT EXISTS logo_scale numeric NOT NULL DEFAULT 1.0;

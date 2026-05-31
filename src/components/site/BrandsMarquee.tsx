@@ -12,7 +12,7 @@ export function BrandsMarquee() {
     queryFn: async () => {
       const { data } = await supabase
         .from("brands")
-        .select("id,slug,title,logo_url")
+        .select("id,slug,title,logo_url,logo_scale")
         .eq("is_active", true)
         .order("sort_order");
       return data ?? [];

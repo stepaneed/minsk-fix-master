@@ -15,6 +15,7 @@ export const Route = createFileRoute("/admin/brands")({
           { name: "title", label: "Название", type: "text", required: true },
           { name: "slug", label: "Slug", type: "slug", required: true },
           { name: "logo_url", label: "Логотип", type: "image" },
+          { name: "logo_scale", label: "Масштаб логотипа", type: "scale", previewField: "logo_url" },
           { name: "sort_order", label: "Порядок", type: "number" },
           { name: "is_active", label: "Активно", type: "boolean" },
         ],
@@ -22,16 +23,29 @@ export const Route = createFileRoute("/admin/brands")({
           {
             key: "logo_url",
             label: "Логотип",
-            className: "w-16",
+            className: "w-20",
             render: (r) =>
               r.logo_url ? (
-                <img src={r.logo_url} alt="" className="h-10 w-10 object-contain" />
+                <div className="flex h-10 w-16 items-center justify-center">
+                  <img
+                    src={r.logo_url}
+                    alt=""
+                    style={{ transform: `scale(${r.logo_scale ?? 1})` }}
+                    className="max-h-10 max-w-full object-contain"
+                  />
+                </div>
               ) : (
                 "—"
               ),
           },
           { key: "title", label: "Название", sortable: true },
           { key: "slug", label: "Slug" },
+          {
+            key: "logo_scale",
+            label: "Масштаб",
+            className: "w-20",
+            render: (r) => `${Math.round((r.logo_scale ?? 1) * 100)}%`,
+          },
           { key: "sort_order", label: "Порядок", sortable: true, className: "w-24" },
         ],
       }}

@@ -87,7 +87,7 @@ function BrandPage() {
         <h2 className="text-3xl font-semibold tracking-tight">Что ремонтируем</h2>
         <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {types.map((s) => (
-            <Link key={s.id} to="/appliance/$slug" params={{ slug: s.slug }} className="group rounded-2xl border bg-card p-6 hover:-translate-y-1 hover:border-primary hover:shadow-lg transition-all">
+            <Link key={s.id} to="/brand/$slug/$appliance" params={{ slug: brand.slug, appliance: s.slug }} className="group rounded-2xl border bg-card p-6 hover:-translate-y-1 hover:border-primary hover:shadow-lg transition-all">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                 <Wrench className="h-6 w-6" />
               </div>

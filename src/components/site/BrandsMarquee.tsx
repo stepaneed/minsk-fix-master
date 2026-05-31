@@ -58,11 +58,13 @@ export function BrandsMarquee({ applianceSlug }: { applianceSlug?: string } = {}
           >
             {[...row, ...row].map((b, i) => {
               const scale = (b as any).logo_scale ?? 1;
+              const linkProps = applianceSlug
+                ? { to: "/appliance/$slug/$brand" as const, params: { slug: applianceSlug, brand: b.slug } }
+                : { to: "/brand/$slug" as const, params: { slug: b.slug } };
               return (
                 <Link
                   key={`${ri}-${b.id}-${i}`}
-                  to="/brand/$slug"
-                  params={{ slug: b.slug }}
+                  {...linkProps}
                   className="mx-2 flex h-16 w-[140px] shrink-0 items-center justify-center rounded-xl border bg-card px-4 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
                   title={b.title}
                 >

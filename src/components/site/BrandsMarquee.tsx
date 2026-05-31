@@ -3,6 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 
+const ROWS = 4;
+const DURATIONS = ["60s", "70s", "55s", "65s"];
+
 export function BrandsMarquee() {
   const { data: brands = [], isLoading } = useQuery({
     queryKey: ["brands_active"],
@@ -22,9 +25,13 @@ export function BrandsMarquee() {
         <div className="mx-auto max-w-6xl px-4">
           <Skeleton className="h-8 w-64" />
           <Skeleton className="mt-2 h-4 w-80" />
-          <div className="mt-8 flex gap-3 overflow-hidden">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <Skeleton key={i} className="h-16 min-w-[140px] rounded-xl" />
+          <div className="mt-8 space-y-3">
+            {Array.from({ length: 4 }).map((_, r) => (
+              <div key={r} className="flex gap-3 overflow-hidden">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <Skeleton key={i} className="h-16 w-[140px] shrink-0 rounded-xl" />
+                ))}
+              </div>
             ))}
           </div>
         </div>
@@ -33,8 +40,10 @@ export function BrandsMarquee() {
   }
 
   if (brands.length === 0) return null;
-  const rows = [brands, [...brands].reverse(), brands];
-  const durations = ["38s", "52s", "44s"];
+
+  // Распределяем уникальные бренды по строкам (round-robin), без повторов внутри строки.
+  const rows: typeof brands[] = Array.from({ length: ROWS }, () => []);
+  brands.forEach((b, i) => rows[i % ROWS].push(b));
 
   return (
     <section className="py-16">
@@ -42,21 +51,36 @@ export function BrandsMarquee() {
         <h2 className="text-3xl font-semibold tracking-tight">Работаем со всеми брендами</h2>
         <p className="mt-2 text-muted-foreground">Bosch, Samsung, LG, Siemens, Атлант и другие</p>
       </div>
-      <div className="relative mt-8 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+      <div className="relative mt-8 space-y-3 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
         {rows.map((row, ri) => (
           <div
             key={ri}
-            className="marquee-track py-3"
-            style={{ ["--marquee-duration" as never]: durations[ri] }}
+            className={`marquee-track ${ri % 2 === 1 ? "marquee-reverse" : ""}`}
+            style={{ ["--marquee-duration" as never]: DURATIONS[ri] }}
           >
             {[...row, ...row].map((b, i) => (
               <Link
                 key={`${ri}-${b.id}-${i}`}
                 to="/brand/$slug"
                 params={{ slug: b.slug }}
-                className="mx-3 flex h-16 min-w-[140px] items-center justify-center rounded-xl border bg-card px-6 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
+                className="mx-2 flex h-16 w-[140px] shrink-0 items-center justify-center rounded-xl border bg-card px-4 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
+                title={b.title}
               >
-                {b.logo_url ? <img src={b.logo_url} alt={b.title} loading="lazy" className="max-h-10" /> : b.title}
+                {b.logo_url ? (
+                  <img
+                    src={b.logo_url}
+                    alt={b.title}
+                    loading="lazy"
+                    className="max-h-9 max-w-[110px] object-contain"
+                    onError={(e) => {
+                      const img = e.currentTarget;
+                      img.style.display = "none";
+                      img.parentElement!.textContent = b.title;
+                    }}
+                  />
+                ) : (
+                  b.title
+                )}
               </Link>
             ))}
           </div>

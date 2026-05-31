@@ -46,10 +46,10 @@ export function DiscountsBlock() {
     <section className="bg-secondary py-16">
       <div className="mx-auto max-w-6xl px-4">
         <Reveal><h2 className="text-3xl font-semibold tracking-tight">Скидки и акции</h2></Reveal>
-        <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid auto-rows-fr gap-4 md:grid-cols-2 lg:grid-cols-3">
           {items.map((it, i) => (
-            <Reveal key={`${it.kind}-${it.id}`} delay={Math.min(i * 60, 300)}>
-              <div className="rounded-2xl bg-background p-6 shadow-sm">
+            <Reveal key={`${it.kind}-${it.id}`} delay={Math.min(i * 60, 300)} className="h-full">
+              <div className="flex h-full flex-col rounded-2xl bg-background p-6 shadow-sm">
                 <div className="flex items-center gap-2 text-primary">
                   {it.kind === "discount" ? <Gift className="h-5 w-5" /> : <Sparkles className="h-5 w-5" />}
                   <span className="text-xs font-medium uppercase tracking-wider">
@@ -59,7 +59,7 @@ export function DiscountsBlock() {
                 <h3 className="mt-3 text-lg font-semibold">{it.title}</h3>
                 {it.benefit && <div className="mt-2 text-3xl font-bold text-primary">{it.benefit}</div>}
                 {it.description && <p className="mt-2 text-sm text-muted-foreground">{it.description}</p>}
-                {it.conditions && <p className="mt-3 text-xs text-muted-foreground">{it.conditions}</p>}
+                {it.conditions && <p className="mt-auto pt-3 text-xs text-muted-foreground">{it.conditions}</p>}
               </div>
             </Reveal>
           ))}

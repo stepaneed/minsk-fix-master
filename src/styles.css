@@ -70,14 +70,21 @@
 }
 
 @layer utilities {
-  @keyframes marquee {
+  @keyframes marquee-left {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
+  }
+  @keyframes marquee-right {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
   }
   .marquee-track {
     display: flex;
     width: max-content;
-    animation: marquee var(--marquee-duration, 40s) linear infinite;
+    animation: marquee-left var(--marquee-duration, 40s) linear infinite;
+  }
+  .marquee-track.marquee-reverse {
+    animation-name: marquee-right;
   }
   .marquee-track:hover { animation-play-state: paused; }
   @keyframes pulse-dot {

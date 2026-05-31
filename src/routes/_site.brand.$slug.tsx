@@ -9,7 +9,7 @@ export const Route = createFileRoute("/_site/brand/$slug")({
   loader: async ({ params }) => {
     const { data } = await supabase
       .from("brands")
-      .select("id,slug,title,logo_url")
+      .select("id,slug,title,logo_url,logo_scale")
       .eq("slug", params.slug)
       .eq("is_active", true)
       .maybeSingle();

@@ -16,10 +16,22 @@ export const Route = createFileRoute("/sitemap.xml")({
           supabase.from("service_types").select("slug").eq("is_active", true),
           supabase.from("brands").select("slug").eq("is_active", true),
         ]);
+        const typeSlugs = (types ?? []).map((t) => t.slug);
+        const brandSlugs = (brands ?? []).map((b) => b.slug);
+
+        const combos: string[] = [];
+        for (const t of typeSlugs) {
+          for (const b of brandSlugs) {
+            combos.push(`/appliance/${t}/${b}`);
+            combos.push(`/brand/${b}/${t}`);
+          }
+        }
+
         const paths = [
           "/", "/services", "/prices", "/discounts", "/promotions", "/faq", "/contacts",
-          ...(types ?? []).map((t) => `/appliance/${t.slug}`),
-          ...(brands ?? []).map((b) => `/brand/${b.slug}`),
+          ...typeSlugs.map((s) => `/appliance/${s}`),
+          ...brandSlugs.map((s) => `/brand/${s}`),
+          ...combos,
         ];
         const xml = [
           `<?xml version="1.0" encoding="UTF-8"?>`,

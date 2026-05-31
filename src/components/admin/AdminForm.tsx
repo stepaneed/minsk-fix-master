@@ -16,10 +16,16 @@ import { ImageUpload } from "./ImageUpload";
 export type Field = {
   name: string;
   label: string;
-  type: "text" | "textarea" | "number" | "boolean" | "image" | "datetime" | "select" | "slug";
+  type: "text" | "textarea" | "number" | "boolean" | "image" | "datetime" | "select" | "slug" | "scale";
   required?: boolean;
   options?: { value: string; label: string }[];
   placeholder?: string;
+  /** For "scale": name of the field holding the image URL to preview. */
+  previewField?: string;
+  /** For "scale": min/max/step (defaults: 0.5/2/0.05). */
+  min?: number;
+  max?: number;
+  step?: number;
 };
 
 export function AdminForm({

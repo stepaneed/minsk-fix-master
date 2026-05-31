@@ -64,6 +64,16 @@ function BrandPage() {
       <section className="bg-gradient-to-b from-secondary to-background">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 lg:grid-cols-2 lg:py-16">
           <div>
+            {brand.logo_url && (
+              <div className="mb-6 flex h-24 w-44 items-center justify-center rounded-2xl border bg-card p-4">
+                <img
+                  src={brand.logo_url}
+                  alt={brand.title}
+                  style={{ transform: `scale(${(brand as any).logo_scale ?? 1})` }}
+                  className="max-h-16 max-w-full object-contain"
+                />
+              </div>
+            )}
             <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">Ремонт техники {brand.title}</h1>
             <p className="mt-4 text-lg text-muted-foreground">
               Сертифицированные мастера, опыт с {brand.title} 10+ лет. Оригинальные запчасти, гарантия до 12 месяцев.

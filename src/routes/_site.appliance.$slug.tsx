@@ -18,8 +18,9 @@ export const Route = createFileRoute("/_site/appliance/$slug")({
     return { service: data };
   },
   head: ({ loaderData, params }) => {
-    const title = `${loaderData?.service.title ?? "Ремонт техники"} в Минске — МастерФикс`;
-    const desc = loaderData?.service.description ?? `Ремонт ${loaderData?.service.title} на дому с гарантией`;
+    const genitive = loaderData?.service.title_genitive || loaderData?.service.title?.toLowerCase();
+    const title = `Ремонт ${genitive} в Минске — МастерФикс`;
+    const desc = loaderData?.service.description ?? `Ремонт ${genitive} на дому с гарантией`;
     return {
       meta: [
         { title },

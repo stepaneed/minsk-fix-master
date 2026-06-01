@@ -57,6 +57,8 @@ function AppliancePage() {
   const { service } = Route.useLoaderData();
   const { slug } = Route.useParams();
   const issues = breakdowns[slug] ?? ["Не включается", "Странный шум", "Не выполняет программу", "Электронные ошибки"];
+  const genitive = service.title_genitive || service.title.toLowerCase();
+  const h1 = `Ремонт ${genitive}`;
 
   return (
     <>

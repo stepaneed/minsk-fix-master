@@ -70,7 +70,7 @@ function AppliancePage() {
       <section className="bg-gradient-to-b from-secondary to-background">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 lg:grid-cols-2 lg:py-16">
           <div>
-            <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">Ремонт: {service.title}</h1>
+            <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">{h1}</h1>
             <p className="mt-4 text-lg text-muted-foreground">{service.description ?? "Выезд мастера в течение часа. Диагностика бесплатно при ремонте."}</p>
             <h2 className="mt-8 text-xl font-semibold">Популярные неисправности</h2>
             <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">

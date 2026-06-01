@@ -158,7 +158,7 @@ export function AdminForm({
                     />
                     <span className="text-sm text-muted-foreground w-12 text-right">{Math.round(current * 100)}%</span>
                   </div>
-                  <div className="flex h-20 w-[160px] items-center justify-center rounded-xl border bg-card px-4">
+                  <div className="flex h-20 w-[160px] items-center justify-center overflow-hidden rounded-xl border bg-card px-4">
                     {previewUrl ? (
                       <img
                         src={previewUrl}

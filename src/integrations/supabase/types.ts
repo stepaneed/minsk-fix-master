@@ -55,6 +55,7 @@ export type Database = {
           created_at: string
           id: string
           is_active: boolean
+          logo_fit: string | null
           logo_scale: number
           logo_url: string | null
           slug: string
@@ -65,6 +66,7 @@ export type Database = {
           created_at?: string
           id?: string
           is_active?: boolean
+          logo_fit?: string | null
           logo_scale?: number
           logo_url?: string | null
           slug: string
@@ -75,6 +77,7 @@ export type Database = {
           created_at?: string
           id?: string
           is_active?: boolean
+          logo_fit?: string | null
           logo_scale?: number
           logo_url?: string | null
           slug?: string
@@ -295,6 +298,7 @@ export type Database = {
           slug: string
           sort_order: number
           title: string
+          title_genitive: string | null
         }
         Insert: {
           created_at?: string
@@ -305,6 +309,7 @@ export type Database = {
           slug: string
           sort_order?: number
           title: string
+          title_genitive?: string | null
         }
         Update: {
           created_at?: string
@@ -315,6 +320,7 @@ export type Database = {
           slug?: string
           sort_order?: number
           title?: string
+          title_genitive?: string | null
         }
         Relationships: []
       }

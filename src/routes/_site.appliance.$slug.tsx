@@ -10,7 +10,7 @@ export const Route = createFileRoute("/_site/appliance/$slug")({
   loader: async ({ params }) => {
     const { data } = await supabase
       .from("service_types")
-      .select("id,slug,title,description,icon_url")
+      .select("id,slug,title,title_genitive,description,icon_url")
       .eq("slug", params.slug)
       .eq("is_active", true)
       .maybeSingle();

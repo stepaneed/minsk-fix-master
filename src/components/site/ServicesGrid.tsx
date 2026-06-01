@@ -24,7 +24,7 @@ export function ServicesGrid() {
         <h2 className="text-3xl font-semibold tracking-tight">Виды техники</h2>
         <p className="mt-2 text-muted-foreground">Ремонтируем всю бытовую технику с гарантией</p>
       </Reveal>
-      <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="mt-8 grid auto-rows-fr grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {isLoading
           ? Array.from({ length: 8 }).map((_, i) => (
               <div key={i} className="rounded-2xl border bg-card p-6">
@@ -34,11 +34,11 @@ export function ServicesGrid() {
               </div>
             ))
           : items.map((s, i) => (
-              <Reveal key={s.id} delay={Math.min(i * 40, 240)}>
+              <Reveal key={s.id} delay={Math.min(i * 40, 240)} className="h-full">
                 <Link
                   to="/appliance/$slug"
                   params={{ slug: s.slug }}
-                  className="group block rounded-2xl border bg-card p-6 transition-all hover:-translate-y-1 hover:border-primary hover:shadow-lg"
+                  className="group flex h-full flex-col rounded-2xl border bg-card p-6 transition-all hover:-translate-y-1 hover:border-primary hover:shadow-lg"
                 >
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                     {s.icon_url ? <img src={s.icon_url} alt="" loading="lazy" className="h-7 w-7" /> : <Wrench className="h-6 w-6" />}

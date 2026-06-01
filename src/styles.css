@@ -87,6 +87,11 @@
     animation-name: marquee-right;
   }
   .marquee-track:hover { animation-play-state: paused; }
+  /* Плавный фейд по краям, без резкого "вылета" текста */
+  .marquee-mask {
+    -webkit-mask-image: linear-gradient(to right, transparent 0, black 18%, black 82%, transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0, black 18%, black 82%, transparent 100%);
+  }
   @keyframes pulse-dot {
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.6; transform: scale(1.3); }

@@ -10,7 +10,7 @@ export const Route = createFileRoute("/_site/appliance/$slug")({
   loader: async ({ params }) => {
     const { data } = await supabase
       .from("service_types")
-      .select("id,slug,title,description,icon_url")
+      .select("id,slug,title,title_genitive,description,icon_url")
       .eq("slug", params.slug)
       .eq("is_active", true)
       .maybeSingle();
@@ -18,8 +18,9 @@ export const Route = createFileRoute("/_site/appliance/$slug")({
     return { service: data };
   },
   head: ({ loaderData, params }) => {
-    const title = `${loaderData?.service.title ?? "Ремонт техники"} в Минске — МастерФикс`;
-    const desc = loaderData?.service.description ?? `Ремонт ${loaderData?.service.title} на дому с гарантией`;
+    const genitive = loaderData?.service.title_genitive || loaderData?.service.title?.toLowerCase();
+    const title = `Ремонт ${genitive} в Минске — МастерФикс`;
+    const desc = loaderData?.service.description ?? `Ремонт ${genitive} на дому с гарантией`;
     return {
       meta: [
         { title },
@@ -56,6 +57,8 @@ function AppliancePage() {
   const { service } = Route.useLoaderData();
   const { slug } = Route.useParams();
   const issues = breakdowns[slug] ?? ["Не включается", "Странный шум", "Не выполняет программу", "Электронные ошибки"];
+  const genitive = service.title_genitive || service.title.toLowerCase();
+  const h1 = `Ремонт ${genitive}`;
 
   return (
     <>
@@ -67,7 +70,7 @@ function AppliancePage() {
       <section className="bg-gradient-to-b from-secondary to-background">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 lg:grid-cols-2 lg:py-16">
           <div>
-            <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">Ремонт: {service.title}</h1>
+            <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">{h1}</h1>
             <p className="mt-4 text-lg text-muted-foreground">{service.description ?? "Выезд мастера в течение часа. Диагностика бесплатно при ремонте."}</p>
             <h2 className="mt-8 text-xl font-semibold">Популярные неисправности</h2>
             <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">

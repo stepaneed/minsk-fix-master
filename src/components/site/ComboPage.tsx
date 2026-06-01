@@ -5,8 +5,8 @@ import { ContactsBlock } from "@/components/site/ContactsBlock";
 import { CheckCircle2 } from "lucide-react";
 
 export type ComboData = {
-  service: { id: string; slug: string; title: string; description: string | null };
-  brand: { id: string; slug: string; title: string; logo_url: string | null; logo_scale?: number | null };
+  service: { id: string; slug: string; title: string; title_genitive?: string | null; description: string | null };
+  brand: { id: string; slug: string; title: string; logo_url: string | null; logo_scale?: number | null; logo_fit?: string | null };
 };
 
 const breakdowns: Record<string, string[]> = {
@@ -15,8 +15,15 @@ const breakdowns: Record<string, string[]> = {
   "dishwashers": ["Не сливает воду", "Не моет посуду", "Не нагревает воду", "Постоянно гудит"],
 };
 
+function comboTitle(service: ComboData["service"], brand: ComboData["brand"]) {
+  const genitive = service.title_genitive || service.title.toLowerCase();
+  return `Ремонт ${genitive} ${brand.title}`;
+}
+
 export function ComboPage({ service, brand }: ComboData) {
   const issues = breakdowns[service.slug] ?? ["Не включается", "Странный шум", "Не выполняет программу", "Электронные ошибки"];
+  const title = comboTitle(service, brand);
+  const fit = brand.logo_fit ?? "contain";
 
   return (
     <>
@@ -29,18 +36,16 @@ export function ComboPage({ service, brand }: ComboData) {
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 lg:grid-cols-2 lg:py-16">
           <div>
             {brand.logo_url && (
-              <div className="mb-6 flex h-20 w-40 items-center justify-center rounded-2xl border bg-card p-4">
+              <div className="mb-6 flex h-20 w-40 items-center justify-center overflow-hidden rounded-2xl border bg-card p-4">
                 <img
                   src={brand.logo_url}
                   alt={brand.title}
-                  style={{ transform: `scale(${brand.logo_scale ?? 1})` }}
-                  className="max-h-14 max-w-full object-contain"
+                  style={{ transform: `scale(${brand.logo_scale ?? 1})`, objectFit: fit as never }}
+                  className="max-h-14 max-w-full"
                 />
               </div>
             )}
-            <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">
-              Ремонт {service.title.toLowerCase()} {brand.title}
-            </h1>
+            <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">{title}</h1>
             <p className="mt-4 text-lg text-muted-foreground">
               Профессиональный ремонт техники {brand.title} на дому. Оригинальные запчасти, гарантия до 12 месяцев,
               выезд мастера в день обращения.
@@ -65,8 +70,9 @@ export function ComboPage({ service, brand }: ComboData) {
 }
 
 export function comboHead(service: ComboData["service"], brand: ComboData["brand"], path: string) {
-  const title = `Ремонт ${service.title.toLowerCase()} ${brand.title} в Минске — МастерФикс`;
-  const desc = `Ремонт ${service.title} ${brand.title} на дому. Оригинальные запчасти и гарантия до 12 месяцев.`;
+  const title = `${comboTitle(service, brand)} в Минске — МастерФикс`;
+  const genitive = service.title_genitive || service.title.toLowerCase();
+  const desc = `Ремонт ${genitive} ${brand.title} на дому. Оригинальные запчасти и гарантия до 12 месяцев.`;
   return {
     meta: [
       { title },
@@ -82,7 +88,7 @@ export function comboHead(service: ComboData["service"], brand: ComboData["brand
       children: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Service",
-        name: `Ремонт ${service.title} ${brand.title}`,
+        name: comboTitle(service, brand),
         description: desc,
         areaServed: "Минск",
         brand: { "@type": "Brand", name: brand.title },

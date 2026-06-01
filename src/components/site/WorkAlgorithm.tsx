@@ -12,10 +12,10 @@ export function WorkAlgorithm() {
     <section className="bg-secondary py-16">
       <div className="mx-auto max-w-6xl px-4">
         <h2 className="text-3xl font-semibold tracking-tight">Как мы работаем</h2>
-        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-4">
+        <div className="mt-10 grid auto-rows-fr grid-cols-1 gap-6 md:grid-cols-4">
           {steps.map((s, i) => (
-            <div key={s.title} className="relative">
-              <div className="rounded-2xl bg-background p-6 shadow-sm">
+            <div key={s.title} className="relative h-full">
+              <div className="flex h-full flex-col rounded-2xl bg-background p-6 shadow-sm">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
                   <s.icon className="h-6 w-6" />
                 </div>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Menu, X, ChevronDown, Phone, Send, MessageCircle, Phone as PhoneIcon, Clock, Shield } from "lucide-react";
+import { Menu, X, ChevronDown, Phone, Send, MessageCircle, Phone as PhoneIcon, Clock } from "lucide-react";
 import { useContacts, MESSENGERS } from "@/components/site/ContactsBlock";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -11,9 +11,13 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
 
 function scrollToOrder() {
   const el = document.getElementById("order");

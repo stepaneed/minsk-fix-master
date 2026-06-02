@@ -7,10 +7,12 @@ const fields = [
   { name: "benefit", label: "Выгода", type: "text" as const, placeholder: "напр. -20%" },
   { name: "conditions", label: "Условия", type: "textarea" as const },
   { name: "expires_at", label: "Действует до", type: "datetime" as const },
+  { name: "sort_order", label: "Порядок", type: "number" as const },
   { name: "is_active", label: "Активно", type: "boolean" as const },
 ];
 
 const columns = [
+  { key: "sort_order", label: "№", sortable: true },
   { key: "title", label: "Заголовок", sortable: true },
   { key: "benefit", label: "Выгода" },
   {
@@ -28,7 +30,7 @@ export const Route = createFileRoute("/admin/discounts")({
       config={{
         title: "Скидки",
         table: "discounts",
-        orderBy: { column: "created_at", ascending: false },
+        orderBy: { column: "sort_order", ascending: true },
         showActiveToggle: true,
         fields,
         columns,

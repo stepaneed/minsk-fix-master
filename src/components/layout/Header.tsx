@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Menu, X, ChevronDown, Phone, Send, MessageCircle, Phone as PhoneIcon, Clock } from "lucide-react";
+import { Menu, ChevronDown, Phone, Send, MessageCircle, Phone as PhoneIcon, Clock, Shield } from "lucide-react";
 import { useContacts, MESSENGERS } from "@/components/site/ContactsBlock";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import {
   AccordionContent,
 } from "@/components/ui/accordion";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 
 function scrollToOrder() {
   const el = document.getElementById("order");
@@ -74,6 +75,8 @@ export function Header() {
     },
   ];
 
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/85 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
@@ -102,6 +105,12 @@ export function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           ))}
+          <Link
+            to="/admin"
+            className="inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"
+          >
+            <Shield className="h-3.5 w-3.5" /> Админ
+          </Link>
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
@@ -149,82 +158,129 @@ export function Header() {
           <Button size="sm" onClick={scrollToOrder}>Оформить заказ</Button>
         </div>
 
-        <button className="lg:hidden" onClick={() => setMenuOpen((v) => !v)} aria-label="Меню">
-          {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
-      </div>
+        <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+          <SheetTrigger asChild>
+            <button className="lg:hidden" aria-label="Меню">
+              <Menu className="h-6 w-6" />
+            </button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-[85%] max-w-sm overflow-y-auto p-0 sm:max-w-sm">
+            <SheetTitle className="sr-only">Меню</SheetTitle>
+            <div className="flex h-full flex-col">
+              <div className="border-b px-5 py-4">
+                <Link to="/" onClick={closeMenu} className="text-lg font-semibold tracking-tight">
+                  МастерФикс
+                </Link>
+              </div>
 
-      {menuOpen && (
-        <div className="max-h-[calc(100vh-4rem)] overflow-y-auto border-t bg-background lg:hidden">
-          <nav className="mx-auto max-w-6xl px-4 py-2">
-            <Link
-              to="/"
-              onClick={() => setMenuOpen(false)}
-              className="block border-b py-4 text-base font-medium"
-            >
-              Главная
-            </Link>
+              <nav className="flex-1 overflow-y-auto px-2 py-2">
+                <Link
+                  to="/"
+                  onClick={closeMenu}
+                  className="block rounded-md px-3 py-3 text-base font-medium hover:bg-secondary"
+                >
+                  Главная
+                </Link>
 
-            <Accordion type="multiple" className="w-full">
-              <AccordionItem value="services">
-                <AccordionTrigger className="text-base font-medium">Услуги</AccordionTrigger>
-                <AccordionContent>
-                  <div className="flex flex-col">
-                    {services.map((s) => (
+                <Accordion type="multiple" className="w-full">
+                  <AccordionItem value="services" className="border-b-0">
+                    <div className="flex items-center">
                       <Link
-                        key={s.slug}
-                        to="/appliance/$slug"
-                        params={{ slug: s.slug }}
-                        onClick={() => setMenuOpen(false)}
-                        className="py-2.5 pl-2 text-sm text-muted-foreground hover:text-foreground"
+                        to="/services"
+                        onClick={closeMenu}
+                        className="flex-1 rounded-md px-3 py-3 text-base font-medium hover:bg-secondary"
                       >
-                        {s.title}
+                        Услуги
                       </Link>
-                    ))}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
+                      <AccordionTrigger className="px-3 py-3 hover:no-underline" />
+                    </div>
+                    <AccordionContent>
+                      <div className="flex flex-col pb-1">
+                        {services.map((s) => (
+                          <Link
+                            key={s.slug}
+                            to="/appliance/$slug"
+                            params={{ slug: s.slug }}
+                            onClick={closeMenu}
+                            className="rounded-md px-6 py-2.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"
+                          >
+                            {s.title}
+                          </Link>
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
 
-              <AccordionItem value="prices">
-                <AccordionTrigger className="text-base font-medium">Цены</AccordionTrigger>
-                <AccordionContent>
-                  <div className="flex flex-col">
-                    <Link to="/prices" onClick={() => setMenuOpen(false)} className="py-2.5 pl-2 text-sm text-muted-foreground hover:text-foreground">Прайс-лист выполняемых услуг</Link>
-                    <Link to="/discounts" onClick={() => setMenuOpen(false)} className="py-2.5 pl-2 text-sm text-muted-foreground hover:text-foreground">Скидки</Link>
-                    <Link to="/promotions" onClick={() => setMenuOpen(false)} className="py-2.5 pl-2 text-sm text-muted-foreground hover:text-foreground">Акции</Link>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
+                  <AccordionItem value="prices" className="border-b-0">
+                    <div className="flex items-center">
+                      <Link
+                        to="/prices"
+                        onClick={closeMenu}
+                        className="flex-1 rounded-md px-3 py-3 text-base font-medium hover:bg-secondary"
+                      >
+                        Цены
+                      </Link>
+                      <AccordionTrigger className="px-3 py-3 hover:no-underline" />
+                    </div>
+                    <AccordionContent>
+                      <div className="flex flex-col pb-1">
+                        <Link to="/prices" onClick={closeMenu} className="rounded-md px-6 py-2.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground">Прайс-лист</Link>
+                        <Link to="/discounts" onClick={closeMenu} className="rounded-md px-6 py-2.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground">Скидки</Link>
+                        <Link to="/promotions" onClick={closeMenu} className="rounded-md px-6 py-2.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground">Акции</Link>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
 
-              <AccordionItem value="faq">
-                <AccordionTrigger className="text-base font-medium">Часто задаваемые вопросы</AccordionTrigger>
-                <AccordionContent>
-                  <div className="flex flex-col">
-                    <Link to="/faq" onClick={() => setMenuOpen(false)} className="py-2.5 pl-2 text-sm text-muted-foreground hover:text-foreground">Вопросы и ответы</Link>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+                  <AccordionItem value="faq" className="border-b-0">
+                    <div className="flex items-center">
+                      <Link
+                        to="/faq"
+                        onClick={closeMenu}
+                        className="flex-1 rounded-md px-3 py-3 text-base font-medium hover:bg-secondary"
+                      >
+                        FAQ
+                      </Link>
+                      <AccordionTrigger className="px-3 py-3 hover:no-underline" />
+                    </div>
+                    <AccordionContent>
+                      <div className="flex flex-col pb-1">
+                        <Link to="/faq" onClick={closeMenu} className="rounded-md px-6 py-2.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground">Вопросы и ответы</Link>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
 
-            <Link
-              to="/contacts"
-              onClick={() => setMenuOpen(false)}
-              className="block border-b py-4 text-base font-medium"
-            >
-              Контакты
-            </Link>
+                <Link
+                  to="/contacts"
+                  onClick={closeMenu}
+                  className="block rounded-md px-3 py-3 text-base font-medium hover:bg-secondary"
+                >
+                  Контакты
+                </Link>
 
-            {c?.phone && (
-              <a href={`tel:${c.phone.replace(/\s/g, "")}`} className="block py-3 text-sm font-semibold">
-                📞 {c.phone}
-              </a>
-            )}
-            <Button className="my-3 w-full" onClick={() => { setMenuOpen(false); scrollToOrder(); }}>
-              Оформить заказ
-            </Button>
-          </nav>
-        </div>
-      )}
+                <Link
+                  to="/admin"
+                  onClick={closeMenu}
+                  className="mt-2 flex items-center gap-2 rounded-md border px-3 py-3 text-sm text-muted-foreground hover:bg-secondary"
+                >
+                  <Shield className="h-4 w-4" /> Админ-панель
+                </Link>
+              </nav>
+
+              <div className="space-y-2 border-t px-4 py-4">
+                {c?.phone && (
+                  <a href={`tel:${c.phone.replace(/\s/g, "")}`} className="flex items-center gap-2 text-sm font-semibold">
+                    <Phone className="h-4 w-4" /> {c.phone}
+                  </a>
+                )}
+                <Button className="w-full" onClick={() => { closeMenu(); scrollToOrder(); }}>
+                  Оформить заказ
+                </Button>
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
     </header>
   );
 }

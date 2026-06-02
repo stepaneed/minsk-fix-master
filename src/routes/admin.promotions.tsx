@@ -8,7 +8,7 @@ export const Route = createFileRoute("/admin/promotions")({
       config={{
         title: "Акции",
         table: "promotions",
-        orderBy: { column: "created_at", ascending: false },
+        orderBy: { column: "sort_order", ascending: true },
         showActiveToggle: true,
         fields: [
           { name: "title", label: "Заголовок", type: "text", required: true },
@@ -16,9 +16,11 @@ export const Route = createFileRoute("/admin/promotions")({
           { name: "benefit", label: "Выгода", type: "text" },
           { name: "conditions", label: "Условия", type: "textarea" },
           { name: "expires_at", label: "Действует до", type: "datetime" },
+          { name: "sort_order", label: "Порядок", type: "number" },
           { name: "is_active", label: "Активно", type: "boolean" },
         ],
         columns: [
+          { key: "sort_order", label: "№", sortable: true },
           { key: "title", label: "Заголовок", sortable: true },
           { key: "benefit", label: "Выгода" },
           {

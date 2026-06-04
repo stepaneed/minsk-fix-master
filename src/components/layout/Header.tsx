@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Menu, ChevronDown, Phone, Send, MessageCircle, Phone as PhoneIcon, Clock, Shield } from "lucide-react";
+import { Menu, ChevronDown, Phone, Send, MessageCircle, Phone as PhoneIcon, Clock, Shield, Home, Wrench, Tag, HelpCircle, DollarSign, Percent, Sparkles } from "lucide-react";
 import { useContacts, MESSENGERS } from "@/components/site/ContactsBlock";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -36,7 +36,7 @@ export function Header() {
     queryFn: async () => {
       const { data } = await supabase
         .from("service_types")
-        .select("slug,title")
+        .select("slug,title,icon_url")
         .eq("is_active", true)
         .order("sort_order");
       return data ?? [];

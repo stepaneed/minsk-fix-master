@@ -18,12 +18,16 @@ export function SortHandle({
     const a = rows[index];
     const b = rows[index + dir];
     if (!a || !b) return;
-    const { error } = await supabase.from(table as any).upsert([
-      { id: a.id, sort_order: b.sort_order },
-      { id: b.id, sort_order: a.sort_order },
-    ] as any);
-    if (error) toast.error(error.message);
-    else onReorder();
+    // Two-step swap with temporary sentinel to avoid the unique-constraint and to
+    // sidestep upsert (which fails on NOT NULL columns like "slug" by attempting INSERT).
+    const tmp = -1 - Date.now() % 100000;
+    const r1 = await supabase.from(table as any).update({ sort_order: tmp }).eq("id", a.id);
+    if (r1.error) return toast.error(r1.error.message);
+    const r2 = await supabase.from(table as any).update({ sort_order: a.sort_order }).eq("id", b.id);
+    if (r2.error) return toast.error(r2.error.message);
+    const r3 = await supabase.from(table as any).update({ sort_order: b.sort_order }).eq("id", a.id);
+    if (r3.error) return toast.error(r3.error.message);
+    onReorder();
   };
   return (
     <div className="flex flex-col">

@@ -296,6 +296,7 @@ export type Database = {
       }
       service_types: {
         Row: {
+          cover_url: string | null
           created_at: string
           description: string | null
           icon_url: string | null
@@ -307,6 +308,7 @@ export type Database = {
           title_genitive: string | null
         }
         Insert: {
+          cover_url?: string | null
           created_at?: string
           description?: string | null
           icon_url?: string | null
@@ -318,6 +320,7 @@ export type Database = {
           title_genitive?: string | null
         }
         Update: {
+          cover_url?: string | null
           created_at?: string
           description?: string | null
           icon_url?: string | null

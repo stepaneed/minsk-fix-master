@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Menu, ChevronDown, Phone, Send, MessageCircle, Phone as PhoneIcon, Clock, Shield } from "lucide-react";
+import { Menu, ChevronDown, Phone, Send, MessageCircle, Phone as PhoneIcon, Clock, Shield, Home, Wrench, Tag, HelpCircle, DollarSign, Percent, Sparkles } from "lucide-react";
 import { useContacts, MESSENGERS } from "@/components/site/ContactsBlock";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -36,7 +36,7 @@ export function Header() {
     queryFn: async () => {
       const { data } = await supabase
         .from("service_types")
-        .select("slug,title")
+        .select("slug,title,icon_url")
         .eq("is_active", true)
         .order("sort_order");
       return data ?? [];
@@ -177,8 +177,9 @@ export function Header() {
                 <Link
                   to="/"
                   onClick={closeMenu}
-                  className="block rounded-md px-3 py-3 text-base font-medium hover:bg-secondary"
+                  className="flex items-center gap-3 rounded-md px-3 py-3 text-base font-medium hover:bg-secondary"
                 >
+                  <Home className="h-5 w-5 text-muted-foreground" />
                   Главная
                 </Link>
 
@@ -188,22 +189,28 @@ export function Header() {
                       <Link
                         to="/services"
                         onClick={closeMenu}
-                        className="flex-1 rounded-md px-3 py-3 text-base font-medium hover:bg-secondary"
+                        className="flex flex-1 items-center gap-3 rounded-md px-3 py-3 text-base font-medium hover:bg-secondary"
                       >
+                        <Wrench className="h-5 w-5 text-muted-foreground" />
                         Услуги
                       </Link>
                       <AccordionTrigger className="px-3 py-3 hover:no-underline" />
                     </div>
                     <AccordionContent>
                       <div className="flex flex-col pb-1">
-                        {services.map((s) => (
+                        {services.map((s: any) => (
                           <Link
                             key={s.slug}
                             to="/appliance/$slug"
                             params={{ slug: s.slug }}
                             onClick={closeMenu}
-                            className="rounded-md px-6 py-2.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"
+                            className="flex items-center gap-3 rounded-md px-6 py-2.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"
                           >
+                            {s.icon_url ? (
+                              <img src={s.icon_url} alt="" loading="lazy" className="h-5 w-5 object-contain" />
+                            ) : (
+                              <Wrench className="h-4 w-4" />
+                            )}
                             {s.title}
                           </Link>
                         ))}
@@ -216,17 +223,18 @@ export function Header() {
                       <Link
                         to="/prices"
                         onClick={closeMenu}
-                        className="flex-1 rounded-md px-3 py-3 text-base font-medium hover:bg-secondary"
+                        className="flex flex-1 items-center gap-3 rounded-md px-3 py-3 text-base font-medium hover:bg-secondary"
                       >
+                        <Tag className="h-5 w-5 text-muted-foreground" />
                         Цены
                       </Link>
                       <AccordionTrigger className="px-3 py-3 hover:no-underline" />
                     </div>
                     <AccordionContent>
                       <div className="flex flex-col pb-1">
-                        <Link to="/prices" onClick={closeMenu} className="rounded-md px-6 py-2.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground">Прайс-лист</Link>
-                        <Link to="/discounts" onClick={closeMenu} className="rounded-md px-6 py-2.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground">Скидки</Link>
-                        <Link to="/promotions" onClick={closeMenu} className="rounded-md px-6 py-2.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground">Акции</Link>
+                        <Link to="/prices" onClick={closeMenu} className="flex items-center gap-3 rounded-md px-6 py-2.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"><DollarSign className="h-4 w-4" />Прайс-лист</Link>
+                        <Link to="/discounts" onClick={closeMenu} className="flex items-center gap-3 rounded-md px-6 py-2.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"><Percent className="h-4 w-4" />Скидки</Link>
+                        <Link to="/promotions" onClick={closeMenu} className="flex items-center gap-3 rounded-md px-6 py-2.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"><Sparkles className="h-4 w-4" />Акции</Link>
                       </div>
                     </AccordionContent>
                   </AccordionItem>
@@ -236,15 +244,16 @@ export function Header() {
                       <Link
                         to="/faq"
                         onClick={closeMenu}
-                        className="flex-1 rounded-md px-3 py-3 text-base font-medium hover:bg-secondary"
+                        className="flex flex-1 items-center gap-3 rounded-md px-3 py-3 text-base font-medium hover:bg-secondary"
                       >
+                        <HelpCircle className="h-5 w-5 text-muted-foreground" />
                         FAQ
                       </Link>
                       <AccordionTrigger className="px-3 py-3 hover:no-underline" />
                     </div>
                     <AccordionContent>
                       <div className="flex flex-col pb-1">
-                        <Link to="/faq" onClick={closeMenu} className="rounded-md px-6 py-2.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground">Вопросы и ответы</Link>
+                        <Link to="/faq" onClick={closeMenu} className="flex items-center gap-3 rounded-md px-6 py-2.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"><HelpCircle className="h-4 w-4" />Вопросы и ответы</Link>
                       </div>
                     </AccordionContent>
                   </AccordionItem>
@@ -253,8 +262,9 @@ export function Header() {
                 <Link
                   to="/contacts"
                   onClick={closeMenu}
-                  className="block rounded-md px-3 py-3 text-base font-medium hover:bg-secondary"
+                  className="flex items-center gap-3 rounded-md px-3 py-3 text-base font-medium hover:bg-secondary"
                 >
+                  <Phone className="h-5 w-5 text-muted-foreground" />
                   Контакты
                 </Link>
 
@@ -266,6 +276,7 @@ export function Header() {
                   <Shield className="h-4 w-4" /> Админ-панель
                 </Link>
               </nav>
+
 
               <div className="space-y-2 border-t px-4 py-4">
                 {c?.phone && (

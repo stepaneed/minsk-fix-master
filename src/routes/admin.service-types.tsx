@@ -13,9 +13,11 @@ export const Route = createFileRoute("/admin/service-types")({
         showActiveToggle: true,
         fields: [
           { name: "title", label: "Название", type: "text", required: true },
+          { name: "title_genitive", label: "Название (родительный падеж)", type: "text", placeholder: "напр. стиральных машин" },
           { name: "slug", label: "Slug (URL)", type: "slug", required: true },
           { name: "description", label: "Описание", type: "textarea" },
           { name: "icon_url", label: "Иконка", type: "image" },
+          { name: "cover_url", label: "Фоновое фото", type: "image" },
           { name: "sort_order", label: "Порядок", type: "number" },
           { name: "is_active", label: "Активно", type: "boolean" },
         ],

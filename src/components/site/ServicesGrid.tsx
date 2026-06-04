@@ -26,7 +26,8 @@ function iconForSlug(slug: string) {
   if (s.includes("wash") || s.includes("стираль")) return WashingMachine;
   if (s.includes("dish") || s.includes("посуд")) return Utensils;
   if (s.includes("microwave") || s.includes("микровол") || s.includes("свч")) return Microwave;
-  if (s.includes("oven") || s.includes("дух") || s.includes("плит") || s.includes("stove")) return Flame;
+  if (s.includes("oven") || s.includes("дух") || s.includes("stove")) return Flame;
+  if (s.includes("cooktop") || s.includes("вароч") || s.includes("плит")) return Flame;
   if (s.includes("hood") || s.includes("вытяж")) return Wind;
   if (s.includes("cond") || s.includes("кондиц") || s.includes("ac") || s.includes("split")) return AirVent;
   if (s.includes("tv") || s.includes("телевиз")) return Tv;
@@ -39,18 +40,43 @@ function iconForSlug(slug: string) {
   return Wrench;
 }
 
+function useDisplaySettings() {
+  return useQuery({
+    queryKey: ["settings", "services_display"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("settings")
+        .select("key,value")
+        .in("key", ["services_show_icon", "services_show_cover"]);
+      const map = Object.fromEntries((data ?? []).map((r: any) => [r.key, r.value]));
+      const parse = (v: unknown, def: boolean) => {
+        if (v === true || v === false) return v;
+        if (typeof v === "string") return v === "true";
+        return def;
+      };
+      return {
+        showIcon: parse(map.services_show_icon, true),
+        showCover: parse(map.services_show_cover, false),
+      };
+    },
+  });
+}
+
 export function ServicesGrid() {
   const { data: items = [], isLoading } = useQuery({
     queryKey: ["service_types_grid"],
     queryFn: async () => {
       const { data } = await supabase
         .from("service_types")
-        .select("id,slug,title,description,icon_url")
+        .select("id,slug,title,description,icon_url,cover_url")
         .eq("is_active", true)
         .order("sort_order");
       return data ?? [];
     },
   });
+  const { data: display } = useDisplaySettings();
+  const showIcon = display?.showIcon ?? true;
+  const showCover = display?.showCover ?? false;
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-16">
@@ -67,24 +93,40 @@ export function ServicesGrid() {
                 <Skeleton className="mt-2 h-4 w-full" />
               </div>
             ))
-          : items.map((s, i) => {
+          : items.map((s: any, i: number) => {
               const Icon = iconForSlug(s.slug);
+              const hasCover = showCover && !!s.cover_url;
               return (
                 <Reveal key={s.id} delay={Math.min(i * 40, 240)} className="h-full">
                   <Link
                     to="/appliance/$slug"
                     params={{ slug: s.slug }}
-                    className="group flex h-full flex-col rounded-2xl border bg-card p-6 transition-all hover:-translate-y-1 hover:border-primary hover:shadow-lg"
+                    className="group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-card p-6 transition-all hover:-translate-y-1 hover:border-primary hover:shadow-lg"
                   >
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-                      {s.icon_url ? (
-                        <img src={s.icon_url} alt="" loading="lazy" className="h-7 w-7" />
-                      ) : (
-                        <Icon className="h-6 w-6" />
+                    {hasCover && (
+                      <>
+                        <img
+                          src={s.cover_url}
+                          alt=""
+                          loading="lazy"
+                          className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25 transition-opacity duration-300 group-hover:opacity-40"
+                        />
+                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-card via-card/70 to-card/30" />
+                      </>
+                    )}
+                    <div className="relative">
+                      {showIcon && (
+                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                          {s.icon_url ? (
+                            <img src={s.icon_url} alt="" loading="lazy" className="h-7 w-7 object-contain" />
+                          ) : (
+                            <Icon className="h-6 w-6" />
+                          )}
+                        </div>
                       )}
+                      <h3 className={showIcon ? "mt-4 font-semibold" : "font-semibold"}>{s.title}</h3>
+                      {s.description && <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{s.description}</p>}
                     </div>
-                    <h3 className="mt-4 font-semibold">{s.title}</h3>
-                    {s.description && <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{s.description}</p>}
                   </Link>
                 </Reveal>
               );

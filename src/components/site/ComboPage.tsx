@@ -5,7 +5,7 @@ import { ContactsBlock } from "@/components/site/ContactsBlock";
 import { CheckCircle2 } from "lucide-react";
 
 export type ComboData = {
-  service: { id: string; slug: string; title: string; title_genitive?: string | null; description: string | null };
+  service: { id: string; slug: string; title: string; title_genitive?: string | null; description: string | null; cover_url?: string | null };
   brand: { id: string; slug: string; title: string; logo_url: string | null; logo_scale?: number | null; logo_fit?: string | null };
 };
 
@@ -24,16 +24,29 @@ export function ComboPage({ service, brand }: ComboData) {
   const issues = breakdowns[service.slug] ?? ["Не включается", "Странный шум", "Не выполняет программу", "Электронные ошибки"];
   const title = comboTitle(service, brand);
   const fit = brand.logo_fit ?? "contain";
+  const genitive = service.title_genitive || service.title.toLowerCase();
 
   return (
     <>
       <nav className="mx-auto max-w-6xl px-4 pt-6 text-xs text-muted-foreground">
         <Link to="/" className="hover:text-foreground">Главная</Link> ·{" "}
-        <Link to="/brand/$slug" params={{ slug: brand.slug }} className="hover:text-foreground">{brand.title}</Link> ·{" "}
-        <span className="text-foreground">{service.title}</span>
+        <Link to="/services" className="hover:text-foreground">Услуги</Link> ·{" "}
+        <Link to="/appliance/$slug" params={{ slug: service.slug }} className="hover:text-foreground">{service.title}</Link> ·{" "}
+        <span className="text-foreground">{brand.title}</span>
       </nav>
-      <section className="bg-gradient-to-b from-secondary to-background">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 lg:grid-cols-2 lg:py-16">
+      <section className="relative overflow-hidden bg-gradient-to-b from-secondary to-background">
+        {service.cover_url && (
+          <>
+            <img
+              src={service.cover_url}
+              alt=""
+              loading="lazy"
+              className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/70 via-background/85 to-background" />
+          </>
+        )}
+        <div className="relative mx-auto grid max-w-6xl gap-10 px-4 py-12 lg:grid-cols-2 lg:py-16">
           <div>
             {brand.logo_url && (
               <div className="mb-6 flex h-20 w-40 items-center justify-center overflow-hidden rounded-2xl border bg-card p-4">
@@ -47,10 +60,10 @@ export function ComboPage({ service, brand }: ComboData) {
             )}
             <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">{title}</h1>
             <p className="mt-4 text-lg text-muted-foreground">
-              Профессиональный ремонт техники {brand.title} на дому. Оригинальные запчасти, гарантия до 12 месяцев,
+              Профессиональный ремонт {genitive} {brand.title} на дому. Оригинальные запчасти, гарантия до 12 месяцев,
               выезд мастера в день обращения.
             </p>
-            <h2 className="mt-8 text-xl font-semibold">Популярные неисправности</h2>
+            <h2 className="mt-8 text-xl font-semibold">Популярные неисправности {brand.title}</h2>
             <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
               {issues.map((i) => (
                 <li key={i} className="flex items-center gap-2 text-sm">

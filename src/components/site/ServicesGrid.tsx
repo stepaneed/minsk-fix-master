@@ -109,9 +109,9 @@ export function ServicesGrid() {
                           src={s.cover_url}
                           alt=""
                           loading="lazy"
-                          className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25 transition-opacity duration-300 group-hover:opacity-40"
+                          className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-60 transition-opacity duration-300 group-hover:opacity-80"
                         />
-                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-card via-card/70 to-card/30" />
+                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-card via-card/85 to-card/40" />
                       </>
                     )}
                     <div className="relative">

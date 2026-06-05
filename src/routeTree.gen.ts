@@ -32,6 +32,8 @@ import { Route as SiteDiscountsRouteImport } from './routes/_site.discounts'
 import { Route as SiteContactsRouteImport } from './routes/_site.contacts'
 import { Route as SiteBrandSlugRouteImport } from './routes/_site.brand.$slug'
 import { Route as SiteApplianceSlugRouteImport } from './routes/_site.appliance.$slug'
+import { Route as SiteBrandSlugIndexRouteImport } from './routes/_site.brand.$slug.index'
+import { Route as SiteApplianceSlugIndexRouteImport } from './routes/_site.appliance.$slug.index'
 import { Route as SiteBrandSlugApplianceRouteImport } from './routes/_site.brand.$slug.$appliance'
 import { Route as SiteApplianceSlugBrandRouteImport } from './routes/_site.appliance.$slug.$brand'
 
@@ -149,6 +151,16 @@ const SiteApplianceSlugRoute = SiteApplianceSlugRouteImport.update({
   path: '/appliance/$slug',
   getParentRoute: () => SiteRoute,
 } as any)
+const SiteBrandSlugIndexRoute = SiteBrandSlugIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SiteBrandSlugRoute,
+} as any)
+const SiteApplianceSlugIndexRoute = SiteApplianceSlugIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SiteApplianceSlugRoute,
+} as any)
 const SiteBrandSlugApplianceRoute = SiteBrandSlugApplianceRouteImport.update({
   id: '/$appliance',
   path: '/$appliance',
@@ -185,6 +197,8 @@ export interface FileRoutesByFullPath {
   '/brand/$slug': typeof SiteBrandSlugRouteWithChildren
   '/appliance/$slug/$brand': typeof SiteApplianceSlugBrandRoute
   '/brand/$slug/$appliance': typeof SiteBrandSlugApplianceRoute
+  '/appliance/$slug/': typeof SiteApplianceSlugIndexRoute
+  '/brand/$slug/': typeof SiteBrandSlugIndexRoute
 }
 export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -206,10 +220,10 @@ export interface FileRoutesByTo {
   '/admin/settings': typeof AdminSettingsRoute
   '/': typeof SiteIndexRoute
   '/admin': typeof AdminIndexRoute
-  '/appliance/$slug': typeof SiteApplianceSlugRouteWithChildren
-  '/brand/$slug': typeof SiteBrandSlugRouteWithChildren
   '/appliance/$slug/$brand': typeof SiteApplianceSlugBrandRoute
   '/brand/$slug/$appliance': typeof SiteBrandSlugApplianceRoute
+  '/appliance/$slug': typeof SiteApplianceSlugIndexRoute
+  '/brand/$slug': typeof SiteBrandSlugIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -238,6 +252,8 @@ export interface FileRoutesById {
   '/_site/brand/$slug': typeof SiteBrandSlugRouteWithChildren
   '/_site/appliance/$slug/$brand': typeof SiteApplianceSlugBrandRoute
   '/_site/brand/$slug/$appliance': typeof SiteBrandSlugApplianceRoute
+  '/_site/appliance/$slug/': typeof SiteApplianceSlugIndexRoute
+  '/_site/brand/$slug/': typeof SiteBrandSlugIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -266,6 +282,8 @@ export interface FileRouteTypes {
     | '/brand/$slug'
     | '/appliance/$slug/$brand'
     | '/brand/$slug/$appliance'
+    | '/appliance/$slug/'
+    | '/brand/$slug/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/sitemap.xml'
@@ -287,10 +305,10 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/'
     | '/admin'
-    | '/appliance/$slug'
-    | '/brand/$slug'
     | '/appliance/$slug/$brand'
     | '/brand/$slug/$appliance'
+    | '/appliance/$slug'
+    | '/brand/$slug'
   id:
     | '__root__'
     | '/_site'
@@ -318,6 +336,8 @@ export interface FileRouteTypes {
     | '/_site/brand/$slug'
     | '/_site/appliance/$slug/$brand'
     | '/_site/brand/$slug/$appliance'
+    | '/_site/appliance/$slug/'
+    | '/_site/brand/$slug/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -489,6 +509,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteApplianceSlugRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/brand/$slug/': {
+      id: '/_site/brand/$slug/'
+      path: '/'
+      fullPath: '/brand/$slug/'
+      preLoaderRoute: typeof SiteBrandSlugIndexRouteImport
+      parentRoute: typeof SiteBrandSlugRoute
+    }
+    '/_site/appliance/$slug/': {
+      id: '/_site/appliance/$slug/'
+      path: '/'
+      fullPath: '/appliance/$slug/'
+      preLoaderRoute: typeof SiteApplianceSlugIndexRouteImport
+      parentRoute: typeof SiteApplianceSlugRoute
+    }
     '/_site/brand/$slug/$appliance': {
       id: '/_site/brand/$slug/$appliance'
       path: '/$appliance'
@@ -508,10 +542,12 @@ declare module '@tanstack/react-router' {
 
 interface SiteApplianceSlugRouteChildren {
   SiteApplianceSlugBrandRoute: typeof SiteApplianceSlugBrandRoute
+  SiteApplianceSlugIndexRoute: typeof SiteApplianceSlugIndexRoute
 }
 
 const SiteApplianceSlugRouteChildren: SiteApplianceSlugRouteChildren = {
   SiteApplianceSlugBrandRoute: SiteApplianceSlugBrandRoute,
+  SiteApplianceSlugIndexRoute: SiteApplianceSlugIndexRoute,
 }
 
 const SiteApplianceSlugRouteWithChildren =
@@ -519,10 +555,12 @@ const SiteApplianceSlugRouteWithChildren =
 
 interface SiteBrandSlugRouteChildren {
   SiteBrandSlugApplianceRoute: typeof SiteBrandSlugApplianceRoute
+  SiteBrandSlugIndexRoute: typeof SiteBrandSlugIndexRoute
 }
 
 const SiteBrandSlugRouteChildren: SiteBrandSlugRouteChildren = {
   SiteBrandSlugApplianceRoute: SiteBrandSlugApplianceRoute,
+  SiteBrandSlugIndexRoute: SiteBrandSlugIndexRoute,
 }
 
 const SiteBrandSlugRouteWithChildren = SiteBrandSlugRoute._addFileChildren(

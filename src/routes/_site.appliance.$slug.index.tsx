@@ -6,7 +6,7 @@ import { BrandsMarquee } from "@/components/site/BrandsMarquee";
 import { ContactsBlock } from "@/components/site/ContactsBlock";
 import { CheckCircle2 } from "lucide-react";
 
-export const Route = createFileRoute("/_site/appliance/$slug")({
+export const Route = createFileRoute("/_site/appliance/$slug/")({
   loader: async ({ params }) => {
     const { data } = await supabase
       .from("service_types")

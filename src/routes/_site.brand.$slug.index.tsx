@@ -5,7 +5,7 @@ import { OrderForm } from "@/components/site/OrderForm";
 import { ContactsBlock } from "@/components/site/ContactsBlock";
 import { Wrench } from "lucide-react";
 
-export const Route = createFileRoute("/_site/brand/$slug")({
+export const Route = createFileRoute("/_site/brand/$slug/")({
   loader: async ({ params }) => {
     const { data } = await supabase
       .from("brands")

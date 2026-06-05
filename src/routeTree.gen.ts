@@ -30,6 +30,8 @@ import { Route as SitePricesRouteImport } from './routes/_site.prices'
 import { Route as SiteFaqRouteImport } from './routes/_site.faq'
 import { Route as SiteDiscountsRouteImport } from './routes/_site.discounts'
 import { Route as SiteContactsRouteImport } from './routes/_site.contacts'
+import { Route as SiteBrandSlugRouteImport } from './routes/_site.brand.$slug'
+import { Route as SiteApplianceSlugRouteImport } from './routes/_site.appliance.$slug'
 import { Route as SiteBrandSlugIndexRouteImport } from './routes/_site.brand.$slug.index'
 import { Route as SiteApplianceSlugIndexRouteImport } from './routes/_site.appliance.$slug.index'
 import { Route as SiteBrandSlugApplianceRouteImport } from './routes/_site.brand.$slug.$appliance'
@@ -139,25 +141,35 @@ const SiteContactsRoute = SiteContactsRouteImport.update({
   path: '/contacts',
   getParentRoute: () => SiteRoute,
 } as any)
-const SiteBrandSlugIndexRoute = SiteBrandSlugIndexRouteImport.update({
-  id: '/brand/$slug/',
-  path: '/brand/$slug/',
+const SiteBrandSlugRoute = SiteBrandSlugRouteImport.update({
+  id: '/brand/$slug',
+  path: '/brand/$slug',
   getParentRoute: () => SiteRoute,
+} as any)
+const SiteApplianceSlugRoute = SiteApplianceSlugRouteImport.update({
+  id: '/appliance/$slug',
+  path: '/appliance/$slug',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteBrandSlugIndexRoute = SiteBrandSlugIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SiteBrandSlugRoute,
 } as any)
 const SiteApplianceSlugIndexRoute = SiteApplianceSlugIndexRouteImport.update({
-  id: '/appliance/$slug/',
-  path: '/appliance/$slug/',
-  getParentRoute: () => SiteRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => SiteApplianceSlugRoute,
 } as any)
 const SiteBrandSlugApplianceRoute = SiteBrandSlugApplianceRouteImport.update({
-  id: '/brand/$slug/$appliance',
-  path: '/brand/$slug/$appliance',
-  getParentRoute: () => SiteRoute,
+  id: '/$appliance',
+  path: '/$appliance',
+  getParentRoute: () => SiteBrandSlugRoute,
 } as any)
 const SiteApplianceSlugBrandRoute = SiteApplianceSlugBrandRouteImport.update({
-  id: '/appliance/$slug/$brand',
-  path: '/appliance/$slug/$brand',
-  getParentRoute: () => SiteRoute,
+  id: '/$brand',
+  path: '/$brand',
+  getParentRoute: () => SiteApplianceSlugRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -181,6 +193,8 @@ export interface FileRoutesByFullPath {
   '/admin/service-types': typeof AdminServiceTypesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/': typeof AdminIndexRoute
+  '/appliance/$slug': typeof SiteApplianceSlugRouteWithChildren
+  '/brand/$slug': typeof SiteBrandSlugRouteWithChildren
   '/appliance/$slug/$brand': typeof SiteApplianceSlugBrandRoute
   '/brand/$slug/$appliance': typeof SiteBrandSlugApplianceRoute
   '/appliance/$slug/': typeof SiteApplianceSlugIndexRoute
@@ -234,6 +248,8 @@ export interface FileRoutesById {
   '/admin/settings': typeof AdminSettingsRoute
   '/_site/': typeof SiteIndexRoute
   '/admin/': typeof AdminIndexRoute
+  '/_site/appliance/$slug': typeof SiteApplianceSlugRouteWithChildren
+  '/_site/brand/$slug': typeof SiteBrandSlugRouteWithChildren
   '/_site/appliance/$slug/$brand': typeof SiteApplianceSlugBrandRoute
   '/_site/brand/$slug/$appliance': typeof SiteBrandSlugApplianceRoute
   '/_site/appliance/$slug/': typeof SiteApplianceSlugIndexRoute
@@ -262,6 +278,8 @@ export interface FileRouteTypes {
     | '/admin/service-types'
     | '/admin/settings'
     | '/admin/'
+    | '/appliance/$slug'
+    | '/brand/$slug'
     | '/appliance/$slug/$brand'
     | '/brand/$slug/$appliance'
     | '/appliance/$slug/'
@@ -314,6 +332,8 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/_site/'
     | '/admin/'
+    | '/_site/appliance/$slug'
+    | '/_site/brand/$slug'
     | '/_site/appliance/$slug/$brand'
     | '/_site/brand/$slug/$appliance'
     | '/_site/appliance/$slug/'
@@ -475,36 +495,77 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteContactsRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/brand/$slug': {
+      id: '/_site/brand/$slug'
+      path: '/brand/$slug'
+      fullPath: '/brand/$slug'
+      preLoaderRoute: typeof SiteBrandSlugRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/appliance/$slug': {
+      id: '/_site/appliance/$slug'
+      path: '/appliance/$slug'
+      fullPath: '/appliance/$slug'
+      preLoaderRoute: typeof SiteApplianceSlugRouteImport
+      parentRoute: typeof SiteRoute
+    }
     '/_site/brand/$slug/': {
       id: '/_site/brand/$slug/'
-      path: '/brand/$slug'
+      path: '/'
       fullPath: '/brand/$slug/'
       preLoaderRoute: typeof SiteBrandSlugIndexRouteImport
-      parentRoute: typeof SiteRoute
+      parentRoute: typeof SiteBrandSlugRoute
     }
     '/_site/appliance/$slug/': {
       id: '/_site/appliance/$slug/'
-      path: '/appliance/$slug'
+      path: '/'
       fullPath: '/appliance/$slug/'
       preLoaderRoute: typeof SiteApplianceSlugIndexRouteImport
-      parentRoute: typeof SiteRoute
+      parentRoute: typeof SiteApplianceSlugRoute
     }
     '/_site/brand/$slug/$appliance': {
       id: '/_site/brand/$slug/$appliance'
-      path: '/brand/$slug/$appliance'
+      path: '/$appliance'
       fullPath: '/brand/$slug/$appliance'
       preLoaderRoute: typeof SiteBrandSlugApplianceRouteImport
-      parentRoute: typeof SiteRoute
+      parentRoute: typeof SiteBrandSlugRoute
     }
     '/_site/appliance/$slug/$brand': {
       id: '/_site/appliance/$slug/$brand'
-      path: '/appliance/$slug/$brand'
+      path: '/$brand'
       fullPath: '/appliance/$slug/$brand'
       preLoaderRoute: typeof SiteApplianceSlugBrandRouteImport
-      parentRoute: typeof SiteRoute
+      parentRoute: typeof SiteApplianceSlugRoute
     }
   }
 }
+
+interface SiteApplianceSlugRouteChildren {
+  SiteApplianceSlugBrandRoute: typeof SiteApplianceSlugBrandRoute
+  SiteApplianceSlugIndexRoute: typeof SiteApplianceSlugIndexRoute
+}
+
+const SiteApplianceSlugRouteChildren: SiteApplianceSlugRouteChildren = {
+  SiteApplianceSlugBrandRoute: SiteApplianceSlugBrandRoute,
+  SiteApplianceSlugIndexRoute: SiteApplianceSlugIndexRoute,
+}
+
+const SiteApplianceSlugRouteWithChildren =
+  SiteApplianceSlugRoute._addFileChildren(SiteApplianceSlugRouteChildren)
+
+interface SiteBrandSlugRouteChildren {
+  SiteBrandSlugApplianceRoute: typeof SiteBrandSlugApplianceRoute
+  SiteBrandSlugIndexRoute: typeof SiteBrandSlugIndexRoute
+}
+
+const SiteBrandSlugRouteChildren: SiteBrandSlugRouteChildren = {
+  SiteBrandSlugApplianceRoute: SiteBrandSlugApplianceRoute,
+  SiteBrandSlugIndexRoute: SiteBrandSlugIndexRoute,
+}
+
+const SiteBrandSlugRouteWithChildren = SiteBrandSlugRoute._addFileChildren(
+  SiteBrandSlugRouteChildren,
+)
 
 interface SiteRouteChildren {
   SiteContactsRoute: typeof SiteContactsRoute
@@ -514,10 +575,8 @@ interface SiteRouteChildren {
   SitePromotionsRoute: typeof SitePromotionsRoute
   SiteServicesRoute: typeof SiteServicesRoute
   SiteIndexRoute: typeof SiteIndexRoute
-  SiteApplianceSlugBrandRoute: typeof SiteApplianceSlugBrandRoute
-  SiteBrandSlugApplianceRoute: typeof SiteBrandSlugApplianceRoute
-  SiteApplianceSlugIndexRoute: typeof SiteApplianceSlugIndexRoute
-  SiteBrandSlugIndexRoute: typeof SiteBrandSlugIndexRoute
+  SiteApplianceSlugRoute: typeof SiteApplianceSlugRouteWithChildren
+  SiteBrandSlugRoute: typeof SiteBrandSlugRouteWithChildren
 }
 
 const SiteRouteChildren: SiteRouteChildren = {
@@ -528,10 +587,8 @@ const SiteRouteChildren: SiteRouteChildren = {
   SitePromotionsRoute: SitePromotionsRoute,
   SiteServicesRoute: SiteServicesRoute,
   SiteIndexRoute: SiteIndexRoute,
-  SiteApplianceSlugBrandRoute: SiteApplianceSlugBrandRoute,
-  SiteBrandSlugApplianceRoute: SiteBrandSlugApplianceRoute,
-  SiteApplianceSlugIndexRoute: SiteApplianceSlugIndexRoute,
-  SiteBrandSlugIndexRoute: SiteBrandSlugIndexRoute,
+  SiteApplianceSlugRoute: SiteApplianceSlugRouteWithChildren,
+  SiteBrandSlugRoute: SiteBrandSlugRouteWithChildren,
 }
 
 const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)

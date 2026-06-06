@@ -54,6 +54,9 @@ export function Header() {
           label: s.title,
           params: { slug: s.slug },
         })),
+        { to: "/extra/$kind", label: "Выкуп техники", params: { kind: "buyout" } },
+        { to: "/extra/$kind", label: "Восстановленная техника", params: { kind: "refurbished" } },
+        { to: "/extra/$kind", label: "Запчасти", params: { kind: "parts" } },
       ],
     },
     {

@@ -15,6 +15,8 @@ import {
   Settings,
   LogOut,
   Menu,
+  PackageOpen,
+  Boxes,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
@@ -24,6 +26,8 @@ const NAV = [
   { to: "/admin/orders", label: "Заявки", icon: Inbox },
   { to: "/admin/service-types", label: "Виды техники", icon: Wrench },
   { to: "/admin/brands", label: "Бренды", icon: Tag },
+  { to: "/admin/extra-services", label: "Доп. услуги", icon: PackageOpen },
+  { to: "/admin/products", label: "Товары", icon: Boxes },
   { to: "/admin/prices", label: "Цены", icon: DollarSign },
   { to: "/admin/discounts", label: "Скидки", icon: Percent },
   { to: "/admin/promotions", label: "Акции", icon: Sparkles },

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { OrderForm } from "@/components/site/OrderForm";
 import { ServicesGrid } from "@/components/site/ServicesGrid";
+import { ExtraServicesGrid } from "@/components/site/ExtraServicesGrid";
 import { WorkAlgorithm } from "@/components/site/WorkAlgorithm";
 import { BrandsMarquee } from "@/components/site/BrandsMarquee";
 import { DiscountsBlock } from "@/components/site/DiscountsBlock";
@@ -84,6 +85,7 @@ function Home() {
 
       {/* 3 */}
       <ServicesGrid />
+      <ExtraServicesGrid />
 
       {/* 4 */}
       <WorkAlgorithm />

@@ -95,6 +95,7 @@ export type Database = {
           expires_at: string | null
           id: string
           is_active: boolean
+          is_featured: boolean
           sort_order: number
           title: string
         }
@@ -106,6 +107,7 @@ export type Database = {
           expires_at?: string | null
           id?: string
           is_active?: boolean
+          is_featured?: boolean
           sort_order?: number
           title: string
         }
@@ -117,6 +119,7 @@ export type Database = {
           expires_at?: string | null
           id?: string
           is_active?: boolean
+          is_featured?: boolean
           sort_order?: number
           title?: string
         }
@@ -249,6 +252,7 @@ export type Database = {
           expires_at: string | null
           id: string
           is_active: boolean
+          is_featured: boolean
           sort_order: number
           title: string
         }
@@ -260,6 +264,7 @@ export type Database = {
           expires_at?: string | null
           id?: string
           is_active?: boolean
+          is_featured?: boolean
           sort_order?: number
           title: string
         }
@@ -271,6 +276,7 @@ export type Database = {
           expires_at?: string | null
           id?: string
           is_active?: boolean
+          is_featured?: boolean
           sort_order?: number
           title?: string
         }
@@ -296,6 +302,7 @@ export type Database = {
       }
       service_types: {
         Row: {
+          category: string
           cover_url: string | null
           created_at: string
           description: string | null
@@ -308,6 +315,7 @@ export type Database = {
           title_genitive: string | null
         }
         Insert: {
+          category?: string
           cover_url?: string | null
           created_at?: string
           description?: string | null
@@ -320,6 +328,7 @@ export type Database = {
           title_genitive?: string | null
         }
         Update: {
+          category?: string
           cover_url?: string | null
           created_at?: string
           description?: string | null

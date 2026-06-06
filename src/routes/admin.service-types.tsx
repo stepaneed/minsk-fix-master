@@ -63,6 +63,10 @@ function ServiceTypesPage() {
             { name: "title", label: "Название", type: "text", required: true },
             { name: "title_genitive", label: "Название (родительный падеж)", type: "text", placeholder: "напр. стиральных машин" },
             { name: "slug", label: "Slug (URL)", type: "slug", required: true },
+            { name: "category", label: "Категория", type: "select", options: [
+              { value: "repair", label: "Виды техники (ремонт)" },
+              { value: "service", label: "Услуги (выкуп, продажа, запчасти)" },
+            ] },
             { name: "description", label: "Описание", type: "textarea" },
             { name: "icon_url", label: "Иконка", type: "image" },
             { name: "cover_url", label: "Фоновое фото", type: "image" },

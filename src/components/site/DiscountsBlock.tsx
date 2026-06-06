@@ -40,7 +40,12 @@ export function DiscountsBlock() {
   const merged = [
     ...(data?.discounts ?? []).map((x) => ({ ...x, kind: "discount" as const })),
     ...(data?.promotions ?? []).map((x) => ({ ...x, kind: "promotion" as const })),
-  ].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+  ].sort((a: any, b: any) => {
+    const af = a.is_featured ? 0 : 1;
+    const bf = b.is_featured ? 0 : 1;
+    if (af !== bf) return af - bf;
+    return (a.sort_order ?? 0) - (b.sort_order ?? 0);
+  });
 
   if (merged.length === 0) return null;
 

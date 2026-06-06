@@ -8,6 +8,7 @@ const fields = [
   { name: "conditions", label: "Условия", type: "textarea" as const },
   { name: "expires_at", label: "Действует до", type: "datetime" as const },
   { name: "sort_order", label: "Порядок", type: "number" as const },
+  { name: "is_featured", label: "Избранное (показывать на главной)", type: "boolean" as const },
   { name: "is_active", label: "Активно", type: "boolean" as const },
 ];
 
@@ -15,6 +16,7 @@ const columns = [
   { key: "sort_order", label: "№", sortable: true },
   { key: "title", label: "Заголовок", sortable: true },
   { key: "benefit", label: "Выгода" },
+  { key: "is_featured", label: "★", render: (r: any) => (r.is_featured ? "★" : "—") },
   {
     key: "expires_at",
     label: "До",

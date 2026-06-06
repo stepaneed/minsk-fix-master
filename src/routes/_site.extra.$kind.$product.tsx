@@ -9,11 +9,11 @@ const ALLOWED = ["refurbished", "parts"] as const;
 
 export const Route = createFileRoute("/_site/extra/$kind/$product")({
   params: {
-    parse: (raw) => {
-      if (!ALLOWED.includes(raw.kind as any)) throw notFound();
+    parse: (raw: Record<string, string>) => {
+      if (!ALLOWED.includes(raw.kind as (typeof ALLOWED)[number])) throw notFound();
       return { kind: raw.kind as (typeof ALLOWED)[number], product: raw.product };
     },
-    stringify: (p) => p,
+    stringify: (p: { kind: string; product: string }) => p,
   },
   head: ({ params }) => ({
     meta: [{ title: `${params.product} — МастерФикс` }],

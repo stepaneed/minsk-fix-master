@@ -125,6 +125,51 @@ export type Database = {
         }
         Relationships: []
       }
+      extra_services: {
+        Row: {
+          cover_url: string | null
+          created_at: string
+          description: string | null
+          icon_url: string | null
+          id: string
+          is_active: boolean
+          kind: string
+          settings: Json
+          slug: string
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          cover_url?: string | null
+          created_at?: string
+          description?: string | null
+          icon_url?: string | null
+          id?: string
+          is_active?: boolean
+          kind: string
+          settings?: Json
+          slug: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          cover_url?: string | null
+          created_at?: string
+          description?: string | null
+          icon_url?: string | null
+          id?: string
+          is_active?: boolean
+          kind?: string
+          settings?: Json
+          slug?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       faq: {
         Row: {
           answer: string
@@ -161,9 +206,11 @@ export type Database = {
           created_at: string
           date: string | null
           description: string | null
+          extra_service_id: string | null
           id: string
           name: string
           phone: string
+          product_id: string | null
           status: string
           telegram_sent: boolean
           time: string | null
@@ -174,9 +221,11 @@ export type Database = {
           created_at?: string
           date?: string | null
           description?: string | null
+          extra_service_id?: string | null
           id?: string
           name: string
           phone: string
+          product_id?: string | null
           status?: string
           telegram_sent?: boolean
           time?: string | null
@@ -187,15 +236,31 @@ export type Database = {
           created_at?: string
           date?: string | null
           description?: string | null
+          extra_service_id?: string | null
           id?: string
           name?: string
           phone?: string
+          product_id?: string | null
           status?: string
           telegram_sent?: boolean
           time?: string | null
           type_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "orders_extra_service_id_fkey"
+            columns: ["extra_service_id"]
+            isOneToOne: false
+            referencedRelation: "extra_services"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "orders_type_id_fkey"
             columns: ["type_id"]
@@ -239,6 +304,97 @@ export type Database = {
             columns: ["service_type_id"]
             isOneToOne: false
             referencedRelation: "service_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_images: {
+        Row: {
+          created_at: string
+          id: string
+          product_id: string
+          role: string
+          sort_order: number
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          product_id: string
+          role?: string
+          sort_order?: number
+          url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          product_id?: string
+          role?: string
+          sort_order?: number
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_images_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          attributes: Json
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          old_price: number | null
+          price: number | null
+          service_id: string
+          slug: string
+          sort_order: number
+          stock: number | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          attributes?: Json
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          old_price?: number | null
+          price?: number | null
+          service_id: string
+          slug: string
+          sort_order?: number
+          stock?: number | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          attributes?: Json
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          old_price?: number | null
+          price?: number | null
+          service_id?: string
+          slug?: string
+          sort_order?: number
+          stock?: number | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "extra_services"
             referencedColumns: ["id"]
           },
         ]

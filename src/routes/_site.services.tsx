@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ServicesGrid } from "@/components/site/ServicesGrid";
+import { ExtraServicesGrid } from "@/components/site/ExtraServicesGrid";
 import { BrandsMarquee } from "@/components/site/BrandsMarquee";
 import { ContactsBlock } from "@/components/site/ContactsBlock";
 
@@ -21,6 +22,7 @@ export const Route = createFileRoute("/_site/services")({
         <p className="mt-3 text-muted-foreground">Выберите вид техники для подробной информации и заявки.</p>
       </section>
       <ServicesGrid />
+      <ExtraServicesGrid />
       <BrandsMarquee />
       <ContactsBlock />
     </>

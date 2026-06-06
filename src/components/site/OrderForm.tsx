@@ -13,7 +13,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 
 const schema = z.object({
-  type_id: z.string().uuid().optional().or(z.literal("")),
+  type_id: z.string().optional().or(z.literal("")),
   name: z.string().trim().min(2, "Введите имя").max(100),
   phone: z.string().trim().min(5, "Введите телефон").max(30),
   address: z.string().max(300).optional(),
@@ -54,6 +54,17 @@ export function OrderForm({ defaultTypeId, compact, onSuccess }: { defaultTypeId
       return data ?? [];
     },
   });
+  const { data: extras = [] } = useQuery({
+    queryKey: ["extra_services_active"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("extra_services")
+        .select("id,title,kind")
+        .eq("is_active", true)
+        .order("sort_order");
+      return data ?? [];
+    },
+  });
 
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -66,8 +77,15 @@ export function OrderForm({ defaultTypeId, compact, onSuccess }: { defaultTypeId
 
   const onSubmit = async (v: FormData) => {
     try {
+      const raw = v.type_id || "";
+      const isExtra = raw.startsWith("extra:");
+      const payload = {
+        ...v,
+        type_id: isExtra ? null : raw || null,
+        extra_service_id: isExtra ? raw.slice(6) : null,
+      };
       const { data, error } = await supabase.functions.invoke("send-telegram", {
-        body: { ...v, type_id: v.type_id || null },
+        body: payload,
       });
       if (error || (data && (data as { error?: string }).error)) {
         const msg = (data as { error?: string })?.error;
@@ -104,15 +122,24 @@ export function OrderForm({ defaultTypeId, compact, onSuccess }: { defaultTypeId
           <label>Website<input type="text" tabIndex={-1} autoComplete="off" {...form.register("website")} /></label>
         </div>
         <div className={compact ? "" : "md:col-span-2"}>
-          <Label>Вид техники</Label>
+          <Label>Вид техники / услуга</Label>
           <select
             className="mt-1 flex h-9 w-full rounded-md border border-input bg-transparent px-3 text-sm"
             {...form.register("type_id")}
           >
             <option value="">— Выберите —</option>
-            {types.map((t) => (
-              <option key={t.id} value={t.id}>{t.title}</option>
-            ))}
+            <optgroup label="Ремонт техники">
+              {types.map((t) => (
+                <option key={t.id} value={t.id}>{t.title}</option>
+              ))}
+            </optgroup>
+            {extras.length > 0 && (
+              <optgroup label="Услуги">
+                {extras.map((e) => (
+                  <option key={e.id} value={`extra:${e.id}`}>{e.title}</option>
+                ))}
+              </optgroup>
+            )}
           </select>
         </div>
         <div>

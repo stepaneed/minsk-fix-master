@@ -17,10 +17,12 @@ import { Route as SiteIndexRouteImport } from './routes/_site.index'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminServiceTypesRouteImport } from './routes/admin.service-types'
 import { Route as AdminPromotionsRouteImport } from './routes/admin.promotions'
+import { Route as AdminProductsRouteImport } from './routes/admin.products'
 import { Route as AdminPricesRouteImport } from './routes/admin.prices'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminFaqRouteImport } from './routes/admin.faq'
+import { Route as AdminExtraServicesRouteImport } from './routes/admin.extra-services'
 import { Route as AdminDiscountsRouteImport } from './routes/admin.discounts'
 import { Route as AdminBrandsRouteImport } from './routes/admin.brands'
 import { Route as AdminArticlesRouteImport } from './routes/admin.articles'
@@ -30,10 +32,13 @@ import { Route as SitePricesRouteImport } from './routes/_site.prices'
 import { Route as SiteFaqRouteImport } from './routes/_site.faq'
 import { Route as SiteDiscountsRouteImport } from './routes/_site.discounts'
 import { Route as SiteContactsRouteImport } from './routes/_site.contacts'
+import { Route as SiteExtraKindRouteImport } from './routes/_site.extra.$kind'
 import { Route as SiteBrandSlugRouteImport } from './routes/_site.brand.$slug'
 import { Route as SiteApplianceSlugRouteImport } from './routes/_site.appliance.$slug'
+import { Route as SiteExtraKindIndexRouteImport } from './routes/_site.extra.$kind.index'
 import { Route as SiteBrandSlugIndexRouteImport } from './routes/_site.brand.$slug.index'
 import { Route as SiteApplianceSlugIndexRouteImport } from './routes/_site.appliance.$slug.index'
+import { Route as SiteExtraKindProductRouteImport } from './routes/_site.extra.$kind.$product'
 import { Route as SiteBrandSlugApplianceRouteImport } from './routes/_site.brand.$slug.$appliance'
 import { Route as SiteApplianceSlugBrandRouteImport } from './routes/_site.appliance.$slug.$brand'
 
@@ -76,6 +81,11 @@ const AdminPromotionsRoute = AdminPromotionsRouteImport.update({
   path: '/promotions',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminProductsRoute = AdminProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminPricesRoute = AdminPricesRouteImport.update({
   id: '/prices',
   path: '/prices',
@@ -94,6 +104,11 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
 const AdminFaqRoute = AdminFaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminExtraServicesRoute = AdminExtraServicesRouteImport.update({
+  id: '/extra-services',
+  path: '/extra-services',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminDiscountsRoute = AdminDiscountsRouteImport.update({
@@ -141,6 +156,11 @@ const SiteContactsRoute = SiteContactsRouteImport.update({
   path: '/contacts',
   getParentRoute: () => SiteRoute,
 } as any)
+const SiteExtraKindRoute = SiteExtraKindRouteImport.update({
+  id: '/extra/$kind',
+  path: '/extra/$kind',
+  getParentRoute: () => SiteRoute,
+} as any)
 const SiteBrandSlugRoute = SiteBrandSlugRouteImport.update({
   id: '/brand/$slug',
   path: '/brand/$slug',
@@ -151,6 +171,11 @@ const SiteApplianceSlugRoute = SiteApplianceSlugRouteImport.update({
   path: '/appliance/$slug',
   getParentRoute: () => SiteRoute,
 } as any)
+const SiteExtraKindIndexRoute = SiteExtraKindIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SiteExtraKindRoute,
+} as any)
 const SiteBrandSlugIndexRoute = SiteBrandSlugIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -160,6 +185,11 @@ const SiteApplianceSlugIndexRoute = SiteApplianceSlugIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => SiteApplianceSlugRoute,
+} as any)
+const SiteExtraKindProductRoute = SiteExtraKindProductRouteImport.update({
+  id: '/$product',
+  path: '/$product',
+  getParentRoute: () => SiteExtraKindRoute,
 } as any)
 const SiteBrandSlugApplianceRoute = SiteBrandSlugApplianceRouteImport.update({
   id: '/$appliance',
@@ -185,20 +215,25 @@ export interface FileRoutesByFullPath {
   '/admin/articles': typeof AdminArticlesRoute
   '/admin/brands': typeof AdminBrandsRoute
   '/admin/discounts': typeof AdminDiscountsRoute
+  '/admin/extra-services': typeof AdminExtraServicesRoute
   '/admin/faq': typeof AdminFaqRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/prices': typeof AdminPricesRoute
+  '/admin/products': typeof AdminProductsRoute
   '/admin/promotions': typeof AdminPromotionsRoute
   '/admin/service-types': typeof AdminServiceTypesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/': typeof AdminIndexRoute
   '/appliance/$slug': typeof SiteApplianceSlugRouteWithChildren
   '/brand/$slug': typeof SiteBrandSlugRouteWithChildren
+  '/extra/$kind': typeof SiteExtraKindRouteWithChildren
   '/appliance/$slug/$brand': typeof SiteApplianceSlugBrandRoute
   '/brand/$slug/$appliance': typeof SiteBrandSlugApplianceRoute
+  '/extra/$kind/$product': typeof SiteExtraKindProductRoute
   '/appliance/$slug/': typeof SiteApplianceSlugIndexRoute
   '/brand/$slug/': typeof SiteBrandSlugIndexRoute
+  '/extra/$kind/': typeof SiteExtraKindIndexRoute
 }
 export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -211,10 +246,12 @@ export interface FileRoutesByTo {
   '/admin/articles': typeof AdminArticlesRoute
   '/admin/brands': typeof AdminBrandsRoute
   '/admin/discounts': typeof AdminDiscountsRoute
+  '/admin/extra-services': typeof AdminExtraServicesRoute
   '/admin/faq': typeof AdminFaqRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/prices': typeof AdminPricesRoute
+  '/admin/products': typeof AdminProductsRoute
   '/admin/promotions': typeof AdminPromotionsRoute
   '/admin/service-types': typeof AdminServiceTypesRoute
   '/admin/settings': typeof AdminSettingsRoute
@@ -222,8 +259,10 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/appliance/$slug/$brand': typeof SiteApplianceSlugBrandRoute
   '/brand/$slug/$appliance': typeof SiteBrandSlugApplianceRoute
+  '/extra/$kind/$product': typeof SiteExtraKindProductRoute
   '/appliance/$slug': typeof SiteApplianceSlugIndexRoute
   '/brand/$slug': typeof SiteBrandSlugIndexRoute
+  '/extra/$kind': typeof SiteExtraKindIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -239,10 +278,12 @@ export interface FileRoutesById {
   '/admin/articles': typeof AdminArticlesRoute
   '/admin/brands': typeof AdminBrandsRoute
   '/admin/discounts': typeof AdminDiscountsRoute
+  '/admin/extra-services': typeof AdminExtraServicesRoute
   '/admin/faq': typeof AdminFaqRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/prices': typeof AdminPricesRoute
+  '/admin/products': typeof AdminProductsRoute
   '/admin/promotions': typeof AdminPromotionsRoute
   '/admin/service-types': typeof AdminServiceTypesRoute
   '/admin/settings': typeof AdminSettingsRoute
@@ -250,10 +291,13 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/_site/appliance/$slug': typeof SiteApplianceSlugRouteWithChildren
   '/_site/brand/$slug': typeof SiteBrandSlugRouteWithChildren
+  '/_site/extra/$kind': typeof SiteExtraKindRouteWithChildren
   '/_site/appliance/$slug/$brand': typeof SiteApplianceSlugBrandRoute
   '/_site/brand/$slug/$appliance': typeof SiteBrandSlugApplianceRoute
+  '/_site/extra/$kind/$product': typeof SiteExtraKindProductRoute
   '/_site/appliance/$slug/': typeof SiteApplianceSlugIndexRoute
   '/_site/brand/$slug/': typeof SiteBrandSlugIndexRoute
+  '/_site/extra/$kind/': typeof SiteExtraKindIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -270,20 +314,25 @@ export interface FileRouteTypes {
     | '/admin/articles'
     | '/admin/brands'
     | '/admin/discounts'
+    | '/admin/extra-services'
     | '/admin/faq'
     | '/admin/login'
     | '/admin/orders'
     | '/admin/prices'
+    | '/admin/products'
     | '/admin/promotions'
     | '/admin/service-types'
     | '/admin/settings'
     | '/admin/'
     | '/appliance/$slug'
     | '/brand/$slug'
+    | '/extra/$kind'
     | '/appliance/$slug/$brand'
     | '/brand/$slug/$appliance'
+    | '/extra/$kind/$product'
     | '/appliance/$slug/'
     | '/brand/$slug/'
+    | '/extra/$kind/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/sitemap.xml'
@@ -296,10 +345,12 @@ export interface FileRouteTypes {
     | '/admin/articles'
     | '/admin/brands'
     | '/admin/discounts'
+    | '/admin/extra-services'
     | '/admin/faq'
     | '/admin/login'
     | '/admin/orders'
     | '/admin/prices'
+    | '/admin/products'
     | '/admin/promotions'
     | '/admin/service-types'
     | '/admin/settings'
@@ -307,8 +358,10 @@ export interface FileRouteTypes {
     | '/admin'
     | '/appliance/$slug/$brand'
     | '/brand/$slug/$appliance'
+    | '/extra/$kind/$product'
     | '/appliance/$slug'
     | '/brand/$slug'
+    | '/extra/$kind'
   id:
     | '__root__'
     | '/_site'
@@ -323,10 +376,12 @@ export interface FileRouteTypes {
     | '/admin/articles'
     | '/admin/brands'
     | '/admin/discounts'
+    | '/admin/extra-services'
     | '/admin/faq'
     | '/admin/login'
     | '/admin/orders'
     | '/admin/prices'
+    | '/admin/products'
     | '/admin/promotions'
     | '/admin/service-types'
     | '/admin/settings'
@@ -334,10 +389,13 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/_site/appliance/$slug'
     | '/_site/brand/$slug'
+    | '/_site/extra/$kind'
     | '/_site/appliance/$slug/$brand'
     | '/_site/brand/$slug/$appliance'
+    | '/_site/extra/$kind/$product'
     | '/_site/appliance/$slug/'
     | '/_site/brand/$slug/'
+    | '/_site/extra/$kind/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -404,6 +462,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPromotionsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/products': {
+      id: '/admin/products'
+      path: '/products'
+      fullPath: '/admin/products'
+      preLoaderRoute: typeof AdminProductsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/prices': {
       id: '/admin/prices'
       path: '/prices'
@@ -430,6 +495,13 @@ declare module '@tanstack/react-router' {
       path: '/faq'
       fullPath: '/admin/faq'
       preLoaderRoute: typeof AdminFaqRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/extra-services': {
+      id: '/admin/extra-services'
+      path: '/extra-services'
+      fullPath: '/admin/extra-services'
+      preLoaderRoute: typeof AdminExtraServicesRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/discounts': {
@@ -495,6 +567,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteContactsRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/extra/$kind': {
+      id: '/_site/extra/$kind'
+      path: '/extra/$kind'
+      fullPath: '/extra/$kind'
+      preLoaderRoute: typeof SiteExtraKindRouteImport
+      parentRoute: typeof SiteRoute
+    }
     '/_site/brand/$slug': {
       id: '/_site/brand/$slug'
       path: '/brand/$slug'
@@ -509,6 +588,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteApplianceSlugRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/extra/$kind/': {
+      id: '/_site/extra/$kind/'
+      path: '/'
+      fullPath: '/extra/$kind/'
+      preLoaderRoute: typeof SiteExtraKindIndexRouteImport
+      parentRoute: typeof SiteExtraKindRoute
+    }
     '/_site/brand/$slug/': {
       id: '/_site/brand/$slug/'
       path: '/'
@@ -522,6 +608,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/appliance/$slug/'
       preLoaderRoute: typeof SiteApplianceSlugIndexRouteImport
       parentRoute: typeof SiteApplianceSlugRoute
+    }
+    '/_site/extra/$kind/$product': {
+      id: '/_site/extra/$kind/$product'
+      path: '/$product'
+      fullPath: '/extra/$kind/$product'
+      preLoaderRoute: typeof SiteExtraKindProductRouteImport
+      parentRoute: typeof SiteExtraKindRoute
     }
     '/_site/brand/$slug/$appliance': {
       id: '/_site/brand/$slug/$appliance'
@@ -567,6 +660,20 @@ const SiteBrandSlugRouteWithChildren = SiteBrandSlugRoute._addFileChildren(
   SiteBrandSlugRouteChildren,
 )
 
+interface SiteExtraKindRouteChildren {
+  SiteExtraKindProductRoute: typeof SiteExtraKindProductRoute
+  SiteExtraKindIndexRoute: typeof SiteExtraKindIndexRoute
+}
+
+const SiteExtraKindRouteChildren: SiteExtraKindRouteChildren = {
+  SiteExtraKindProductRoute: SiteExtraKindProductRoute,
+  SiteExtraKindIndexRoute: SiteExtraKindIndexRoute,
+}
+
+const SiteExtraKindRouteWithChildren = SiteExtraKindRoute._addFileChildren(
+  SiteExtraKindRouteChildren,
+)
+
 interface SiteRouteChildren {
   SiteContactsRoute: typeof SiteContactsRoute
   SiteDiscountsRoute: typeof SiteDiscountsRoute
@@ -577,6 +684,7 @@ interface SiteRouteChildren {
   SiteIndexRoute: typeof SiteIndexRoute
   SiteApplianceSlugRoute: typeof SiteApplianceSlugRouteWithChildren
   SiteBrandSlugRoute: typeof SiteBrandSlugRouteWithChildren
+  SiteExtraKindRoute: typeof SiteExtraKindRouteWithChildren
 }
 
 const SiteRouteChildren: SiteRouteChildren = {
@@ -589,6 +697,7 @@ const SiteRouteChildren: SiteRouteChildren = {
   SiteIndexRoute: SiteIndexRoute,
   SiteApplianceSlugRoute: SiteApplianceSlugRouteWithChildren,
   SiteBrandSlugRoute: SiteBrandSlugRouteWithChildren,
+  SiteExtraKindRoute: SiteExtraKindRouteWithChildren,
 }
 
 const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
@@ -597,10 +706,12 @@ interface AdminRouteChildren {
   AdminArticlesRoute: typeof AdminArticlesRoute
   AdminBrandsRoute: typeof AdminBrandsRoute
   AdminDiscountsRoute: typeof AdminDiscountsRoute
+  AdminExtraServicesRoute: typeof AdminExtraServicesRoute
   AdminFaqRoute: typeof AdminFaqRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminOrdersRoute: typeof AdminOrdersRoute
   AdminPricesRoute: typeof AdminPricesRoute
+  AdminProductsRoute: typeof AdminProductsRoute
   AdminPromotionsRoute: typeof AdminPromotionsRoute
   AdminServiceTypesRoute: typeof AdminServiceTypesRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
@@ -611,10 +722,12 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminArticlesRoute: AdminArticlesRoute,
   AdminBrandsRoute: AdminBrandsRoute,
   AdminDiscountsRoute: AdminDiscountsRoute,
+  AdminExtraServicesRoute: AdminExtraServicesRoute,
   AdminFaqRoute: AdminFaqRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminOrdersRoute: AdminOrdersRoute,
   AdminPricesRoute: AdminPricesRoute,
+  AdminProductsRoute: AdminProductsRoute,
   AdminPromotionsRoute: AdminPromotionsRoute,
   AdminServiceTypesRoute: AdminServiceTypesRoute,
   AdminSettingsRoute: AdminSettingsRoute,
@@ -631,13 +744,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

@@ -134,7 +134,13 @@ function SettingsPage() {
         </p>
       </div>
 
+      <div>
+        <h2 className="text-sm font-semibold tracking-wide uppercase text-muted-foreground">Внешний вид</h2>
+        <div className="mt-3"><PromoOverlayControl /></div>
+      </div>
+
       <div className="flex gap-2 items-end">
+
         <div className="flex-1 max-w-sm">
           <Label htmlFor="new-key">Новый ключ</Label>
           <Input

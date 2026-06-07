@@ -44,8 +44,6 @@ export function ServicesGrid() {
                     <h3 className="font-semibold">{s.title}</h3>
                     {s.description && <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{s.description}</p>}
                   </div>
-                    <h3 className="font-semibold">{s.title}</h3>
-                    {s.description && <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{s.description}</p>}
                 </Link>
               </Reveal>
             ))}

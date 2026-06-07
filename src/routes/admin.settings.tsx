@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Slider } from "@/components/ui/slider";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Trash2, Plus } from "lucide-react";
@@ -13,6 +14,57 @@ export const Route = createFileRoute("/admin/settings")({
   head: () => ({ meta: [{ title: "Настройки — Админка" }, { name: "robots", content: "noindex" }] }),
   component: SettingsPage,
 });
+
+function PromoOverlayControl() {
+  const qc = useQueryClient();
+  const { data } = useQuery({
+    queryKey: ["admin", "setting", "promo_overlay_opacity"],
+    queryFn: async () => {
+      const { data } = await supabase.from("settings").select("value").eq("key", "promo_overlay_opacity").maybeSingle();
+      let raw: any = data?.value;
+      if (raw && typeof raw === "object" && "value" in raw) raw = raw.value;
+      const n = typeof raw === "number" ? raw : typeof raw === "string" ? Number(raw) : NaN;
+      return Number.isFinite(n) ? n : 35;
+    },
+  });
+  const [val, setVal] = useState<number>(35);
+  useEffect(() => {
+    if (typeof data === "number") setVal(data);
+  }, [data]);
+
+  const save = async (n: number) => {
+    const { error } = await supabase.from("settings").upsert({ key: "promo_overlay_opacity", value: n });
+    if (error) toast.error(error.message);
+    else {
+      toast.success("Сохранено");
+      qc.invalidateQueries({ queryKey: ["admin", "setting", "promo_overlay_opacity"] });
+      qc.invalidateQueries({ queryKey: ["setting", "promo_overlay_opacity"] });
+    }
+  };
+
+  return (
+    <div className="rounded-lg border border-border bg-background p-4 space-y-3">
+      <div>
+        <Label>Пелена на изображениях акций и скидок</Label>
+        <p className="text-xs text-muted-foreground mt-1">
+          Контрастность фоновых изображений в карточках акций и скидок. 0% — изображение без пелены, 100% — полностью скрыто.
+        </p>
+      </div>
+      <div className="flex items-center gap-4">
+        <Slider
+          value={[val]}
+          min={0}
+          max={100}
+          step={5}
+          onValueChange={(v) => setVal(v[0] ?? 0)}
+          className="flex-1"
+        />
+        <div className="w-14 text-right text-sm font-mono">{val}%</div>
+        <Button size="sm" onClick={() => save(val)}>Сохранить</Button>
+      </div>
+    </div>
+  );
+}
 
 function SettingsPage() {
   const qc = useQueryClient();
@@ -82,7 +134,13 @@ function SettingsPage() {
         </p>
       </div>
 
+      <div>
+        <h2 className="text-sm font-semibold tracking-wide uppercase text-muted-foreground">Внешний вид</h2>
+        <div className="mt-3"><PromoOverlayControl /></div>
+      </div>
+
       <div className="flex gap-2 items-end">
+
         <div className="flex-1 max-w-sm">
           <Label htmlFor="new-key">Новый ключ</Label>
           <Input

@@ -1,11 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
-import { Gift, Sparkles, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Reveal } from "./Reveal";
+import { CardCover } from "./CardCover";
+import { usePromoOverlay } from "@/lib/usePromoOverlay";
 
 export function DiscountsBlock() {
+  const overlay = usePromoOverlay();
   const { data, isLoading } = useQuery({
     queryKey: ["discounts_promotions_top"],
     queryFn: async () => {
@@ -61,26 +64,28 @@ export function DiscountsBlock() {
           {items.map((it: any, i) => (
             <Reveal key={`${it.kind}-${it.id}`} delay={Math.min(i * 60, 300)} className="h-full">
               <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-background shadow-sm">
-                {it.image_url && (
-                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-secondary">
-                    <img
-                      src={it.image_url}
-                      alt={it.title}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-background" />
+                <CardCover
+                  src={it.image_url}
+                  alt={it.title}
+                  toClass="to-background"
+                  overlayOpacity={it.image_url ? overlay : 0}
+                  badge={
+                    it.benefit ? (
+                      <span className="text-4xl font-bold leading-none text-primary drop-shadow-sm md:text-5xl">
+                        {it.benefit}
+                      </span>
+                    ) : (
+                      <span className="text-xs font-medium uppercase tracking-wider text-primary">
+                        {it.kind === "discount" ? "Скидка" : "Акция"}
+                      </span>
+                    )
+                  }
+                />
+                <div className="relative z-10 -mt-6 flex flex-1 flex-col p-6">
+                  <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    {it.kind === "discount" ? "Скидка" : "Акция"}
                   </div>
-                )}
-                <div className={`relative z-10 flex flex-1 flex-col p-6 ${it.image_url ? "-mt-6" : ""}`}>
-                  <div className="flex items-center gap-2 text-primary">
-                    {it.kind === "discount" ? <Gift className="h-5 w-5" /> : <Sparkles className="h-5 w-5" />}
-                    <span className="text-xs font-medium uppercase tracking-wider">
-                      {it.kind === "discount" ? "Скидка" : "Акция"}
-                    </span>
-                  </div>
-                  <h3 className="mt-3 text-lg font-semibold">{it.title}</h3>
-                  {it.benefit && <div className="mt-2 text-3xl font-bold text-primary">{it.benefit}</div>}
+                  <h3 className="mt-2 text-lg font-semibold">{it.title}</h3>
                   {it.description && <p className="mt-2 text-sm text-muted-foreground">{it.description}</p>}
                   {it.conditions && <p className="mt-auto pt-3 text-xs text-muted-foreground">{it.conditions}</p>}
                 </div>

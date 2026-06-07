@@ -48,17 +48,30 @@ function PromotionsPage() {
         ) : items.length === 0 ? (
           <p className="mt-6 text-muted-foreground">Активных акций пока нет. Загляните позже.</p>
         ) : (
-          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid auto-rows-fr gap-4 md:grid-cols-2 lg:grid-cols-3">
             {items.map((it) => (
-              <div key={it.id} className="rounded-2xl border bg-card p-6 shadow-sm">
-                <div className="flex items-center gap-2 text-primary">
-                  <Sparkles className="h-5 w-5" />
-                  <span className="text-xs font-medium uppercase tracking-wider">Акция</span>
+              <div key={it.id} className="group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-card shadow-sm">
+                {it.image_url && (
+                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-secondary">
+                    <img
+                      src={it.image_url}
+                      alt={it.title}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-card" />
+                  </div>
+                )}
+                <div className={`relative z-10 flex flex-1 flex-col p-6 ${it.image_url ? "-mt-6" : ""}`}>
+                  <div className="flex items-center gap-2 text-primary">
+                    <Sparkles className="h-5 w-5" />
+                    <span className="text-xs font-medium uppercase tracking-wider">Акция</span>
+                  </div>
+                  <h3 className="mt-3 text-lg font-semibold">{it.title}</h3>
+                  {it.benefit && <div className="mt-2 text-3xl font-bold text-primary">{it.benefit}</div>}
+                  {it.description && <p className="mt-2 text-sm text-muted-foreground">{it.description}</p>}
+                  {it.conditions && <p className="mt-auto pt-3 text-xs text-muted-foreground">{it.conditions}</p>}
                 </div>
-                <h3 className="mt-3 text-lg font-semibold">{it.title}</h3>
-                {it.benefit && <div className="mt-2 text-3xl font-bold text-primary">{it.benefit}</div>}
-                {it.description && <p className="mt-2 text-sm text-muted-foreground">{it.description}</p>}
-                {it.conditions && <p className="mt-3 text-xs text-muted-foreground">{it.conditions}</p>}
               </div>
             ))}
           </div>

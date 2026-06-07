@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Reveal } from "./Reveal";
+import { CardCover } from "./CardCover";
 
 export function ServicesGrid() {
   const { data: items = [], isLoading } = useQuery({
@@ -38,14 +39,8 @@ export function ServicesGrid() {
                   params={{ slug: s.slug }}
                   className="group flex h-full flex-col overflow-hidden rounded-2xl border bg-card transition-all hover:-translate-y-1 hover:border-primary hover:shadow-lg"
                 >
-                  {s.cover_url ? (
-                    <div className="aspect-[16/10] w-full overflow-hidden bg-secondary">
-                      <img src={s.cover_url} alt={s.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                    </div>
-                  ) : (
-                    <div className="aspect-[16/10] w-full bg-secondary" />
-                  )}
-                  <div className="flex flex-1 flex-col p-5">
+                  <CardCover src={s.cover_url} alt={s.title} toClass="to-card" />
+                  <div className="relative z-10 -mt-6 flex flex-1 flex-col p-5">
                     <h3 className="font-semibold">{s.title}</h3>
                     {s.description && <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{s.description}</p>}
                   </div>

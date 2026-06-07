@@ -7,6 +7,7 @@ const fields = [
   { name: "benefit", label: "Выгода", type: "text" as const, placeholder: "напр. -20%" },
   { name: "conditions", label: "Условия", type: "textarea" as const },
   { name: "expires_at", label: "Действует до", type: "datetime" as const },
+  { name: "image_url", label: "Фоновое изображение", type: "image" as const },
   { name: "sort_order", label: "Порядок", type: "number" as const },
   { name: "is_featured", label: "Избранное (показывать на главной)", type: "boolean" as const },
   { name: "is_active", label: "Активно", type: "boolean" as const },

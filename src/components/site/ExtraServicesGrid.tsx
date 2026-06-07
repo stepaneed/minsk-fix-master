@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Reveal } from "./Reveal";
+import { CardCover } from "./CardCover";
 import { Calculator, PackageOpen, Wrench } from "lucide-react";
 
 const KIND_ICON: Record<string, any> = {
@@ -47,16 +48,13 @@ export function ExtraServicesGrid() {
                     params={{ kind: s.kind }}
                     className="group flex h-full flex-col overflow-hidden rounded-2xl border bg-card transition-all hover:-translate-y-1 hover:border-primary hover:shadow-lg"
                   >
-                    {s.cover_url ? (
-                      <div className="aspect-[16/10] w-full overflow-hidden bg-secondary">
-                        <img src={s.cover_url} alt={s.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                      </div>
-                    ) : (
-                      <div className="aspect-[16/10] flex w-full items-center justify-center bg-secondary">
-                        <Icon className="h-16 w-16 text-muted-foreground/40" />
-                      </div>
-                    )}
-                    <div className="flex flex-1 flex-col p-5">
+                    <CardCover
+                      src={s.cover_url}
+                      alt={s.title}
+                      toClass="to-card"
+                      fallback={<Icon className="h-16 w-16 text-muted-foreground/40" />}
+                    />
+                    <div className="relative z-10 -mt-6 flex flex-1 flex-col p-5">
                       <div className="flex items-center gap-2">
                         <Icon className="h-5 w-5 text-primary" />
                         <h3 className="font-semibold">{s.title}</h3>

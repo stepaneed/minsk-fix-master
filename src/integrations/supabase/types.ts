@@ -94,6 +94,7 @@ export type Database = {
           description: string | null
           expires_at: string | null
           id: string
+          image_url: string | null
           is_active: boolean
           is_featured: boolean
           sort_order: number
@@ -106,6 +107,7 @@ export type Database = {
           description?: string | null
           expires_at?: string | null
           id?: string
+          image_url?: string | null
           is_active?: boolean
           is_featured?: boolean
           sort_order?: number
@@ -118,6 +120,7 @@ export type Database = {
           description?: string | null
           expires_at?: string | null
           id?: string
+          image_url?: string | null
           is_active?: boolean
           is_featured?: boolean
           sort_order?: number
@@ -407,6 +410,7 @@ export type Database = {
           description: string | null
           expires_at: string | null
           id: string
+          image_url: string | null
           is_active: boolean
           is_featured: boolean
           sort_order: number
@@ -419,6 +423,7 @@ export type Database = {
           description?: string | null
           expires_at?: string | null
           id?: string
+          image_url?: string | null
           is_active?: boolean
           is_featured?: boolean
           sort_order?: number
@@ -431,6 +436,7 @@ export type Database = {
           description?: string | null
           expires_at?: string | null
           id?: string
+          image_url?: string | null
           is_active?: boolean
           is_featured?: boolean
           sort_order?: number

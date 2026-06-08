@@ -73,14 +73,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Master Fix" },
+      { name: "description", content: "Ремонт бытовой техники в Минске — выезд мастера на дом" },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Master Fix" },
+      { property: "og:description", content: "Ремонт бытовой техники в Минске — выезд мастера на дом" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Master Fix" },
+      { name: "twitter:description", content: "Ремонт бытовой техники в Минске — выезд мастера на дом" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/b1054f86-85ce-4295-a248-e88bfe947ac4" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/b1054f86-85ce-4295-a248-e88bfe947ac4" },
     ],
     links: [
       {

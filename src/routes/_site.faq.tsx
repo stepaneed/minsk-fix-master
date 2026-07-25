@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { SecondCTA } from "@/components/site/SecondCTA";
 import { Skeleton } from "@/components/ui/skeleton";
+import { safeJsonLd } from "@/lib/utils";
 
 export const Route = createFileRoute("/_site/faq")({
   head: () => ({
@@ -72,7 +73,7 @@ function FaqPage() {
           ))}
         </div>
         {items.length > 0 && (
-          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
         )}
       </section>
       <SecondCTA title="Остались вопросы?" subtitle="Перезвоним и подскажем — бесплатно" />

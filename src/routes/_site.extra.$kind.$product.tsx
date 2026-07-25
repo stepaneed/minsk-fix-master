@@ -20,7 +20,7 @@ export const Route = createFileRoute("/_site/extra/$kind/$product")({
     links: [{ rel: "canonical", href: `/extra/${params.kind}/${params.product}` }],
   }),
   component: ProductPage,
-  errorComponent: ({ error }) => <div className="mx-auto max-w-6xl p-8">Ошибка: {error.message}</div>,
+  errorComponent: () => <div className="mx-auto max-w-6xl p-8">Не удалось загрузить страницу. Попробуйте позже.</div>,
   notFoundComponent: () => <div className="mx-auto max-w-6xl p-8">Товар не найден.</div>,
 });
 

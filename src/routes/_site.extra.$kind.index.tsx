@@ -34,7 +34,7 @@ export const Route = createFileRoute("/_site/extra/$kind/")({
     };
   },
   component: ExtraServicePage,
-  errorComponent: ({ error }) => <div className="mx-auto max-w-6xl p-8">Ошибка: {error.message}</div>,
+  errorComponent: () => <div className="mx-auto max-w-6xl p-8">Не удалось загрузить страницу. Попробуйте позже.</div>,
   notFoundComponent: () => <div className="mx-auto max-w-6xl p-8">Услуга не найдена.</div>,
 });
 

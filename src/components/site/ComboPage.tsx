@@ -1,3 +1,4 @@
+import { safeJsonLd } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import { OrderForm } from "@/components/site/OrderForm";
 import { WorkAlgorithm } from "@/components/site/WorkAlgorithm";
@@ -98,7 +99,7 @@ export function comboHead(service: ComboData["service"], brand: ComboData["brand
     links: [{ rel: "canonical", href: path }],
     scripts: [{
       type: "application/ld+json",
-      children: JSON.stringify({
+      children: safeJsonLd({
         "@context": "https://schema.org",
         "@type": "Service",
         name: comboTitle(service, brand),

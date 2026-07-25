@@ -88,7 +88,8 @@ Deno.serve(async (req) => {
     .single();
 
   if (insertErr) {
-    return jsonResponse(500, { error: insertErr.message });
+    console.error("Order insert failed", insertErr);
+    return jsonResponse(500, { error: "internal_error" });
   }
 
   // Log rate-limit hit

@@ -9,42 +9,41 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as SiteRouteImport } from './routes/_site'
-import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SiteIndexRouteImport } from './routes/_site.index'
-import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
-import { Route as AdminServiceTypesRouteImport } from './routes/admin.service-types'
-import { Route as AdminPromotionsRouteImport } from './routes/admin.promotions'
-import { Route as AdminProductsRouteImport } from './routes/admin.products'
-import { Route as AdminPricesRouteImport } from './routes/admin.prices'
-import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
-import { Route as AdminLoginRouteImport } from './routes/admin.login'
-import { Route as AdminFaqRouteImport } from './routes/admin.faq'
-import { Route as AdminExtraServicesRouteImport } from './routes/admin.extra-services'
-import { Route as AdminDiscountsRouteImport } from './routes/admin.discounts'
-import { Route as AdminBrandsRouteImport } from './routes/admin.brands'
-import { Route as AdminArticlesRouteImport } from './routes/admin.articles'
-import { Route as SiteServicesRouteImport } from './routes/_site.services'
-import { Route as SitePromotionsRouteImport } from './routes/_site.promotions'
-import { Route as SitePricesRouteImport } from './routes/_site.prices'
-import { Route as SiteFaqRouteImport } from './routes/_site.faq'
-import { Route as SiteDiscountsRouteImport } from './routes/_site.discounts'
 import { Route as SiteContactsRouteImport } from './routes/_site.contacts'
-import { Route as SiteExtraKindRouteImport } from './routes/_site.extra.$kind'
-import { Route as SiteBrandSlugRouteImport } from './routes/_site.brand.$slug'
+import { Route as SiteDiscountsRouteImport } from './routes/_site.discounts'
+import { Route as SiteFaqRouteImport } from './routes/_site.faq'
+import { Route as SitePricesRouteImport } from './routes/_site.prices'
+import { Route as SitePromotionsRouteImport } from './routes/_site.promotions'
+import { Route as SiteServicesRouteImport } from './routes/_site.services'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminArticlesRouteImport } from './routes/admin.articles'
+import { Route as AdminBrandsRouteImport } from './routes/admin.brands'
+import { Route as AdminDiscountsRouteImport } from './routes/admin.discounts'
+import { Route as AdminExtraServicesRouteImport } from './routes/admin.extra-services'
+import { Route as AdminFaqRouteImport } from './routes/admin.faq'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
+import { Route as AdminPricesRouteImport } from './routes/admin.prices'
+import { Route as AdminProductsRouteImport } from './routes/admin.products'
+import { Route as AdminPromotionsRouteImport } from './routes/admin.promotions'
+import { Route as AdminServiceTypesRouteImport } from './routes/admin.service-types'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as SiteApplianceSlugRouteImport } from './routes/_site.appliance.$slug'
-import { Route as SiteExtraKindIndexRouteImport } from './routes/_site.extra.$kind.index'
-import { Route as SiteBrandSlugIndexRouteImport } from './routes/_site.brand.$slug.index'
+import { Route as SiteBrandSlugRouteImport } from './routes/_site.brand.$slug'
+import { Route as SiteExtraKindRouteImport } from './routes/_site.extra.$kind'
 import { Route as SiteApplianceSlugIndexRouteImport } from './routes/_site.appliance.$slug.index'
-import { Route as SiteExtraKindProductRouteImport } from './routes/_site.extra.$kind.$product'
-import { Route as SiteBrandSlugApplianceRouteImport } from './routes/_site.brand.$slug.$appliance'
 import { Route as SiteApplianceSlugBrandRouteImport } from './routes/_site.appliance.$slug.$brand'
+import { Route as SiteBrandSlugIndexRouteImport } from './routes/_site.brand.$slug.index'
+import { Route as SiteBrandSlugApplianceRouteImport } from './routes/_site.brand.$slug.$appliance'
+import { Route as SiteExtraKindIndexRouteImport } from './routes/_site.extra.$kind.index'
+import { Route as SiteExtraKindProductRouteImport } from './routes/_site.extra.$kind.$product'
 
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
+const SiteRoute = SiteRouteImport.update({
+  id: '/_site',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -52,103 +51,14 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SiteRoute = SiteRouteImport.update({
-  id: '/_site',
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
-} as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AdminRoute,
 } as any)
 const SiteIndexRoute = SiteIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => SiteRoute,
-} as any)
-const AdminSettingsRoute = AdminSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminServiceTypesRoute = AdminServiceTypesRouteImport.update({
-  id: '/service-types',
-  path: '/service-types',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminPromotionsRoute = AdminPromotionsRouteImport.update({
-  id: '/promotions',
-  path: '/promotions',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminProductsRoute = AdminProductsRouteImport.update({
-  id: '/products',
-  path: '/products',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminPricesRoute = AdminPricesRouteImport.update({
-  id: '/prices',
-  path: '/prices',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminOrdersRoute = AdminOrdersRouteImport.update({
-  id: '/orders',
-  path: '/orders',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminLoginRoute = AdminLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminFaqRoute = AdminFaqRouteImport.update({
-  id: '/faq',
-  path: '/faq',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminExtraServicesRoute = AdminExtraServicesRouteImport.update({
-  id: '/extra-services',
-  path: '/extra-services',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminDiscountsRoute = AdminDiscountsRouteImport.update({
-  id: '/discounts',
-  path: '/discounts',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminBrandsRoute = AdminBrandsRouteImport.update({
-  id: '/brands',
-  path: '/brands',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminArticlesRoute = AdminArticlesRouteImport.update({
-  id: '/articles',
-  path: '/articles',
-  getParentRoute: () => AdminRoute,
-} as any)
-const SiteServicesRoute = SiteServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
-  getParentRoute: () => SiteRoute,
-} as any)
-const SitePromotionsRoute = SitePromotionsRouteImport.update({
-  id: '/promotions',
-  path: '/promotions',
-  getParentRoute: () => SiteRoute,
-} as any)
-const SitePricesRoute = SitePricesRouteImport.update({
-  id: '/prices',
-  path: '/prices',
-  getParentRoute: () => SiteRoute,
-} as any)
-const SiteFaqRoute = SiteFaqRouteImport.update({
-  id: '/faq',
-  path: '/faq',
-  getParentRoute: () => SiteRoute,
-} as any)
-const SiteDiscountsRoute = SiteDiscountsRouteImport.update({
-  id: '/discounts',
-  path: '/discounts',
   getParentRoute: () => SiteRoute,
 } as any)
 const SiteContactsRoute = SiteContactsRouteImport.update({
@@ -156,9 +66,99 @@ const SiteContactsRoute = SiteContactsRouteImport.update({
   path: '/contacts',
   getParentRoute: () => SiteRoute,
 } as any)
-const SiteExtraKindRoute = SiteExtraKindRouteImport.update({
-  id: '/extra/$kind',
-  path: '/extra/$kind',
+const SiteDiscountsRoute = SiteDiscountsRouteImport.update({
+  id: '/discounts',
+  path: '/discounts',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteFaqRoute = SiteFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SitePricesRoute = SitePricesRouteImport.update({
+  id: '/prices',
+  path: '/prices',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SitePromotionsRoute = SitePromotionsRouteImport.update({
+  id: '/promotions',
+  path: '/promotions',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteServicesRoute = SiteServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => SiteRoute,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminArticlesRoute = AdminArticlesRouteImport.update({
+  id: '/articles',
+  path: '/articles',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBrandsRoute = AdminBrandsRouteImport.update({
+  id: '/brands',
+  path: '/brands',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminDiscountsRoute = AdminDiscountsRouteImport.update({
+  id: '/discounts',
+  path: '/discounts',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminExtraServicesRoute = AdminExtraServicesRouteImport.update({
+  id: '/extra-services',
+  path: '/extra-services',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminFaqRoute = AdminFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminOrdersRoute = AdminOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPricesRoute = AdminPricesRouteImport.update({
+  id: '/prices',
+  path: '/prices',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminProductsRoute = AdminProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPromotionsRoute = AdminPromotionsRouteImport.update({
+  id: '/promotions',
+  path: '/promotions',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminServiceTypesRoute = AdminServiceTypesRouteImport.update({
+  id: '/service-types',
+  path: '/service-types',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const SiteApplianceSlugRoute = SiteApplianceSlugRouteImport.update({
+  id: '/appliance/$slug',
+  path: '/appliance/$slug',
   getParentRoute: () => SiteRoute,
 } as any)
 const SiteBrandSlugRoute = SiteBrandSlugRouteImport.update({
@@ -166,40 +166,40 @@ const SiteBrandSlugRoute = SiteBrandSlugRouteImport.update({
   path: '/brand/$slug',
   getParentRoute: () => SiteRoute,
 } as any)
-const SiteApplianceSlugRoute = SiteApplianceSlugRouteImport.update({
-  id: '/appliance/$slug',
-  path: '/appliance/$slug',
+const SiteExtraKindRoute = SiteExtraKindRouteImport.update({
+  id: '/extra/$kind',
+  path: '/extra/$kind',
   getParentRoute: () => SiteRoute,
-} as any)
-const SiteExtraKindIndexRoute = SiteExtraKindIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => SiteExtraKindRoute,
-} as any)
-const SiteBrandSlugIndexRoute = SiteBrandSlugIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => SiteBrandSlugRoute,
 } as any)
 const SiteApplianceSlugIndexRoute = SiteApplianceSlugIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => SiteApplianceSlugRoute,
 } as any)
-const SiteExtraKindProductRoute = SiteExtraKindProductRouteImport.update({
-  id: '/$product',
-  path: '/$product',
-  getParentRoute: () => SiteExtraKindRoute,
+const SiteApplianceSlugBrandRoute = SiteApplianceSlugBrandRouteImport.update({
+  id: '/$brand',
+  path: '/$brand',
+  getParentRoute: () => SiteApplianceSlugRoute,
+} as any)
+const SiteBrandSlugIndexRoute = SiteBrandSlugIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SiteBrandSlugRoute,
 } as any)
 const SiteBrandSlugApplianceRoute = SiteBrandSlugApplianceRouteImport.update({
   id: '/$appliance',
   path: '/$appliance',
   getParentRoute: () => SiteBrandSlugRoute,
 } as any)
-const SiteApplianceSlugBrandRoute = SiteApplianceSlugBrandRouteImport.update({
-  id: '/$brand',
-  path: '/$brand',
-  getParentRoute: () => SiteApplianceSlugRoute,
+const SiteExtraKindIndexRoute = SiteExtraKindIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SiteExtraKindRoute,
+} as any)
+const SiteExtraKindProductRoute = SiteExtraKindProductRouteImport.update({
+  id: '/$product',
+  path: '/$product',
+  getParentRoute: () => SiteExtraKindRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -406,11 +406,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
+    '/_site': {
+      id: '/_site'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof SiteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -420,144 +420,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_site': {
-      id: '/_site'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof SiteRouteImport
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/admin/': {
-      id: '/admin/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof AdminRoute
     }
     '/_site/': {
       id: '/_site/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof SiteIndexRouteImport
-      parentRoute: typeof SiteRoute
-    }
-    '/admin/settings': {
-      id: '/admin/settings'
-      path: '/settings'
-      fullPath: '/admin/settings'
-      preLoaderRoute: typeof AdminSettingsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/service-types': {
-      id: '/admin/service-types'
-      path: '/service-types'
-      fullPath: '/admin/service-types'
-      preLoaderRoute: typeof AdminServiceTypesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/promotions': {
-      id: '/admin/promotions'
-      path: '/promotions'
-      fullPath: '/admin/promotions'
-      preLoaderRoute: typeof AdminPromotionsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/products': {
-      id: '/admin/products'
-      path: '/products'
-      fullPath: '/admin/products'
-      preLoaderRoute: typeof AdminProductsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/prices': {
-      id: '/admin/prices'
-      path: '/prices'
-      fullPath: '/admin/prices'
-      preLoaderRoute: typeof AdminPricesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/orders': {
-      id: '/admin/orders'
-      path: '/orders'
-      fullPath: '/admin/orders'
-      preLoaderRoute: typeof AdminOrdersRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/login': {
-      id: '/admin/login'
-      path: '/login'
-      fullPath: '/admin/login'
-      preLoaderRoute: typeof AdminLoginRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/faq': {
-      id: '/admin/faq'
-      path: '/faq'
-      fullPath: '/admin/faq'
-      preLoaderRoute: typeof AdminFaqRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/extra-services': {
-      id: '/admin/extra-services'
-      path: '/extra-services'
-      fullPath: '/admin/extra-services'
-      preLoaderRoute: typeof AdminExtraServicesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/discounts': {
-      id: '/admin/discounts'
-      path: '/discounts'
-      fullPath: '/admin/discounts'
-      preLoaderRoute: typeof AdminDiscountsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/brands': {
-      id: '/admin/brands'
-      path: '/brands'
-      fullPath: '/admin/brands'
-      preLoaderRoute: typeof AdminBrandsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/articles': {
-      id: '/admin/articles'
-      path: '/articles'
-      fullPath: '/admin/articles'
-      preLoaderRoute: typeof AdminArticlesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/_site/services': {
-      id: '/_site/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof SiteServicesRouteImport
-      parentRoute: typeof SiteRoute
-    }
-    '/_site/promotions': {
-      id: '/_site/promotions'
-      path: '/promotions'
-      fullPath: '/promotions'
-      preLoaderRoute: typeof SitePromotionsRouteImport
-      parentRoute: typeof SiteRoute
-    }
-    '/_site/prices': {
-      id: '/_site/prices'
-      path: '/prices'
-      fullPath: '/prices'
-      preLoaderRoute: typeof SitePricesRouteImport
-      parentRoute: typeof SiteRoute
-    }
-    '/_site/faq': {
-      id: '/_site/faq'
-      path: '/faq'
-      fullPath: '/faq'
-      preLoaderRoute: typeof SiteFaqRouteImport
-      parentRoute: typeof SiteRoute
-    }
-    '/_site/discounts': {
-      id: '/_site/discounts'
-      path: '/discounts'
-      fullPath: '/discounts'
-      preLoaderRoute: typeof SiteDiscountsRouteImport
       parentRoute: typeof SiteRoute
     }
     '/_site/contacts': {
@@ -567,11 +441,137 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteContactsRouteImport
       parentRoute: typeof SiteRoute
     }
-    '/_site/extra/$kind': {
-      id: '/_site/extra/$kind'
-      path: '/extra/$kind'
-      fullPath: '/extra/$kind'
-      preLoaderRoute: typeof SiteExtraKindRouteImport
+    '/_site/discounts': {
+      id: '/_site/discounts'
+      path: '/discounts'
+      fullPath: '/discounts'
+      preLoaderRoute: typeof SiteDiscountsRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/faq': {
+      id: '/_site/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof SiteFaqRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/prices': {
+      id: '/_site/prices'
+      path: '/prices'
+      fullPath: '/prices'
+      preLoaderRoute: typeof SitePricesRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/promotions': {
+      id: '/_site/promotions'
+      path: '/promotions'
+      fullPath: '/promotions'
+      preLoaderRoute: typeof SitePromotionsRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/services': {
+      id: '/_site/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof SiteServicesRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/articles': {
+      id: '/admin/articles'
+      path: '/articles'
+      fullPath: '/admin/articles'
+      preLoaderRoute: typeof AdminArticlesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/brands': {
+      id: '/admin/brands'
+      path: '/brands'
+      fullPath: '/admin/brands'
+      preLoaderRoute: typeof AdminBrandsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/discounts': {
+      id: '/admin/discounts'
+      path: '/discounts'
+      fullPath: '/admin/discounts'
+      preLoaderRoute: typeof AdminDiscountsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/extra-services': {
+      id: '/admin/extra-services'
+      path: '/extra-services'
+      fullPath: '/admin/extra-services'
+      preLoaderRoute: typeof AdminExtraServicesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/faq': {
+      id: '/admin/faq'
+      path: '/faq'
+      fullPath: '/admin/faq'
+      preLoaderRoute: typeof AdminFaqRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/orders': {
+      id: '/admin/orders'
+      path: '/orders'
+      fullPath: '/admin/orders'
+      preLoaderRoute: typeof AdminOrdersRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/prices': {
+      id: '/admin/prices'
+      path: '/prices'
+      fullPath: '/admin/prices'
+      preLoaderRoute: typeof AdminPricesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/products': {
+      id: '/admin/products'
+      path: '/products'
+      fullPath: '/admin/products'
+      preLoaderRoute: typeof AdminProductsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/promotions': {
+      id: '/admin/promotions'
+      path: '/promotions'
+      fullPath: '/admin/promotions'
+      preLoaderRoute: typeof AdminPromotionsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/service-types': {
+      id: '/admin/service-types'
+      path: '/service-types'
+      fullPath: '/admin/service-types'
+      preLoaderRoute: typeof AdminServiceTypesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_site/appliance/$slug': {
+      id: '/_site/appliance/$slug'
+      path: '/appliance/$slug'
+      fullPath: '/appliance/$slug'
+      preLoaderRoute: typeof SiteApplianceSlugRouteImport
       parentRoute: typeof SiteRoute
     }
     '/_site/brand/$slug': {
@@ -581,26 +581,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteBrandSlugRouteImport
       parentRoute: typeof SiteRoute
     }
-    '/_site/appliance/$slug': {
-      id: '/_site/appliance/$slug'
-      path: '/appliance/$slug'
-      fullPath: '/appliance/$slug'
-      preLoaderRoute: typeof SiteApplianceSlugRouteImport
+    '/_site/extra/$kind': {
+      id: '/_site/extra/$kind'
+      path: '/extra/$kind'
+      fullPath: '/extra/$kind'
+      preLoaderRoute: typeof SiteExtraKindRouteImport
       parentRoute: typeof SiteRoute
-    }
-    '/_site/extra/$kind/': {
-      id: '/_site/extra/$kind/'
-      path: '/'
-      fullPath: '/extra/$kind/'
-      preLoaderRoute: typeof SiteExtraKindIndexRouteImport
-      parentRoute: typeof SiteExtraKindRoute
-    }
-    '/_site/brand/$slug/': {
-      id: '/_site/brand/$slug/'
-      path: '/'
-      fullPath: '/brand/$slug/'
-      preLoaderRoute: typeof SiteBrandSlugIndexRouteImport
-      parentRoute: typeof SiteBrandSlugRoute
     }
     '/_site/appliance/$slug/': {
       id: '/_site/appliance/$slug/'
@@ -609,12 +595,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteApplianceSlugIndexRouteImport
       parentRoute: typeof SiteApplianceSlugRoute
     }
-    '/_site/extra/$kind/$product': {
-      id: '/_site/extra/$kind/$product'
-      path: '/$product'
-      fullPath: '/extra/$kind/$product'
-      preLoaderRoute: typeof SiteExtraKindProductRouteImport
-      parentRoute: typeof SiteExtraKindRoute
+    '/_site/appliance/$slug/$brand': {
+      id: '/_site/appliance/$slug/$brand'
+      path: '/$brand'
+      fullPath: '/appliance/$slug/$brand'
+      preLoaderRoute: typeof SiteApplianceSlugBrandRouteImport
+      parentRoute: typeof SiteApplianceSlugRoute
+    }
+    '/_site/brand/$slug/': {
+      id: '/_site/brand/$slug/'
+      path: '/'
+      fullPath: '/brand/$slug/'
+      preLoaderRoute: typeof SiteBrandSlugIndexRouteImport
+      parentRoute: typeof SiteBrandSlugRoute
     }
     '/_site/brand/$slug/$appliance': {
       id: '/_site/brand/$slug/$appliance'
@@ -623,12 +616,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteBrandSlugApplianceRouteImport
       parentRoute: typeof SiteBrandSlugRoute
     }
-    '/_site/appliance/$slug/$brand': {
-      id: '/_site/appliance/$slug/$brand'
-      path: '/$brand'
-      fullPath: '/appliance/$slug/$brand'
-      preLoaderRoute: typeof SiteApplianceSlugBrandRouteImport
-      parentRoute: typeof SiteApplianceSlugRoute
+    '/_site/extra/$kind/': {
+      id: '/_site/extra/$kind/'
+      path: '/'
+      fullPath: '/extra/$kind/'
+      preLoaderRoute: typeof SiteExtraKindIndexRouteImport
+      parentRoute: typeof SiteExtraKindRoute
+    }
+    '/_site/extra/$kind/$product': {
+      id: '/_site/extra/$kind/$product'
+      path: '/$product'
+      fullPath: '/extra/$kind/$product'
+      preLoaderRoute: typeof SiteExtraKindProductRouteImport
+      parentRoute: typeof SiteExtraKindRoute
     }
   }
 }

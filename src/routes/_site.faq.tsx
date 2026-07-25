@@ -73,7 +73,7 @@ function FaqPage() {
           ))}
         </div>
         {items.length > 0 && (
-          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
         )}
       </section>
       <SecondCTA title="Остались вопросы?" subtitle="Перезвоним и подскажем — бесплатно" />

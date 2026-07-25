@@ -1,3 +1,4 @@
+import { safeJsonLd } from "@/lib/utils";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { OrderForm } from "@/components/site/OrderForm";
 import { ServicesGrid } from "@/components/site/ServicesGrid";
@@ -24,7 +25,7 @@ export const Route = createFileRoute("/_site/")({
     links: [{ rel: "canonical", href: "/" }],
     scripts: [{
       type: "application/ld+json",
-      children: JSON.stringify({
+      children: safeJsonLd({
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
         name: "МастерФикс",

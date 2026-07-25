@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { safeJsonLd } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { OrderForm } from "@/components/site/OrderForm";
 import { ContactsBlock } from "@/components/site/ContactsBlock";
@@ -31,7 +32,7 @@ export const Route = createFileRoute("/_site/brand/$slug/")({
       links: [{ rel: "canonical", href: `/brand/${params.slug}` }],
       scripts: [{
         type: "application/ld+json",
-        children: JSON.stringify({
+        children: safeJsonLd({
           "@context": "https://schema.org",
           "@type": "Service",
           name: `Ремонт техники ${loaderData?.brand.title}`,

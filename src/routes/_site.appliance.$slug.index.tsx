@@ -1,4 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { safeJsonLd } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { OrderForm } from "@/components/site/OrderForm";
 import { WorkAlgorithm } from "@/components/site/WorkAlgorithm";
@@ -33,7 +34,7 @@ export const Route = createFileRoute("/_site/appliance/$slug/")({
       links: [{ rel: "canonical", href: `/appliance/${params.slug}` }],
       scripts: [{
         type: "application/ld+json",
-        children: JSON.stringify({
+        children: safeJsonLd({
           "@context": "https://schema.org",
           "@type": "Service",
           name: loaderData?.service.title,

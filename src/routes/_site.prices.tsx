@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { SecondCTA } from "@/components/site/SecondCTA";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PriceCalculator } from "@/components/site/PriceCalculator";
 
 export const Route = createFileRoute("/_site/prices")({
   head: () => ({
@@ -42,6 +43,12 @@ function PricesPage() {
         </nav>
         <h1 className="text-4xl font-semibold tracking-tight">Прейскурант</h1>
         <p className="mt-3 text-muted-foreground">Окончательная цена зависит от сложности — её мастер озвучит после диагностики.</p>
+
+        <div className="mt-8">
+          <PriceCalculator />
+        </div>
+
+        <h2 className="mt-14 text-2xl font-semibold tracking-tight">Прейскурант по видам техники</h2>
 
         {isLoading && (
           <div className="mt-8 space-y-3">

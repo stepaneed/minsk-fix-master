@@ -166,6 +166,9 @@ export function CrudPage({ config }: { config: CrudConfig }) {
         <AdminTable
           rows={rows as any[]}
           columns={cols}
+          filters={config.filters}
+          pageSize={config.pageSize}
+
           actions={(row) => (
             <div className="flex justify-end gap-1">
               <Button

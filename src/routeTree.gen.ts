@@ -36,6 +36,7 @@ import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as SiteApplianceSlugRouteImport } from './routes/_site.appliance.$slug'
 import { Route as SiteBrandSlugRouteImport } from './routes/_site.brand.$slug'
 import { Route as SiteExtraKindRouteImport } from './routes/_site.extra.$kind'
+import { Route as SiteFaqErrorCodesRouteImport } from './routes/_site.faq.error-codes'
 import { Route as SiteApplianceSlugIndexRouteImport } from './routes/_site.appliance.$slug.index'
 import { Route as SiteApplianceSlugBrandRouteImport } from './routes/_site.appliance.$slug.$brand'
 import { Route as SiteBrandSlugIndexRouteImport } from './routes/_site.brand.$slug.index'
@@ -177,6 +178,11 @@ const SiteExtraKindRoute = SiteExtraKindRouteImport.update({
   path: '/extra/$kind',
   getParentRoute: () => SiteRoute,
 } as any)
+const SiteFaqErrorCodesRoute = SiteFaqErrorCodesRouteImport.update({
+  id: '/error-codes',
+  path: '/error-codes',
+  getParentRoute: () => SiteFaqRoute,
+} as any)
 const SiteApplianceSlugIndexRoute = SiteApplianceSlugIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -214,7 +220,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/contacts': typeof SiteContactsRoute
   '/discounts': typeof SiteDiscountsRoute
-  '/faq': typeof SiteFaqRoute
+  '/faq': typeof SiteFaqRouteWithChildren
   '/prices': typeof SitePricesRoute
   '/promotions': typeof SitePromotionsRoute
   '/services': typeof SiteServicesRoute
@@ -235,6 +241,7 @@ export interface FileRoutesByFullPath {
   '/appliance/$slug': typeof SiteApplianceSlugRouteWithChildren
   '/brand/$slug': typeof SiteBrandSlugRouteWithChildren
   '/extra/$kind': typeof SiteExtraKindRouteWithChildren
+  '/faq/error-codes': typeof SiteFaqErrorCodesRoute
   '/appliance/$slug/$brand': typeof SiteApplianceSlugBrandRoute
   '/brand/$slug/$appliance': typeof SiteBrandSlugApplianceRoute
   '/extra/$kind/$product': typeof SiteExtraKindProductRoute
@@ -246,7 +253,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/contacts': typeof SiteContactsRoute
   '/discounts': typeof SiteDiscountsRoute
-  '/faq': typeof SiteFaqRoute
+  '/faq': typeof SiteFaqRouteWithChildren
   '/prices': typeof SitePricesRoute
   '/promotions': typeof SitePromotionsRoute
   '/services': typeof SiteServicesRoute
@@ -265,6 +272,7 @@ export interface FileRoutesByTo {
   '/admin/settings': typeof AdminSettingsRoute
   '/': typeof SiteIndexRoute
   '/admin': typeof AdminIndexRoute
+  '/faq/error-codes': typeof SiteFaqErrorCodesRoute
   '/appliance/$slug/$brand': typeof SiteApplianceSlugBrandRoute
   '/brand/$slug/$appliance': typeof SiteBrandSlugApplianceRoute
   '/extra/$kind/$product': typeof SiteExtraKindProductRoute
@@ -279,7 +287,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_site/contacts': typeof SiteContactsRoute
   '/_site/discounts': typeof SiteDiscountsRoute
-  '/_site/faq': typeof SiteFaqRoute
+  '/_site/faq': typeof SiteFaqRouteWithChildren
   '/_site/prices': typeof SitePricesRoute
   '/_site/promotions': typeof SitePromotionsRoute
   '/_site/services': typeof SiteServicesRoute
@@ -301,6 +309,7 @@ export interface FileRoutesById {
   '/_site/appliance/$slug': typeof SiteApplianceSlugRouteWithChildren
   '/_site/brand/$slug': typeof SiteBrandSlugRouteWithChildren
   '/_site/extra/$kind': typeof SiteExtraKindRouteWithChildren
+  '/_site/faq/error-codes': typeof SiteFaqErrorCodesRoute
   '/_site/appliance/$slug/$brand': typeof SiteApplianceSlugBrandRoute
   '/_site/brand/$slug/$appliance': typeof SiteBrandSlugApplianceRoute
   '/_site/extra/$kind/$product': typeof SiteExtraKindProductRoute
@@ -337,6 +346,7 @@ export interface FileRouteTypes {
     | '/appliance/$slug'
     | '/brand/$slug'
     | '/extra/$kind'
+    | '/faq/error-codes'
     | '/appliance/$slug/$brand'
     | '/brand/$slug/$appliance'
     | '/extra/$kind/$product'
@@ -367,6 +377,7 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/'
     | '/admin'
+    | '/faq/error-codes'
     | '/appliance/$slug/$brand'
     | '/brand/$slug/$appliance'
     | '/extra/$kind/$product'
@@ -402,6 +413,7 @@ export interface FileRouteTypes {
     | '/_site/appliance/$slug'
     | '/_site/brand/$slug'
     | '/_site/extra/$kind'
+    | '/_site/faq/error-codes'
     | '/_site/appliance/$slug/$brand'
     | '/_site/brand/$slug/$appliance'
     | '/_site/extra/$kind/$product'
@@ -607,6 +619,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteExtraKindRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/faq/error-codes': {
+      id: '/_site/faq/error-codes'
+      path: '/error-codes'
+      fullPath: '/faq/error-codes'
+      preLoaderRoute: typeof SiteFaqErrorCodesRouteImport
+      parentRoute: typeof SiteFaqRoute
+    }
     '/_site/appliance/$slug/': {
       id: '/_site/appliance/$slug/'
       path: '/'
@@ -652,6 +671,17 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface SiteFaqRouteChildren {
+  SiteFaqErrorCodesRoute: typeof SiteFaqErrorCodesRoute
+}
+
+const SiteFaqRouteChildren: SiteFaqRouteChildren = {
+  SiteFaqErrorCodesRoute: SiteFaqErrorCodesRoute,
+}
+
+const SiteFaqRouteWithChildren =
+  SiteFaqRoute._addFileChildren(SiteFaqRouteChildren)
+
 interface SiteApplianceSlugRouteChildren {
   SiteApplianceSlugBrandRoute: typeof SiteApplianceSlugBrandRoute
   SiteApplianceSlugIndexRoute: typeof SiteApplianceSlugIndexRoute
@@ -696,7 +726,7 @@ const SiteExtraKindRouteWithChildren = SiteExtraKindRoute._addFileChildren(
 interface SiteRouteChildren {
   SiteContactsRoute: typeof SiteContactsRoute
   SiteDiscountsRoute: typeof SiteDiscountsRoute
-  SiteFaqRoute: typeof SiteFaqRoute
+  SiteFaqRoute: typeof SiteFaqRouteWithChildren
   SitePricesRoute: typeof SitePricesRoute
   SitePromotionsRoute: typeof SitePromotionsRoute
   SiteServicesRoute: typeof SiteServicesRoute
@@ -709,7 +739,7 @@ interface SiteRouteChildren {
 const SiteRouteChildren: SiteRouteChildren = {
   SiteContactsRoute: SiteContactsRoute,
   SiteDiscountsRoute: SiteDiscountsRoute,
-  SiteFaqRoute: SiteFaqRoute,
+  SiteFaqRoute: SiteFaqRouteWithChildren,
   SitePricesRoute: SitePricesRoute,
   SitePromotionsRoute: SitePromotionsRoute,
   SiteServicesRoute: SiteServicesRoute,

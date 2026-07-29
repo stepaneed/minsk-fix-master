@@ -6,7 +6,7 @@ import { SecondCTA } from "@/components/site/SecondCTA";
 import { Skeleton } from "@/components/ui/skeleton";
 import { safeJsonLd } from "@/lib/utils";
 
-export const Route = createFileRoute("/_site/faq")({
+export const Route = createFileRoute("/_site/faq/")({
   head: () => ({
     meta: [
       { title: "Частые вопросы о ремонте техники — МастерФикс" },

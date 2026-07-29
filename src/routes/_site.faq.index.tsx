@@ -6,7 +6,7 @@ import { SecondCTA } from "@/components/site/SecondCTA";
 import { Skeleton } from "@/components/ui/skeleton";
 import { safeJsonLd } from "@/lib/utils";
 
-export const Route = createFileRoute("/_site/faq")({
+export const Route = createFileRoute("/_site/faq/")({
   head: () => ({
     meta: [
       { title: "Частые вопросы о ремонте техники — МастерФикс" },
@@ -52,6 +52,12 @@ function FaqPage() {
           <a href="/" className="hover:text-foreground">Главная</a> · <span className="text-foreground">FAQ</span>
         </nav>
         <h1 className="text-4xl font-semibold tracking-tight">Частые вопросы</h1>
+        <a
+          href="/faq/error-codes"
+          className="mt-4 inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm transition-colors hover:bg-secondary"
+        >
+          Коды ошибок техники по брендам →
+        </a>
         <div className="mt-8 space-y-10">
           {isLoading && (
             <div className="space-y-3">

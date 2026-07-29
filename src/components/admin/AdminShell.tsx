@@ -17,6 +17,7 @@ import {
   Menu,
   PackageOpen,
   Boxes,
+  AlertTriangle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
@@ -32,6 +33,7 @@ const NAV = [
   { to: "/admin/discounts", label: "Скидки", icon: Percent },
   { to: "/admin/promotions", label: "Акции", icon: Sparkles },
   { to: "/admin/faq", label: "FAQ", icon: HelpCircle },
+  { to: "/admin/error-codes", label: "Коды ошибок", icon: AlertTriangle },
   { to: "/admin/articles", label: "Статьи", icon: Newspaper },
   { to: "/admin/settings", label: "Настройки", icon: Settings },
 ];

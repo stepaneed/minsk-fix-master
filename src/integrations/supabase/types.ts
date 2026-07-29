@@ -128,6 +128,63 @@ export type Database = {
         }
         Relationships: []
       }
+      error_codes: {
+        Row: {
+          brand_id: string | null
+          cause: string | null
+          code: string
+          created_at: string
+          id: string
+          is_active: boolean
+          meaning: string
+          service_type_id: string | null
+          solution: string | null
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          brand_id?: string | null
+          cause?: string | null
+          code: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          meaning: string
+          service_type_id?: string | null
+          solution?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          brand_id?: string | null
+          cause?: string | null
+          code?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          meaning?: string
+          service_type_id?: string | null
+          solution?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "error_codes_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "brands"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "error_codes_service_type_id_fkey"
+            columns: ["service_type_id"]
+            isOneToOne: false
+            referencedRelation: "service_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       extra_services: {
         Row: {
           cover_url: string | null

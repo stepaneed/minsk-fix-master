@@ -23,6 +23,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminArticlesRouteImport } from './routes/admin.articles'
 import { Route as AdminBrandsRouteImport } from './routes/admin.brands'
 import { Route as AdminDiscountsRouteImport } from './routes/admin.discounts'
+import { Route as AdminErrorCodesRouteImport } from './routes/admin.error-codes'
 import { Route as AdminExtraServicesRouteImport } from './routes/admin.extra-services'
 import { Route as AdminFaqRouteImport } from './routes/admin.faq'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
@@ -109,6 +110,11 @@ const AdminBrandsRoute = AdminBrandsRouteImport.update({
 const AdminDiscountsRoute = AdminDiscountsRouteImport.update({
   id: '/discounts',
   path: '/discounts',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminErrorCodesRoute = AdminErrorCodesRouteImport.update({
+  id: '/error-codes',
+  path: '/error-codes',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminExtraServicesRoute = AdminExtraServicesRouteImport.update({
@@ -215,6 +221,7 @@ export interface FileRoutesByFullPath {
   '/admin/articles': typeof AdminArticlesRoute
   '/admin/brands': typeof AdminBrandsRoute
   '/admin/discounts': typeof AdminDiscountsRoute
+  '/admin/error-codes': typeof AdminErrorCodesRoute
   '/admin/extra-services': typeof AdminExtraServicesRoute
   '/admin/faq': typeof AdminFaqRoute
   '/admin/login': typeof AdminLoginRoute
@@ -246,6 +253,7 @@ export interface FileRoutesByTo {
   '/admin/articles': typeof AdminArticlesRoute
   '/admin/brands': typeof AdminBrandsRoute
   '/admin/discounts': typeof AdminDiscountsRoute
+  '/admin/error-codes': typeof AdminErrorCodesRoute
   '/admin/extra-services': typeof AdminExtraServicesRoute
   '/admin/faq': typeof AdminFaqRoute
   '/admin/login': typeof AdminLoginRoute
@@ -278,6 +286,7 @@ export interface FileRoutesById {
   '/admin/articles': typeof AdminArticlesRoute
   '/admin/brands': typeof AdminBrandsRoute
   '/admin/discounts': typeof AdminDiscountsRoute
+  '/admin/error-codes': typeof AdminErrorCodesRoute
   '/admin/extra-services': typeof AdminExtraServicesRoute
   '/admin/faq': typeof AdminFaqRoute
   '/admin/login': typeof AdminLoginRoute
@@ -314,6 +323,7 @@ export interface FileRouteTypes {
     | '/admin/articles'
     | '/admin/brands'
     | '/admin/discounts'
+    | '/admin/error-codes'
     | '/admin/extra-services'
     | '/admin/faq'
     | '/admin/login'
@@ -345,6 +355,7 @@ export interface FileRouteTypes {
     | '/admin/articles'
     | '/admin/brands'
     | '/admin/discounts'
+    | '/admin/error-codes'
     | '/admin/extra-services'
     | '/admin/faq'
     | '/admin/login'
@@ -376,6 +387,7 @@ export interface FileRouteTypes {
     | '/admin/articles'
     | '/admin/brands'
     | '/admin/discounts'
+    | '/admin/error-codes'
     | '/admin/extra-services'
     | '/admin/faq'
     | '/admin/login'
@@ -502,6 +514,13 @@ declare module '@tanstack/react-router' {
       path: '/discounts'
       fullPath: '/admin/discounts'
       preLoaderRoute: typeof AdminDiscountsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/error-codes': {
+      id: '/admin/error-codes'
+      path: '/error-codes'
+      fullPath: '/admin/error-codes'
+      preLoaderRoute: typeof AdminErrorCodesRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/extra-services': {
@@ -706,6 +725,7 @@ interface AdminRouteChildren {
   AdminArticlesRoute: typeof AdminArticlesRoute
   AdminBrandsRoute: typeof AdminBrandsRoute
   AdminDiscountsRoute: typeof AdminDiscountsRoute
+  AdminErrorCodesRoute: typeof AdminErrorCodesRoute
   AdminExtraServicesRoute: typeof AdminExtraServicesRoute
   AdminFaqRoute: typeof AdminFaqRoute
   AdminLoginRoute: typeof AdminLoginRoute
@@ -722,6 +742,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminArticlesRoute: AdminArticlesRoute,
   AdminBrandsRoute: AdminBrandsRoute,
   AdminDiscountsRoute: AdminDiscountsRoute,
+  AdminErrorCodesRoute: AdminErrorCodesRoute,
   AdminExtraServicesRoute: AdminExtraServicesRoute,
   AdminFaqRoute: AdminFaqRoute,
   AdminLoginRoute: AdminLoginRoute,

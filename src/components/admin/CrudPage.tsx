@@ -19,7 +19,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { AdminTable, type Column } from "./AdminTable";
+import { AdminTable, type Column, type TableFilter } from "./AdminTable";
 import { AdminForm, type Field } from "./AdminForm";
 import { AdminToggle } from "./AdminToggle";
 import { SortHandle } from "./SortHandle";
@@ -34,6 +34,9 @@ export type CrudConfig = {
   orderBy?: { column: string; ascending?: boolean };
   showSortHandle?: boolean;
   showActiveToggle?: boolean;
+  /** Dropdown filters shown above the table. */
+  filters?: TableFilter<any>[];
+  pageSize?: number;
 };
 
 export function CrudPage({ config }: { config: CrudConfig }) {

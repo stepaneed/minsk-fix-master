@@ -260,6 +260,36 @@ export type Database = {
         }
         Relationships: []
       }
+      media: {
+        Row: {
+          content_type: string
+          created_at: string
+          data: string
+          filename: string
+          id: string
+          size: number
+          updated_at: string
+        }
+        Insert: {
+          content_type?: string
+          created_at?: string
+          data: string
+          filename: string
+          id?: string
+          size?: number
+          updated_at?: string
+        }
+        Update: {
+          content_type?: string
+          created_at?: string
+          data?: string
+          filename?: string
+          id?: string
+          size?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           address: string | null
@@ -333,29 +363,38 @@ export type Database = {
       prices: {
         Row: {
           created_at: string
+          description: string | null
           id: string
           is_active: boolean
+          kind: string
           price_from: number | null
           price_to: number | null
           service_type_id: string | null
+          sort_order: number
           title: string
         }
         Insert: {
           created_at?: string
+          description?: string | null
           id?: string
           is_active?: boolean
+          kind?: string
           price_from?: number | null
           price_to?: number | null
           service_type_id?: string | null
+          sort_order?: number
           title: string
         }
         Update: {
           created_at?: string
+          description?: string | null
           id?: string
           is_active?: boolean
+          kind?: string
           price_from?: number | null
           price_to?: number | null
           service_type_id?: string | null
+          sort_order?: number
           title?: string
         }
         Relationships: [

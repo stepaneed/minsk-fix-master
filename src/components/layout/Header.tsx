@@ -73,6 +73,7 @@ export function Header() {
       label: "FAQ",
       links: [
         { to: "/faq", label: "Частые вопросы", params: undefined },
+        { to: "/faq/error-codes", label: "Коды ошибок", params: undefined },
         { to: "/contacts", label: "Контакты", params: undefined },
       ],
     },

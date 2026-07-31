@@ -25,6 +25,13 @@ function PricesPage() {
         title: "Цены",
         table: "prices",
         orderBy: { column: "title" },
+        filters: [
+          {
+            key: "service_type_id",
+            label: "Вид техники",
+            options: types.map((t: any) => ({ value: t.id, label: t.title })),
+          },
+        ],
         showActiveToggle: true,
         fields: [
           { name: "title", label: "Название услуги", type: "text", required: true },
@@ -49,13 +56,13 @@ function PricesPage() {
             key: "price_from",
             label: "От",
             sortable: true,
-            render: (r) => (r.price_from != null ? `${r.price_from} ₽` : "—"),
+            render: (r) => (r.price_from != null ? `${r.price_from} BYN` : "—"),
           },
           {
             key: "price_to",
             label: "До",
             sortable: true,
-            render: (r) => (r.price_to != null ? `${r.price_to} ₽` : "—"),
+            render: (r) => (r.price_to != null ? `${r.price_to} BYN` : "—"),
           },
         ],
       }}

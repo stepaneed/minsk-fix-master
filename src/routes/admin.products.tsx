@@ -80,6 +80,22 @@ function ProductsAdmin() {
       ) : (
         <AdminTable
           rows={products as any[]}
+          filters={[
+            {
+              key: "service_id",
+              label: "Услуга",
+              options: services.map((s: any) => ({ value: s.id, label: s.title })),
+            },
+            {
+              key: "is_active",
+              label: "Статус",
+              options: [
+                { value: "true", label: "Активно" },
+                { value: "false", label: "Черновик" },
+              ],
+              value: (r) => String(r.is_active),
+            },
+          ]}
           columns={[
             { key: "title", label: "Название" },
             { key: "extra_services", label: "Услуга", render: (r: any) => r.extra_services?.title ?? "—" },

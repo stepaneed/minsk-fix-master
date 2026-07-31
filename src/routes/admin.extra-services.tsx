@@ -130,7 +130,7 @@ function BuyoutSettings({ service, onSaved }: { service: any; onSaved: () => voi
         <p className="text-sm text-muted-foreground">Стоимость = база × возраст × состояние × бонус_бренда. В ключах используйте slug вида техники/бренда.</p>
       </div>
       <div className="grid gap-4 md:grid-cols-2">
-        <MapEditor title="База (BYN по виду техники)" value={s.base} onChange={(v) => setS({ ...s, base: v })} placeholderK="washing_machines" placeholderV="150" />
+        <MapEditor title="База (бел. руб. по виду техники)" value={s.base} onChange={(v) => setS({ ...s, base: v })} placeholderK="washing_machines" placeholderV="150" />
         <MapEditor title="Возраст (множитель)" value={s.age} onChange={(v) => setS({ ...s, age: v })} placeholderK="<3 / 3-7" placeholderV="0.7" />
         <MapEditor title="Состояние (множитель)" value={s.condition} onChange={(v) => setS({ ...s, condition: v })} placeholderK="working" placeholderV="1.0" />
         <MapEditor title="Бонус бренда" value={s.brand_bonus} onChange={(v) => setS({ ...s, brand_bonus: v })} placeholderK="bosch" placeholderV="1.1" />

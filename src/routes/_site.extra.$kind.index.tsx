@@ -6,6 +6,7 @@ import { BuyoutCalculator } from "@/components/site/BuyoutCalculator";
 import { ProductFilter, filterProducts, type Product } from "@/components/site/ProductFilter";
 import { OrderForm } from "@/components/site/OrderForm";
 import { Badge } from "@/components/ui/badge";
+import { PriceValue } from "@/components/ui/currency-icon";
 
 const ALLOWED = ["buyout", "refurbished", "parts"] as const;
 
@@ -47,6 +48,7 @@ function ExtraServicePage() {
         .from("extra_services")
         .select("*")
         .eq("kind", kind)
+        .eq("is_active", true)
         .maybeSingle();
       return data;
     },
@@ -124,8 +126,8 @@ function ProductsCatalog({ serviceId, kind }: { serviceId: string; kind: string 
                       <div className="mt-auto pt-3">
                         {p.price != null && (
                           <div className="flex items-baseline gap-2">
-                            <span className="text-lg font-semibold">{p.price} BYN</span>
-                            {hasDiscount && <span className="text-sm text-muted-foreground line-through">{p.old_price} BYN</span>}
+                            <PriceValue className="text-lg font-semibold">{p.price}</PriceValue>
+                            {hasDiscount && <PriceValue className="text-sm text-muted-foreground line-through">{p.old_price}</PriceValue>}
                           </div>
                         )}
                       </div>

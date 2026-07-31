@@ -11,7 +11,6 @@ export const Route = createFileRoute("/_site/appliance/$slug/$brand")({
     if (!service || !brand) throw notFound();
     return { service, brand };
   },
-  beforeLoad: ({ context }) => context,
   head: ({ loaderData, params }) =>
     loaderData
       ? comboHead(loaderData.service, loaderData.brand, `/appliance/${params.slug}/${params.brand}`)

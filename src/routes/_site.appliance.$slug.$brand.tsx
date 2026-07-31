@@ -1,6 +1,6 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound, Outlet } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
-import { ComboPage, comboHead } from "@/components/site/ComboPage";
+import { comboHead } from "@/components/site/ComboPage";
 
 export const Route = createFileRoute("/_site/appliance/$slug/$brand")({
   loader: async ({ params }) => {
@@ -15,8 +15,5 @@ export const Route = createFileRoute("/_site/appliance/$slug/$brand")({
     loaderData
       ? comboHead(loaderData.service, loaderData.brand, `/appliance/${params.slug}/${params.brand}`)
       : {},
-  component: () => {
-    const data = Route.useLoaderData();
-    return <ComboPage service={data.service} brand={data.brand} />;
-  },
+  component: Outlet,
 });

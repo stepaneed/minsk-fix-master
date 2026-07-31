@@ -20,6 +20,12 @@ import {
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 
+const EXTRA_LABELS: Record<string, string> = {
+  buyout: "Выкуп техники",
+  refurbished: "Восстановленная техника",
+  parts: "Запчасти",
+};
+
 function scrollToOrder() {
   const el = document.getElementById("order");
   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -43,6 +49,14 @@ export function Header() {
     },
   });
 
+  const { data: extraServices = [] } = useQuery({
+    queryKey: ["header_extra_services"],
+    queryFn: async () => {
+      const { data } = await supabase.from("extra_services").select("kind,title").eq("is_active", true).order("sort_order");
+      return data ?? [];
+    },
+  });
+
   const dropdowns = [
     {
       key: "services",
@@ -54,9 +68,11 @@ export function Header() {
           label: s.title,
           params: { slug: s.slug },
         })),
-        { to: "/extra/$kind", label: "Выкуп техники", params: { kind: "buyout" } },
-        { to: "/extra/$kind", label: "Восстановленная техника", params: { kind: "refurbished" } },
-        { to: "/extra/$kind", label: "Запчасти", params: { kind: "parts" } },
+        ...extraServices.map((service) => ({
+          to: "/extra/$kind",
+          label: service.title || EXTRA_LABELS[service.kind] || service.kind,
+          params: { kind: service.kind },
+        })),
       ],
     },
     {

@@ -72,6 +72,13 @@ export function ComboPage({ service, brand }: ComboData) {
                 </li>
               ))}
             </ul>
+            <Link
+              to="/appliance/$slug/$brand/error"
+              params={{ slug: service.slug, brand: brand.slug }}
+              className="mt-6 inline-flex text-sm font-medium text-primary hover:underline"
+            >
+              Коды ошибок {brand.title}
+            </Link>
           </div>
           <OrderForm defaultTypeId={service.id} />
         </div>

@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ProductGallery } from "@/components/site/ProductGallery";
 import { OrderForm } from "@/components/site/OrderForm";
 import { Badge } from "@/components/ui/badge";
+import { PriceValue } from "@/components/ui/currency-icon";
 
 const ALLOWED = ["refurbished", "parts"] as const;
 
@@ -29,13 +30,14 @@ function ProductPage() {
   const { data, isLoading } = useQuery({
     queryKey: ["product", kind, slug],
     queryFn: async () => {
-      const { data: svc } = await supabase.from("extra_services").select("id,title").eq("kind", kind).maybeSingle();
+      const { data: svc } = await supabase.from("extra_services").select("id,title").eq("kind", kind).eq("is_active", true).maybeSingle();
       if (!svc) return null;
       const { data: p } = await supabase
         .from("products")
         .select("*, product_images(id,url,role,sort_order)")
         .eq("service_id", svc.id)
         .eq("slug", slug)
+        .eq("is_active", true)
         .maybeSingle();
       return p ? { product: p, service: svc } : null;
     },
@@ -61,10 +63,10 @@ function ProductPage() {
           <h1 className="text-3xl font-semibold tracking-tight">{product.title}</h1>
           {product.price != null && (
             <div className="mt-4 flex items-baseline gap-3">
-              <span className="text-3xl font-semibold">{product.price} BYN</span>
+              <PriceValue className="text-3xl font-semibold">{product.price}</PriceValue>
               {hasDiscount && (
                 <>
-                  <span className="text-lg text-muted-foreground line-through">{product.old_price} BYN</span>
+                  <PriceValue className="text-lg text-muted-foreground line-through">{product.old_price}</PriceValue>
                   <Badge className="bg-destructive">-{Math.round((1 - (product.price! / product.old_price!)) * 100)}%</Badge>
                 </>
               )}

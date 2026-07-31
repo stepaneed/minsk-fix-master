@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { PriceValue } from "@/components/ui/currency-icon";
 
 const AGE_OPTIONS = [
   { value: "<3", label: "до 3 лет" },
@@ -118,7 +119,7 @@ export function BuyoutCalculator({ settings }: { settings: any }) {
       <div className="mt-6 rounded-xl border bg-secondary p-5">
         <div className="text-xs uppercase tracking-wide text-muted-foreground">Ориентировочная цена выкупа</div>
         <div className="mt-1 text-3xl font-semibold">
-          {estimate ? `${estimate.low}–${estimate.high} BYN` : "—"}
+          {estimate ? <PriceValue>{estimate.low}–{estimate.high}</PriceValue> : "—"}
         </div>
         <p className="mt-2 text-xs text-muted-foreground">Финальная цена определяется после осмотра.</p>
       </div>

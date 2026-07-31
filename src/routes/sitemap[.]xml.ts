@@ -12,9 +12,10 @@ export const Route = createFileRoute("/sitemap.xml")({
           process.env.SUPABASE_URL!,
           process.env.SUPABASE_SERVICE_ROLE_KEY!,
         );
-        const [{ data: types }, { data: brands }] = await Promise.all([
+        const [{ data: types }, { data: brands }, { data: codePairs }] = await Promise.all([
           supabase.from("service_types").select("slug").eq("is_active", true),
           supabase.from("brands").select("slug").eq("is_active", true),
+          supabase.from("error_codes").select("service_types!inner(slug,is_active),brands!inner(slug,is_active)").eq("is_active", true).eq("service_types.is_active", true).eq("brands.is_active", true),
         ]);
         const typeSlugs = (types ?? []).map((t) => t.slug);
         const brandSlugs = (brands ?? []).map((b) => b.slug);
@@ -26,12 +27,18 @@ export const Route = createFileRoute("/sitemap.xml")({
             combos.push(`/brand/${b}/${t}`);
           }
         }
+        const errorPaths = Array.from(new Set((codePairs ?? []).flatMap((row: any) => {
+          const type = row.service_types?.slug;
+          const brand = row.brands?.slug;
+          return type && brand ? [`/appliance/${type}/${brand}/error`, `/brand/${brand}/${type}/error`] : [];
+        })));
 
         const paths = [
           "/", "/services", "/prices", "/discounts", "/promotions", "/faq", "/faq/error-codes", "/contacts",
           ...typeSlugs.map((s) => `/appliance/${s}`),
           ...brandSlugs.map((s) => `/brand/${s}`),
           ...combos,
+          ...errorPaths,
         ];
         const xml = [
           `<?xml version="1.0" encoding="UTF-8"?>`,

@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Sparkles, Wrench, Loader2 } from "lucide-react";
 import { OrderModal } from "@/components/site/OrderModal";
 import { toast } from "sonner";
+import { PriceValue } from "@/components/ui/currency-icon";
 
 export function PriceCalculator() {
   const [typeId, setTypeId] = useState<string>("");
@@ -160,8 +161,8 @@ export function PriceCalculator() {
               <div className="text-xs uppercase tracking-wide text-muted-foreground">Ориентировочная стоимость работ</div>
               <div className="mt-1 text-3xl font-semibold text-primary">
                 {mutation.data.min === mutation.data.max
-                  ? `${mutation.data.min} BYN`
-                  : `${mutation.data.min} – ${mutation.data.max} BYN`}
+                  ? <PriceValue>{mutation.data.min}</PriceValue>
+                  : <PriceValue>{mutation.data.min} – {mutation.data.max}</PriceValue>}
               </div>
             </div>
             <Button onClick={() => setOrderOpen(true)}>

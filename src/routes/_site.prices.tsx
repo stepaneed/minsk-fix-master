@@ -5,6 +5,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { SecondCTA } from "@/components/site/SecondCTA";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PriceCalculator } from "@/components/site/PriceCalculator";
+import { CurrencyIcon, PriceValue } from "@/components/ui/currency-icon";
 
 export const Route = createFileRoute("/_site/prices")({
   head: () => ({
@@ -72,7 +73,7 @@ function PricesPage() {
                       <thead className="bg-secondary">
                         <tr>
                           <th className="px-4 py-3 text-left font-medium">Услуга</th>
-                          <th className="px-4 py-3 text-right font-medium">Цена, BYN</th>
+                          <th className="px-4 py-3 text-right font-medium"><span className="inline-flex items-center gap-1">Цена, <CurrencyIcon /></span></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -82,7 +83,7 @@ function PricesPage() {
                           <tr key={r.id} className="border-t">
                             <td className="px-4 py-3">{r.title}</td>
                             <td className="px-4 py-3 text-right font-medium">
-                              {r.price_from}{r.price_to ? ` – ${r.price_to}` : ""}
+                              <PriceValue>{r.price_from}{r.price_to ? ` – ${r.price_to}` : ""}</PriceValue>
                             </td>
                           </tr>
                         ))}

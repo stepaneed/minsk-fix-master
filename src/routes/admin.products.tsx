@@ -15,6 +15,7 @@ import { ProductImagesEditor, type ProductImage } from "@/components/admin/Produ
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2 } from "lucide-react";
+import { PriceValue } from "@/components/ui/currency-icon";
 
 export const Route = createFileRoute("/admin/products")({
   head: () => ({ meta: [{ title: "Товары — Админка" }, { name: "robots", content: "noindex" }] }),
@@ -99,8 +100,8 @@ function ProductsAdmin() {
           columns={[
             { key: "title", label: "Название" },
             { key: "extra_services", label: "Услуга", render: (r: any) => r.extra_services?.title ?? "—" },
-            { key: "price", label: "Цена", render: (r: any) => (r.price != null ? `${r.price} BYN` : "—") },
-            { key: "old_price", label: "Старая цена", render: (r: any) => (r.old_price != null ? `${r.old_price} BYN` : "—") },
+            { key: "price", label: "Цена", render: (r: any) => (r.price != null ? <PriceValue>{r.price}</PriceValue> : "—") },
+            { key: "old_price", label: "Старая цена", render: (r: any) => (r.old_price != null ? <PriceValue>{r.old_price}</PriceValue> : "—") },
             { key: "is_active", label: "Активно", render: (r: any) => (r.is_active ? "✓" : "—"), className: "w-20" },
           ]}
           actions={(row) => (
@@ -219,7 +220,7 @@ function ProductForm({
         <div><Label>Порядок</Label><Input className="mt-1" type="number" value={v.sort_order} onChange={(e) => setV({ ...v, sort_order: e.target.value })} /></div>
         <div><Label>Название *</Label><Input className="mt-1" value={v.title} onChange={(e) => setV({ ...v, title: e.target.value })} /></div>
         <div><Label>Slug *</Label><Input className="mt-1" value={v.slug} onChange={(e) => setV({ ...v, slug: e.target.value })} /></div>
-        <div><Label>Цена (BYN)</Label><Input className="mt-1" type="number" step="0.01" value={v.price ?? ""} onChange={(e) => setV({ ...v, price: e.target.value })} /></div>
+        <div><Label>Цена, бел. руб.</Label><Input className="mt-1" type="number" step="0.01" value={v.price ?? ""} onChange={(e) => setV({ ...v, price: e.target.value })} /></div>
         <div><Label>Старая цена (для скидки)</Label><Input className="mt-1" type="number" step="0.01" value={v.old_price ?? ""} onChange={(e) => setV({ ...v, old_price: e.target.value })} /></div>
         <div><Label>В наличии (шт.)</Label><Input className="mt-1" type="number" value={v.stock ?? ""} onChange={(e) => setV({ ...v, stock: e.target.value })} /></div>
         <div className="flex items-end gap-2"><Switch checked={!!v.is_active} onCheckedChange={(c) => setV({ ...v, is_active: c })} /><Label>Активно</Label></div>
